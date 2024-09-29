@@ -2,6 +2,7 @@ package com.example.eowa.model;
 
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +17,7 @@ public class User {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
-    @
+    @JoinColumn(name="session", referencedColumnName = "jsessionid")
     private Session session;
 
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "participants")
