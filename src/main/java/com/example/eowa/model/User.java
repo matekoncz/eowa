@@ -16,8 +16,7 @@ public class User {
     @Column
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="session", referencedColumnName = "jsessionid")
+    @OneToOne(mappedBy = "user")
     private Session session;
 
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "participants")

@@ -55,12 +55,11 @@ public class SessionServiceTests {
     @Test
     public void shouldGetUserBySessionId() throws UserException {
         User user = new User("felh","asznalo3","email@gmail.com");
-        userService.saveUser(user);
+        User saveduser = userService.saveUser(user);
         Session session = new Session();
         session.setJsessionid("id");
         session.setUser(user);
         Session storedSession = sessionService.saveSession(session);
-        //user.setSession(storedSession);
         Assertions.assertEquals("felh",sessionService.getUserBySessionId("id").getUsername());
     }
 }

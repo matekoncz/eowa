@@ -7,8 +7,8 @@ public class Session {
 
     @Id
     private String jsessionid;
-
-    @OneToOne(mappedBy = "session")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user", referencedColumnName = "username")
     private User user;
     @Column
     private long timestamp;
