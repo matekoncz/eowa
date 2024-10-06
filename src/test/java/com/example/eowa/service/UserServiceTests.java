@@ -2,10 +2,7 @@ package com.example.eowa.service;
 
 import com.example.eowa.model.Event;
 import com.example.eowa.model.User;
-import exceptions.userExceptions.EmailAddressInInvalidFormatException;
-import exceptions.userExceptions.UserException;
-import exceptions.userExceptions.UserMissingRequiredFieldsException;
-import exceptions.userExceptions.UsernameNotUniqueException;
+import exceptions.userExceptions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,6 +70,17 @@ public class UserServiceTests {
         User user5 = new User("felh","asznalo5","a5@b.com");
         Assertions.assertThrows(UsernameNotUniqueException.class,()->{
             userService.saveUser(user5);
+        });
+    }
+
+    @Test
+    public void shouldNotSaveTwoUsersWithSameEmail() throws UserException {
+        User user = new User("felh","asznalo1","a@b.com");
+        userService.saveUser(user);
+        User newuser = new User("felh2","asznalo1","a@b.com");
+
+        Assertions.assertThrows(EmailAddressNotUniqueException.class,()->{
+            userService.saveUser(newuser);
         });
     }
 }

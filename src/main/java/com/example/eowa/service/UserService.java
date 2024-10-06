@@ -46,11 +46,21 @@ public class UserService {
         userRepository.deleteAll();
     }
 
-    private void validateUser(User user) throws UserMissingRequiredFieldsException, EmailAddressInInvalidFormatException, PasswordTooShortException, UsernameNotUniqueException {
+    private void validateUser(User user) throws UserException{
         checkRequiredFields(user);
         checkEmailFormat(user);
         checkPassword(user);
         checkUsername(user);
+        checkIfEmailIsTaken(user);
+    }
+
+    private void checkIfEmailIsTaken(User user) throws EmailAddressNotUniqueException {
+        if(user.getEmail()==null){
+            return;
+        }
+        if(userRepository.usersWithThisEmail(user.getEmail())>0){
+            throw new EmailAddressNotUniqueException();
+        }
     }
 
     private void checkUsername(User user) throws UsernameNotUniqueException {
