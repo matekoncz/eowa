@@ -23,6 +23,9 @@ public class AuthServiceTests {
     private static final long ONE_HOUR_IN_MILLIS = 60*60*1000;
 
     @Autowired
+    private EventService eventService;
+
+    @Autowired
     private AuthService authService;
 
     @Autowired
@@ -33,6 +36,7 @@ public class AuthServiceTests {
 
     @BeforeEach
     public void beforeTests(){
+        eventService.deleteAllEvent();
         sessionService.deleteAllSession();
         userService.deleteAllUsers();
     }

@@ -1,5 +1,6 @@
 package com.example.eowa.service;
 
+import com.example.eowa.model.Event;
 import com.example.eowa.model.User;
 import exceptions.userExceptions.EmailAddressInInvalidFormatException;
 import exceptions.userExceptions.UserException;
@@ -18,10 +19,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class UserServiceTests {
 
     @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
     private UserService userService;
 
     @BeforeEach
     public void beforeTests(){
+        sessionService.deleteAllSession();
+        eventService.deleteAllEvent();
         userService.deleteAllUsers();
     }
 

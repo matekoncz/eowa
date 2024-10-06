@@ -16,6 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class SessionServiceTests {
 
     @Autowired
+    private EventService eventService;
+
+    @Autowired
     private SessionService sessionService;
 
     @Autowired
@@ -23,6 +26,7 @@ public class SessionServiceTests {
 
     @BeforeEach
     public void beforeTests(){
+        eventService.deleteAllEvent();
         sessionService.deleteAllSession();
         userService.deleteAllUsers();
     }

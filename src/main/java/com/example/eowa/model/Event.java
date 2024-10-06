@@ -25,8 +25,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(long id, User owner, String eventName, Set<User> participants) {
-        this.id = id;
+    public Event( User owner, String eventName, Set<User> participants) {
         this.owner = owner;
         this.eventName = eventName;
         this.participants = participants;
