@@ -38,4 +38,8 @@ public class SessionService {
     public void deleteAllSession() {
         sessionRepository.deleteAll();
     }
+
+    public Session updateSession(Session session){
+        return sessionRepository.save(session);
+    }
 }

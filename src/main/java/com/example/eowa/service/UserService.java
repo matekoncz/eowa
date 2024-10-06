@@ -82,7 +82,6 @@ public class UserService {
     }
 
     public boolean isPasswordCorrect(String password,User user){
-        String encodedPassword = passwordEncoder.encode(password);
-        return user.getPassword().equals(encodedPassword);
+        return passwordEncoder.matches(password,user.getPassword());
     }
 }

@@ -12,9 +12,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class AuthService {
-
 
     @Value("${session.durationInHours}")
     private int sessionDuration;
@@ -30,7 +30,6 @@ public class AuthService {
         this.sessionService = sessionService;
     }
 
-    @Transactional
     public String login(Credentials credentials,String jsessionid) throws AuthenticationException{
         authenticate(credentials);
         User user = userService.getUserByUsername(credentials.getUsername());
