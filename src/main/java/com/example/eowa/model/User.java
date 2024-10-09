@@ -1,5 +1,7 @@
 package com.example.eowa.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import org.hibernate.annotations.ColumnDefault;
@@ -12,10 +14,12 @@ public class User {
     @Id
     private String username;
     @Column
+    @JsonProperty
     private String password;
     @Column
     private String email;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user")
     private Session session;
 
@@ -36,6 +40,7 @@ public class User {
         return username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -56,6 +61,7 @@ public class User {
         events.add(event);
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
