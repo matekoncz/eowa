@@ -8,6 +8,7 @@ import exceptions.authenticationExceptions.InvalidSessionException;
 import exceptions.authenticationExceptions.UserDoesNotExistException;
 import exceptions.authenticationExceptions.WrongPasswordException;
 import exceptions.userExceptions.PasswordTooShortException;
+import exceptions.userExceptions.UserException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class AuthService {
     public AuthService(UserService userService, SessionService sessionService) {
         this.userService = userService;
         this.sessionService = sessionService;
+    }
+
+    public User signUpUser(User user) throws UserException {
+        return userService.saveUser(user);
     }
 
     public String login(Credentials credentials,String jsessionid) throws AuthenticationException{
