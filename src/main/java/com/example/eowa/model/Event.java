@@ -1,7 +1,6 @@
 package com.example.eowa.model;
 
 import jakarta.persistence.*;
-
 import java.util.Set;
 
 @Entity
