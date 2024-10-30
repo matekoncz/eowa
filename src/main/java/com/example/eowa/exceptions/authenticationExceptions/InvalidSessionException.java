@@ -1,4 +1,4 @@
-package exceptions.authenticationExceptions;
+package com.example.eowa.exceptions.authenticationExceptions;
 
 public class InvalidSessionException extends AuthenticationException{
 

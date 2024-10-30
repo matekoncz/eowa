@@ -1,4 +1,4 @@
-package exceptions.userExceptions;
+package com.example.eowa.exceptions.userExceptions;
 
 public class EmailAddressNotUniqueException extends UserException{
     public EmailAddressNotUniqueException(){

@@ -1,4 +1,4 @@
-package exceptions.userExceptions;
+package com.example.eowa.exceptions.userExceptions;
 
 import com.example.eowa.model.User;
 

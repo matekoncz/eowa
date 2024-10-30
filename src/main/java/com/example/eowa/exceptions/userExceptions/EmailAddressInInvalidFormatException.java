@@ -1,4 +1,4 @@
-package exceptions.userExceptions;
+package com.example.eowa.exceptions.userExceptions;
 
 public class EmailAddressInInvalidFormatException extends UserException {
     public EmailAddressInInvalidFormatException() {

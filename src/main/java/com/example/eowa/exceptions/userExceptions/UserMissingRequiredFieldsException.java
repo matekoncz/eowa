@@ -1,4 +1,4 @@
-package exceptions.userExceptions;
+package com.example.eowa.exceptions.userExceptions;
 
 public class UserMissingRequiredFieldsException extends UserException{
     public UserMissingRequiredFieldsException() {
