@@ -1,14 +1,11 @@
 package com.example.eowa.service;
 
+import com.example.eowa.exceptions.authenticationExceptions.*;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.Session;
 import com.example.eowa.model.User;
-import exceptions.authenticationExceptions.AuthenticationException;
-import exceptions.authenticationExceptions.InvalidSessionException;
-import exceptions.authenticationExceptions.UserDoesNotExistException;
-import exceptions.authenticationExceptions.WrongPasswordException;
-import exceptions.userExceptions.PasswordTooShortException;
-import exceptions.userExceptions.UserException;
+import com.example.eowa.model.Event;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,9 +23,12 @@ public class AuthService {
 
     private final SessionService sessionService;
 
-    public AuthService(UserService userService, SessionService sessionService) {
+    private final EventService eventService;
+
+    public AuthService(UserService userService, SessionService sessionService, EventService eventService) {
         this.userService = userService;
         this.sessionService = sessionService;
+        this.eventService = eventService;
     }
 
     public User signUpUser(User user) throws UserException {
@@ -72,5 +72,27 @@ public class AuthService {
             sessionService.deleteSessionById(jsessionid);
             throw new InvalidSessionException();
         }
+    }
+
+    public void validateParticipant(String sessionid, long eventid) throws UserIsNotParticipantException {
+        Event event = eventService.getEventById(eventid);
+        User currentuser = sessionService.getUserBySessionId(sessionid);
+
+        if(!event.getParticipants().contains(currentuser)){
+            throw new UserIsNotParticipantException();
+        }
+    }
+
+    public void validateEventOwner(String sessionid, long eventid) throws UserIsNotEventOwnerException {
+        Event event = eventService.getEventById(eventid);
+        User currentuser = sessionService.getUserBySessionId(sessionid);
+
+        if(!event.getOwner().equals(currentuser)){
+            throw new UserIsNotEventOwnerException();
+        }
+    }
+
+    public User getUserBySessionId(String jsessionid) {
+        return sessionService.getUserBySessionId(jsessionid);
     }
 }
