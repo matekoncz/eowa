@@ -1,8 +1,8 @@
 package com.example.eowa.service;
 
+import com.example.eowa.exceptions.userExceptions.*;
 import com.example.eowa.model.User;
 import com.example.eowa.repository.UserRepository;
-import exceptions.userExceptions.*;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +22,6 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-//    @Transactional
     public User saveUser(User user) throws UserException {
         validateUser(user);
 

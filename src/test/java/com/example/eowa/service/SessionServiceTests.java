@@ -2,7 +2,7 @@ package com.example.eowa.service;
 
 import com.example.eowa.model.Session;
 import com.example.eowa.model.User;
-import exceptions.userExceptions.UserException;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

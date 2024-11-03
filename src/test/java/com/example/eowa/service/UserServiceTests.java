@@ -1,8 +1,8 @@
 package com.example.eowa.service;
 
-import com.example.eowa.model.Event;
+import com.example.eowa.exceptions.userExceptions.*;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.User;
-import exceptions.userExceptions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
