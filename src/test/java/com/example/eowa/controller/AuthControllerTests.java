@@ -49,7 +49,7 @@ public class AuthControllerTests {
     public void beforeTests() throws Exception {
         userService.deleteAllUsers();
         eventService.deleteAllEvent();
-        userService.deleteAllUsers();
+        sessionService.deleteAllSession();
     }
 
     @Test

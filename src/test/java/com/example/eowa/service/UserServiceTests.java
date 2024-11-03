@@ -26,9 +26,9 @@ public class UserServiceTests {
 
     @BeforeEach
     public void beforeTests(){
-        sessionService.deleteAllSession();
         eventService.deleteAllEvent();
         userService.deleteAllUsers();
+        sessionService.deleteAllSession();
     }
 
     @Test

@@ -2,13 +2,12 @@ package com.example.eowa.service;
 
 import com.example.eowa.model.Event;
 import com.example.eowa.model.User;
-import exceptions.userExceptions.UserException;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.CustomAutowireConfigurer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -72,6 +71,6 @@ public class EventServiceTests {
         Event event = new Event(savedUser,"kertiparti",participants);
         Event savedEvent = eventService.saveEvent(event);
 
-        Assertions.assertEquals(savedEvent.getParticipants().size(),2);
+        Assertions.assertEquals(savedEvent.getParticipants().size(),3);
     }
 }

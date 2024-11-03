@@ -48,6 +48,7 @@ public class UserControllerTests {
     public void beforeTests() throws Exception {
         eventService.deleteAllEvent();
         userService.deleteAllUsers();
+        sessionService.deleteAllSession();
     }
 
     @Test
