@@ -1,22 +1,20 @@
 package com.example.eowa.controller;
 
+import com.example.eowa.exceptions.CookieDoesNotExistException;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.User;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.SessionService;
 import com.example.eowa.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exceptions.authenticationExceptions.AuthenticationException;
-import exceptions.userExceptions.UserException;
+import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -63,16 +61,9 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public HttpServletResponse logout(HttpServletRequest request, HttpServletResponse response){
-        CookieReader cookieReader = new CookieReader(request.getCookies());
-        if(!cookieReader.hasCookie("jsessionid")) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            return response;
-        }
-
-        Cookie sessionCookie = cookieReader.getCookie("jsessionid");
-        String jsessionid = sessionCookie.getValue();
+    public HttpServletResponse logout(@CookieValue("jsessionid") String jsessionid, HttpServletResponse response) throws CookieDoesNotExistException {
         authService.logout(jsessionid);
+        Cookie sessionCookie = new Cookie("jsessionid",jsessionid);
         sessionCookie.setMaxAge(0);
         response.addCookie(sessionCookie);
         response.setStatus(HttpStatus.OK.value());

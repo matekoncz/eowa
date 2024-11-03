@@ -1,5 +1,6 @@
 package com.example.eowa.controller;
 
+import com.example.eowa.exceptions.CookieDoesNotExistException;
 import com.example.eowa.model.User;
 import com.example.eowa.service.SessionService;
 import com.example.eowa.service.UserService;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,9 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/currentuser")
-    public HttpServletResponse getCurrentUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CookieReader cookieReader = new CookieReader(request.getCookies());
-        User currentUser = sessionService.getUserBySessionId(cookieReader.getCookie("jsessionid").getValue());
+    public HttpServletResponse getCurrentUser(@CookieValue("jsessionid") String jsessionid, HttpServletResponse response) throws IOException {
+        User currentUser = sessionService.getUserBySessionId(jsessionid);
         String userJson = objectMapper.writeValueAsString(currentUser);
         response.getWriter().print(userJson);
         return response;
