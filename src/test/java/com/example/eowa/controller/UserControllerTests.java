@@ -45,8 +45,7 @@ public class UserControllerTests {
     private EventService eventService;
 
     @BeforeEach
-    public void setup() throws Exception {
-        sessionService.deleteAllSession();
+    public void beforeTests() throws Exception {
         eventService.deleteAllEvent();
         userService.deleteAllUsers();
     }

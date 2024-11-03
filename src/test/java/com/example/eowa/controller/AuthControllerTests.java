@@ -46,8 +46,8 @@ public class AuthControllerTests {
     @Autowired
     private MockMvc mockMvc;
     @BeforeEach
-    public void setup() throws Exception {
-        sessionService.deleteAllSession();
+    public void beforeTests() throws Exception {
+        userService.deleteAllUsers();
         eventService.deleteAllEvent();
         userService.deleteAllUsers();
     }
