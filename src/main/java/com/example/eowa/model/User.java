@@ -21,7 +21,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Session session;
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "participants")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "participants")
     private Set<Event> events;
 
     public User() {

@@ -16,6 +16,7 @@ public class EventService {
     }
 
     public Event saveEvent(Event event){
+        event.addParticipant(event.getOwner());
         return eventRepository.save(event);
     }
 

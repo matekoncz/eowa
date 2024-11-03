@@ -15,10 +15,7 @@ public class Event {
     @Column
     private String eventName;
 
-    @ManyToMany
-    @JoinTable( name = "participation",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "username"))
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> participants;
 
     public Event() {
@@ -52,6 +49,10 @@ public class Event {
 
     public void setParticipants(Set<User> participants) {
         this.participants = participants;
+    }
+
+    public void addALlParticipant(Set<User> participants) {
+        this.participants.addAll(participants);
     }
 
     public void addParticipant(User participant){
