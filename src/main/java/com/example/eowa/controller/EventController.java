@@ -1,5 +1,6 @@
 package com.example.eowa.controller;
 
+import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.CookieDoesNotExistException;
 import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
 import com.example.eowa.exceptions.authenticationExceptions.UserIsNotEventOwnerException;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Set;
 
 @Controller
@@ -79,10 +82,20 @@ public class EventController {
 
     @Transactional
     @PutMapping("/{id}/add-users")
-    public HttpServletResponse addParticipants(@CookieValue("jsessionid") String jsessionid, @PathVariable("id") long id, @RequestBody Set<User> participants, HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public HttpServletResponse addParticipants(@CookieValue("jsessionid") String jsessionid, @PathVariable("id") long id, @RequestBody Set<User> participants, HttpServletResponse response) throws AuthenticationException {
         authService.validateSession(jsessionid);
         authService.validateEventOwner(jsessionid, id);
         eventService.getEventById(id).addALlParticipant(participants);
+        response.setStatus(HttpStatus.OK.value());
+        return response;
+    }
+
+    @PutMapping("/{id}/add-calendar")
+    public HttpServletResponse addCalendar(@CookieValue("jsessionid") String jsessionid,  @PathVariable("id") long id, @RequestParam("start") String startString, @RequestParam("end") String endString,@RequestParam("zone") String zoneId, HttpServletResponse response) throws UserIsNotEventOwnerException, CalendarException {
+        authService.validateEventOwner(jsessionid,id);
+        LocalDateTime startTime = LocalDateTime.parse(startString);
+        LocalDateTime endTime = LocalDateTime.parse(endString);
+        eventService.setEventCalendar(id,zoneId,startTime,endTime);
         response.setStatus(HttpStatus.OK.value());
         return response;
     }
