@@ -1,7 +1,6 @@
 package com.example.eowa.service;
 
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
-import com.example.eowa.exceptions.CalendarExceptions.WrongIntervalException;
 import com.example.eowa.model.Calendar;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

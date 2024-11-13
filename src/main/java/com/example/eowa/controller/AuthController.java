@@ -24,14 +24,11 @@ public class AuthController {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final UserService userService;
-
     private final AuthService authService;
 
     private final SessionService sessionService;
 
-    public AuthController(UserService userService, AuthService authService, SessionService sessionService) {
-        this.userService = userService;
+    public AuthController(AuthService authService, SessionService sessionService) {
         this.authService = authService;
         this.sessionService = sessionService;
     }

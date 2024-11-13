@@ -3,7 +3,7 @@ package com.example.eowa.controller;
 import jakarta.servlet.http.Cookie;
 
 public class CookieReader {
-    private Cookie[] cookies;
+    private final Cookie[] cookies;
 
     public CookieReader(Cookie[] cookies) {
         this.cookies = cookies;

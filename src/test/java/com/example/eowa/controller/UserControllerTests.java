@@ -11,13 +11,11 @@ import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class UserControllerTests {
 
     @Autowired
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,7 +44,7 @@ public class UserControllerTests {
     private EventService eventService;
 
     @BeforeEach
-    public void beforeTests() throws Exception {
+    public void beforeTests(){
         eventService.deleteAllEvent();
         userService.deleteAllUsers();
         sessionService.deleteAllSession();

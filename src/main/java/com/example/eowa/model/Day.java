@@ -2,7 +2,6 @@ package com.example.eowa.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -18,8 +17,6 @@ public class Day {
     private int serialNumber;
     @Column
     private boolean enabled;
-    @Column
-    private boolean hasExtraHour;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Hour> hours;
@@ -31,7 +28,6 @@ public class Day {
         this.dayStartTime = dayStartTime;
         this.serialNumber = serialNumber;
         this.enabled = enabled;
-        this.hasExtraHour = hasExtraHour;
         this.hours = hours;
     }
 
@@ -43,16 +39,8 @@ public class Day {
         return dayStartTime;
     }
 
-    public void setDayStartTime(ZonedDateTime dayStartTime) {
-        this.dayStartTime = dayStartTime;
-    }
-
     public int getSerialNumber() {
         return serialNumber;
-    }
-
-    public void setSerialNumber(int serialNumber) {
-        this.serialNumber = serialNumber;
     }
 
     public boolean isEnabled() {
@@ -63,19 +51,8 @@ public class Day {
         this.enabled = enabled;
     }
 
-    public boolean isHasExtraHour() {
-        return hasExtraHour;
-    }
-
-    public void setHasExtraHour(boolean hasExtraHour) {
-        this.hasExtraHour = hasExtraHour;
-    }
-
     public List<Hour> getHours() {
         return hours;
     }
 
-    public void setHours(List<Hour> hours) {
-        this.hours = hours;
-    }
 }

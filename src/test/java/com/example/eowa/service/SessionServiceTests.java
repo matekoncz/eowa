@@ -1,16 +1,14 @@
 package com.example.eowa.service;
 
+import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.Session;
 import com.example.eowa.model.User;
-import com.example.eowa.exceptions.userExceptions.UserException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -60,11 +58,11 @@ public class SessionServiceTests {
     @Test
     public void shouldGetUserBySessionId() throws UserException {
         User user = new User("felh","asznalo3","email@gmail.com");
-        User saveduser = userService.saveUser(user);
+        userService.saveUser(user);
         Session session = new Session();
         session.setJsessionid("id");
         session.setUser(user);
-        Session storedSession = sessionService.saveSession(session);
+        sessionService.saveSession(session);
         Assertions.assertEquals("felh",sessionService.getUserBySessionId("id").getUsername());
     }
 }

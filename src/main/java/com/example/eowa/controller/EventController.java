@@ -1,7 +1,6 @@
 package com.example.eowa.controller;
 
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
-import com.example.eowa.exceptions.CookieDoesNotExistException;
 import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
 import com.example.eowa.exceptions.authenticationExceptions.UserIsNotEventOwnerException;
 import com.example.eowa.model.Event;
@@ -9,9 +8,7 @@ import com.example.eowa.model.User;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.EventService;
 import com.example.eowa.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Set;
 
 @Controller
@@ -31,14 +27,11 @@ public class EventController {
 
     private final AuthService authService;
 
-    private final UserService userService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
-    public EventController(EventService eventService, AuthService authService, UserService userService) {
+    public EventController(EventService eventService, AuthService authService) {
         this.eventService = eventService;
         this.authService = authService;
-        this.userService = userService;
     }
 
     @PostMapping("/create")

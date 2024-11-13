@@ -1,8 +1,6 @@
 package com.example.eowa.controller;
 
 import com.example.eowa.EowaApplication;
-import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
-import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.Event;
 import com.example.eowa.model.User;
@@ -10,21 +8,17 @@ import com.example.eowa.service.AuthService;
 import com.example.eowa.service.EventService;
 import com.example.eowa.service.SessionService;
 import com.example.eowa.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,9 +40,6 @@ public class EventControllerTests {
 
     @Autowired
     EventService eventService;
-
-    @Autowired
-    EventController eventController;
 
     @Autowired
     SessionService sessionService;
@@ -176,7 +167,7 @@ public class EventControllerTests {
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
 
-        var response = mockMvc.perform(put("/events/"+id+"/add-users")
+        mockMvc.perform(put("/events/"+id+"/add-users")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(participants))
                         .accept("application/json")

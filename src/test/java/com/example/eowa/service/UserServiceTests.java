@@ -1,16 +1,13 @@
 package com.example.eowa.service;
 
 import com.example.eowa.exceptions.userExceptions.*;
-import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -51,27 +48,19 @@ public class UserServiceTests {
     @Test
     public void shouldNotSaveInvalidUser() throws UserException{
         User user = new User();
-        Assertions.assertThrows(UserMissingRequiredFieldsException.class,()->{
-            userService.saveUser(user);
-        });
+        Assertions.assertThrows(UserMissingRequiredFieldsException.class,()-> userService.saveUser(user));
 
         User user2 = new User("","","");
-        Assertions.assertThrows(UserMissingRequiredFieldsException.class,()->{
-            userService.saveUser(user2);
-        });
+        Assertions.assertThrows(UserMissingRequiredFieldsException.class,()-> userService.saveUser(user2));
 
         User user3 = new User("felh","asznalo3","a@b.c");
-        Assertions.assertThrows(EmailAddressInInvalidFormatException.class,()->{
-            userService.saveUser(user3);
-        });
+        Assertions.assertThrows(EmailAddressInInvalidFormatException.class,()-> userService.saveUser(user3));
 
         User user4 = new User("felh","asznalo4","a4@b.com");
         userService.saveUser(user4);
 
         User user5 = new User("felh","asznalo5","a5@b.com");
-        Assertions.assertThrows(UsernameNotUniqueException.class,()->{
-            userService.saveUser(user5);
-        });
+        Assertions.assertThrows(UsernameNotUniqueException.class,()-> userService.saveUser(user5));
     }
 
     @Test
@@ -80,8 +69,6 @@ public class UserServiceTests {
         userService.saveUser(user);
         User newuser = new User("felh2","asznalo1","a@b.com");
 
-        Assertions.assertThrows(EmailAddressNotUniqueException.class,()->{
-            userService.saveUser(newuser);
-        });
+        Assertions.assertThrows(EmailAddressNotUniqueException.class,()-> userService.saveUser(newuser));
     }
 }

@@ -1,4 +1,5 @@
 package com.example.eowa.service;
+
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.CalendarExceptions.TimeTravelException;
 import com.example.eowa.exceptions.CalendarExceptions.WrongIntervalException;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,13 +1,10 @@
 package com.example.eowa.model;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.TimeZone;
 
 @Entity
 public class Calendar {
@@ -37,24 +34,12 @@ public class Calendar {
         return timeZone;
     }
 
-    public void setTimeZone(ZoneId timeZone) {
-        this.timeZone = timeZone;
-    }
-
     public ZonedDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-    }
-
     public ZonedDateTime getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
     }
 
     public List<Day> getDays() {
