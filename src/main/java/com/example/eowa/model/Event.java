@@ -9,11 +9,17 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @OneToOne
+    private Calendar calendar;
+
     @ManyToOne
     private User owner;
 
     @Column
     private String eventName;
+
+    @Column
+    private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> participants;
@@ -21,10 +27,11 @@ public class Event {
     public Event() {
     }
 
-    public Event( User owner, String eventName, Set<User> participants) {
+    public Event( User owner, String eventName, Set<User> participants, String description) {
         this.owner = owner;
         this.eventName = eventName;
         this.participants = participants;
+        this.description = description;
     }
 
     public long getId() {
@@ -61,6 +68,22 @@ public class Event {
 
     public String getEventName() {
         return eventName;
+    }
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar){
+        this.calendar = calendar;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setEventName(String eventName) {
