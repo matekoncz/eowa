@@ -10,6 +10,7 @@ import com.example.eowa.service.AuthService;
 import com.example.eowa.service.EventService;
 import com.example.eowa.service.SessionService;
 import com.example.eowa.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +24,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -71,7 +74,7 @@ public class EventControllerTests {
 
         authService.login(credentials,"jsessionid");
 
-        Event event = new Event(savedUser,"buli",new HashSet<>());
+        Event event = new Event(savedUser,"buli",new HashSet<>(),"");
 
         var response = mockMvc.perform(post("/events/create")
                 .contentType("application/json")
@@ -94,7 +97,7 @@ public class EventControllerTests {
 
         authService.login(credentials,"jsessionid");
 
-        Event event = new Event(savedUser,"buli",new HashSet<>());
+        Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
 
         var response = mockMvc.perform(get("/events/"+id)
@@ -117,7 +120,7 @@ public class EventControllerTests {
 
         authService.login(credentials,"jsessionid");
 
-        Event event = new Event(savedUser,"buli",new HashSet<>());
+        Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         eventService.saveEvent(event);
 
         var response = mockMvc.perform(get("/events/currentuser-events")
@@ -141,7 +144,7 @@ public class EventControllerTests {
 
         authService.login(credentials,"jsessionid");
 
-        Event event = new Event(savedUser,"buli",new HashSet<>());
+        Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
 
         mockMvc.perform(delete("/events/"+id)
@@ -170,7 +173,7 @@ public class EventControllerTests {
 
         authService.login(credentials,"jsessionid");
 
-        Event event = new Event(savedUser,"buli",new HashSet<>());
+        Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
 
         var response = mockMvc.perform(put("/events/"+id+"/add-users")
@@ -184,5 +187,40 @@ public class EventControllerTests {
         Event savedEvent = eventService.getEventById(id);
 
         Assertions.assertEquals(savedEvent.getParticipants().size(),3);
+    }
+
+    @Test
+    public void shouldSetCalendar() throws Exception {
+        User savedUser = userService.saveUser(new User("felh","asznalo1","email@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh");
+
+        authService.login(credentials,"jsessionid");
+
+        Event event = new Event(savedUser,"buli",new HashSet<>(),"");
+
+        var response = mockMvc.perform(post("/events/create")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(event))
+                        .accept("application/json")
+                        .cookie(new Cookie("jsessionid","jsessionid")))
+                .andReturn()
+                .getResponse();
+        Event savedEvent = objectMapper.readValue(response.getContentAsString(), Event.class);
+
+        String start = LocalDateTime.now().toString();
+        String end = LocalDateTime.now().plusDays(3).toString();
+
+        mockMvc.perform(put("/events/"+savedEvent.getId()+"/add-calendar")
+                .cookie(new Cookie("jsessionid","jsessionid"))
+                .param("start",start)
+                .param("end",end)
+                .param("zone","CET")
+                .accept("application/json"));
+
+        savedEvent = eventService.getEventById(savedEvent.getId());
+
+        Assertions.assertEquals(3,savedEvent.getCalendar().getDays().size());
     }
 }

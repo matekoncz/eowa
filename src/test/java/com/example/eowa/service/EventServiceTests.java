@@ -1,5 +1,7 @@
 package com.example.eowa.service;
 
+import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
+import com.example.eowa.model.Calendar;
 import com.example.eowa.model.Event;
 import com.example.eowa.model.User;
 import com.example.eowa.exceptions.userExceptions.UserException;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +30,7 @@ public class EventServiceTests {
 
     @Autowired
     private EventService eventService;
+    private final Calendar calendar = new Calendar();
 
     @BeforeEach
     public void beforeTests(){
@@ -39,7 +43,7 @@ public class EventServiceTests {
     public void shouldSaveEvent() throws UserException {
         User user = new User("felh","asznalo1","email@gmail.com");
         User savedUser = userService.saveUser(user);
-        Event event = new Event(savedUser,"kertiparti",new HashSet<User>());
+        Event event = new Event(savedUser,"kertiparti",new HashSet<User>(),"");
         Event savedEvent = eventService.saveEvent(event);
         Assertions.assertNotNull(savedEvent);
     }
@@ -48,7 +52,7 @@ public class EventServiceTests {
     public void shouldGetEventById() throws UserException {
         User user = new User("felh","asznalo1","email@gmail.com");
         User savedUser = userService.saveUser(user);
-        Event event = new Event(savedUser,"kertiparti",new HashSet<User>());
+        Event event = new Event(savedUser,"kertiparti",new HashSet<User>(),"");
         Long storedId = eventService.saveEvent(event).getId();
 
         Assertions.assertEquals("kertiparti",eventService.getEventById(storedId).getEventName());
@@ -69,9 +73,32 @@ public class EventServiceTests {
         participants.add(savedp1);
         participants.add(savedp2);
 
-        Event event = new Event(savedUser,"kertiparti",participants);
+        Event event = new Event(savedUser,"kertiparti",participants,"");
         Event savedEvent = eventService.saveEvent(event);
 
         Assertions.assertEquals(savedEvent.getParticipants().size(),3);
+    }
+
+    @Test
+    public void shouldSetEventCalendar() throws UserException, CalendarException {
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti",new HashSet<User>(),"");
+        Event savedEvent = eventService.saveEvent(event);
+        eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(3));
+        Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
+        Assertions.assertNotNull(savedCalendar);
+    }
+
+    @Test
+    public void shouldSetEventCalendarDays() throws UserException, CalendarException {
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti",new HashSet<User>(),"");
+        Event savedEvent = eventService.saveEvent(event);
+        eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(3));
+        Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
+        Assertions.assertNotNull(savedCalendar);
+        Assertions.assertEquals(savedCalendar.getDays().size(),3);
     }
 }
