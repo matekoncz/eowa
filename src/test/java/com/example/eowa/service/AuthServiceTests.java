@@ -1,10 +1,8 @@
 package com.example.eowa.service;
 
+import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.authenticationExceptions.*;
-import com.example.eowa.model.Credentials;
-import com.example.eowa.model.Event;
-import com.example.eowa.model.Session;
-import com.example.eowa.model.User;
+import com.example.eowa.model.*;
 import com.example.eowa.exceptions.userExceptions.UserException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +33,7 @@ public class AuthServiceTests {
 
     @Autowired
     private SessionService sessionService;
+    private final Calendar calendar = new Calendar();
 
     @BeforeEach
     public void beforeTests(){
@@ -124,7 +123,7 @@ public class AuthServiceTests {
     public void shouldValidateEventOwnerBySessionPositive() throws UserException, AuthenticationException {
         User savedUser = userService.saveUser(new User("felh","asznalo1","email@gmail.com"));
 
-        Event event = new Event(savedUser,"kertiparti",new HashSet<>());
+        Event event = new Event(savedUser,"kertiparti",new HashSet<>(),"");
         Event savedEvent = eventService.saveEvent(event);
 
         Credentials credentials = new Credentials();
@@ -142,7 +141,7 @@ public class AuthServiceTests {
         User savedUser = userService.saveUser(new User("felh","asznalo1","email@gmail.com"));
 
         User owner = userService.saveUser(new User("felh2","asznalo2","freemail@gmail.com"));
-        Event event = new Event(owner,"kertiparti",new HashSet<>());
+        Event event = new Event(owner,"kertiparti",new HashSet<>(),"");
         Event savedEvent = eventService.saveEvent(event);
 
         Credentials credentials = new Credentials();
@@ -167,7 +166,7 @@ public class AuthServiceTests {
         Set<User> participants = new HashSet<>();
         participants.add(savedUser);
 
-        Event event = new Event(owner,"kertiparti",participants);
+        Event event = new Event(owner,"kertiparti",participants,"");
         Event savedEvent = eventService.saveEvent(event);
 
         Credentials credentials = new Credentials();
@@ -186,7 +185,7 @@ public class AuthServiceTests {
 
         User owner = userService.saveUser(new User("felh2","asznalo2","freemail@gmail.com"));
 
-        Event event = new Event(owner,"kertiparti",new HashSet<>());
+        Event event = new Event(owner,"kertiparti",new HashSet<>(),"");
         Event savedEvent = eventService.saveEvent(event);
 
         Credentials credentials = new Credentials();
