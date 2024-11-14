@@ -15,8 +15,8 @@ public class Hour {
     private int number;
     @Column
     private boolean enabled;
-    @ManyToMany
-    private Set<User> respondingUsers;
+    @OneToMany()
+    private Set<Opinion> opinions;
 
     public Hour() {
     }
