@@ -63,7 +63,7 @@ public class EventControllerTests {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        authService.login(credentials,"jsessionid");
+        String jsessionid = authService.login(credentials);
 
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
 
@@ -71,7 +71,7 @@ public class EventControllerTests {
                 .contentType("application/json")
                         .content(objectMapper.writeValueAsString(event))
                 .accept("application/json")
-                .cookie(new Cookie("jsessionid","jsessionid")))
+                .cookie(new Cookie("jsessionid",jsessionid)))
                 .andReturn()
                 .getResponse();
         Event savedEvent = objectMapper.readValue(response.getContentAsString(), Event.class);
@@ -86,7 +86,7 @@ public class EventControllerTests {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        authService.login(credentials,"jsessionid");
+        String jsessionid = authService.login(credentials);
 
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
@@ -94,7 +94,7 @@ public class EventControllerTests {
         var response = mockMvc.perform(get("/events/"+id)
                         .contentType("application/json")
                         .accept("application/json")
-                        .cookie(new Cookie("jsessionid","jsessionid")))
+                        .cookie(new Cookie("jsessionid",jsessionid)))
                 .andReturn()
                 .getResponse();
         Event savedEvent = objectMapper.readValue(response.getContentAsString(), Event.class);
@@ -109,7 +109,7 @@ public class EventControllerTests {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        authService.login(credentials,"jsessionid");
+        String jsessionid = authService.login(credentials);
 
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         eventService.saveEvent(event);
@@ -118,7 +118,7 @@ public class EventControllerTests {
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(event))
                         .accept("application/json")
-                        .cookie(new Cookie("jsessionid","jsessionid")))
+                        .cookie(new Cookie("jsessionid",jsessionid)))
                 .andReturn()
                 .getResponse();
         Event[] events = objectMapper.readValue(response.getContentAsString(), Event[].class);
@@ -133,7 +133,7 @@ public class EventControllerTests {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        authService.login(credentials,"jsessionid");
+        String jsessionid = authService.login(credentials);
 
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
@@ -141,7 +141,7 @@ public class EventControllerTests {
         mockMvc.perform(delete("/events/"+id)
                         .contentType("application/json")
                         .accept("application/json")
-                        .cookie(new Cookie("jsessionid","jsessionid")))
+                        .cookie(new Cookie("jsessionid",jsessionid)))
                 .andReturn()
                 .getResponse();
 
@@ -162,7 +162,7 @@ public class EventControllerTests {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        authService.login(credentials,"jsessionid");
+        String jsessionid = authService.login(credentials);
 
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
         long id = eventService.saveEvent(event).getId();
@@ -171,7 +171,7 @@ public class EventControllerTests {
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(participants))
                         .accept("application/json")
-                        .cookie(new Cookie("jsessionid","jsessionid")))
+                        .cookie(new Cookie("jsessionid",jsessionid)))
                 .andReturn()
                 .getResponse();
 
@@ -187,7 +187,7 @@ public class EventControllerTests {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        authService.login(credentials,"jsessionid");
+        String jsessionid = authService.login(credentials);
 
         Event event = new Event(savedUser,"buli",new HashSet<>(),"");
 
@@ -195,7 +195,7 @@ public class EventControllerTests {
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(event))
                         .accept("application/json")
-                        .cookie(new Cookie("jsessionid","jsessionid")))
+                        .cookie(new Cookie("jsessionid",jsessionid)))
                 .andReturn()
                 .getResponse();
         Event savedEvent = objectMapper.readValue(response.getContentAsString(), Event.class);
@@ -204,7 +204,7 @@ public class EventControllerTests {
         String end = LocalDateTime.now().plusDays(3).toString();
 
         mockMvc.perform(put("/events/"+savedEvent.getId()+"/add-calendar")
-                .cookie(new Cookie("jsessionid","jsessionid"))
+                .cookie(new Cookie("jsessionid",jsessionid))
                 .param("start",start)
                 .param("end",end)
                 .param("zone","CET")

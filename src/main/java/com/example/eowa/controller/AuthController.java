@@ -1,14 +1,13 @@
 package com.example.eowa.controller;
 
 import com.example.eowa.exceptions.CookieDoesNotExistException;
+import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.User;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.SessionService;
-import com.example.eowa.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
-import com.example.eowa.exceptions.userExceptions.UserException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,7 +41,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public HttpServletResponse login(@RequestBody Credentials credentials, HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
-        String jsessionid = authService.login(credentials,request.getSession().getId());
+        String jsessionid = authService.login(credentials);
         User loggedInUser = sessionService.getUserBySessionId(jsessionid);
 
         String userJson = objectMapper.writeValueAsString(loggedInUser);

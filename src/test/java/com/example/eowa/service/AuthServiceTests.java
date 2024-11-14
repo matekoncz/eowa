@@ -44,8 +44,8 @@ public class AuthServiceTests {
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
         Assertions.assertEquals(storedSession.getUser().getUsername(),savedUser.getUsername());
     }
 
@@ -55,7 +55,7 @@ public class AuthServiceTests {
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
         credentials.setPassword("asznalo2");
-        Assertions.assertThrows(WrongPasswordException.class, ()-> authService.login(credentials,"session"));
+        Assertions.assertThrows(WrongPasswordException.class, ()-> authService.login(credentials));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class AuthServiceTests {
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
         credentials.setPassword("asznalo2");
-        Assertions.assertThrows(UserDoesNotExistException.class, ()-> authService.login(credentials,"session"));
+        Assertions.assertThrows(UserDoesNotExistException.class, ()-> authService.login(credentials));
     }
 
     @Test
@@ -72,8 +72,8 @@ public class AuthServiceTests {
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
         authService.logout(storedSession.getJsessionid());
         Assertions.assertNull(sessionService.getSessionById(storedSession.getJsessionid()));
     }
@@ -89,8 +89,8 @@ public class AuthServiceTests {
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
         authService.validateSession(storedSession.getJsessionid());
     }
 
@@ -100,8 +100,8 @@ public class AuthServiceTests {
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
         storedSession.setTimestamp(System.currentTimeMillis()-ONE_HOUR_IN_MILLIS*20);
         sessionService.updateSession(storedSession);
         Assertions.assertThrows(InvalidSessionException.class, ()-> authService.validateSession(storedSession.getJsessionid()));
@@ -118,8 +118,8 @@ public class AuthServiceTests {
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
 
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
 
         authService.validateEventOwner(storedSession.getJsessionid(), savedEvent.getId());
     }
@@ -136,8 +136,8 @@ public class AuthServiceTests {
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
 
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
 
         Assertions.assertThrows(UserIsNotEventOwnerException.class,
                 ()-> authService.validateEventOwner(storedSession.getJsessionid(), savedEvent.getId()));
@@ -160,8 +160,8 @@ public class AuthServiceTests {
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
 
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
 
         authService.validateParticipant(storedSession.getJsessionid(), savedEvent.getId());
     }
@@ -179,8 +179,8 @@ public class AuthServiceTests {
         credentials.setUsername("felh");
         credentials.setPassword("asznalo1");
 
-        authService.login(credentials,"session");
-        Session storedSession = sessionService.getSessionById("session");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
 
 
         Assertions.assertThrows(UserIsNotParticipantException.class,

@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Transactional
 @Service
 public class AuthService {
@@ -35,14 +37,14 @@ public class AuthService {
         return userService.saveUser(user);
     }
 
-    public String login(Credentials credentials,String jsessionid) throws AuthenticationException{
+    public String login(Credentials credentials) throws AuthenticationException{
         authenticate(credentials);
         User user = userService.getUserByUsername(credentials.getUsername());
         Session session = user.getSession();
         if(session == null){
             session = new Session();
             session.setUser(user);
-            session.setJsessionid(jsessionid);
+            session.setJsessionid(UUID.randomUUID().toString().replace("-",""));
             sessionService.saveSession(session);
         }
         return session.getJsessionid();
