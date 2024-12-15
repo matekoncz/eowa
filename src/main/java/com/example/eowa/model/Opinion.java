@@ -10,9 +10,6 @@ public class Opinion {
     private long id;
 
     @ManyToOne
-    private Hour hour;
-
-    @ManyToOne
     private User user;
 
     @Column
@@ -21,8 +18,7 @@ public class Opinion {
     public Opinion() {
     }
 
-    public Opinion(Hour hour, User user, UserOpinion userOpinion) {
-        this.hour = hour;
+    public Opinion(User user, UserOpinion userOpinion) {
         this.user = user;
         this.userOpinion = userOpinion;
     }
@@ -30,11 +26,6 @@ public class Opinion {
     public long getId() {
         return id;
     }
-
-    public Hour getHour() {
-        return hour;
-    }
-
     public User getUser() {
         return user;
     }
