@@ -1,6 +1,7 @@
 package com.example.eowa.service;
 
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
+import com.example.eowa.exceptions.authenticationExceptions.InvalidInvitationCodeException;
 import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.*;
 import org.junit.jupiter.api.Assertions;
@@ -148,7 +149,7 @@ public class EventServiceTests {
 
         eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(2));
 
-        eventService.setUnavailableHoursDaily(savedEvent.getId(),Set.of(0,1,2,3,21,22,23));
+        eventService.setUnavailableHoursPeriodically(savedEvent.getId(),Set.of(0,1,2,3,21,22,23), CalendarService.Period.DAILY);
 
         Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
         Day firstDay = savedCalendar.getDays().getFirst();
@@ -173,7 +174,7 @@ public class EventServiceTests {
 
         eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(8));
 
-        eventService.setUnavailableHoursWeekly(savedEvent.getId(),Set.of(0,1,2,3,21,22,23));
+        eventService.setUnavailableHoursPeriodically(savedEvent.getId(),Set.of(0,1,2,3,21,22,23), CalendarService.Period.WEEKLY);
 
         Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
         Day firstDay = savedCalendar.getDays().getFirst();
@@ -248,5 +249,23 @@ public class EventServiceTests {
         Assertions.assertEquals(firstHour.getOpinions().size(),0);
         Assertions.assertEquals(lastHour.getOpinions().size(),1);
         Assertions.assertEquals(unchangedHour.getOpinions().size(),0);
+    }
+
+    @Test
+    public void shouldAddParticipantWithInvitationCode() throws UserException, CalendarException, InvalidInvitationCodeException {
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+
+        User participant = new User("felh2","asznalo1","email2@gmail.com");
+        User savedParticipant = userService.saveUser(participant);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+        Event savedEvent = eventService.saveEvent(event);
+
+        eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(2));
+
+        Event updatedEvent = eventService.joinEventWithInvitationCode(savedParticipant, event.getInvitationCode());
+
+        Assertions.assertTrue(updatedEvent.getParticipants().contains(savedParticipant));
     }
 }
