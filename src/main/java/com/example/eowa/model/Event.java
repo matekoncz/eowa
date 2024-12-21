@@ -2,6 +2,7 @@ package com.example.eowa.model;
 
 import jakarta.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 public class Event {
@@ -24,6 +25,9 @@ public class Event {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> participants;
 
+    @Column(name = "code")
+    private String invitationCode;
+
     public Event() {
     }
 
@@ -32,6 +36,7 @@ public class Event {
         this.eventName = eventName;
         this.participants = participants;
         this.description = description;
+        this.invitationCode = eventName+"::"+UUID.randomUUID().toString();
     }
 
     public long getId() {
@@ -84,5 +89,9 @@ public class Event {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
+    }
+
+    public String getInvitationCode() {
+        return invitationCode;
     }
 }
