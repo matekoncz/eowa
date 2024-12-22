@@ -33,14 +33,18 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public HttpServletResponse signUp(@RequestBody User user, HttpServletResponse response) throws UserException {
+    public HttpServletResponse signUp(
+            @RequestBody User user,
+            HttpServletResponse response) throws UserException {
         authService.signUpUser(user);
         response.setStatus(HttpStatus.OK.value());
         return response;
     }
 
     @PostMapping("/login")
-    public HttpServletResponse login(@RequestBody Credentials credentials, HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
+    public HttpServletResponse login(
+            @RequestBody Credentials credentials,
+            HttpServletResponse response) throws AuthenticationException, IOException, UserException {
         String jsessionid = authService.login(credentials);
         User loggedInUser = sessionService.getUserBySessionId(jsessionid);
 
@@ -57,7 +61,9 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public HttpServletResponse logout(@CookieValue("jsessionid") String jsessionid, HttpServletResponse response) throws CookieDoesNotExistException {
+    public HttpServletResponse logout(
+            @CookieValue("jsessionid") String jsessionid,
+            HttpServletResponse response) {
         authService.logout(jsessionid);
         Cookie sessionCookie = new Cookie("jsessionid",jsessionid);
         sessionCookie.setMaxAge(0);
