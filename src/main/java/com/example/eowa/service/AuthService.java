@@ -1,6 +1,7 @@
 package com.example.eowa.service;
 
 import com.example.eowa.exceptions.authenticationExceptions.*;
+import com.example.eowa.exceptions.userExceptions.UserDoesNotExistException;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.Session;
 import com.example.eowa.model.User;
@@ -37,7 +38,7 @@ public class AuthService {
         return userService.saveUser(user);
     }
 
-    public String login(Credentials credentials) throws AuthenticationException{
+    public String login(Credentials credentials) throws AuthenticationException, UserException {
         authenticate(credentials);
         User user = userService.getUserByUsername(credentials.getUsername());
         Session session = user.getSession();
@@ -54,7 +55,7 @@ public class AuthService {
         sessionService.deleteSessionById(jsessionid);
     }
 
-    public void authenticate(Credentials credentials) throws AuthenticationException {
+    public void authenticate(Credentials credentials) throws AuthenticationException, UserDoesNotExistException {
         User user = userService.getUserByUsername(credentials.getUsername());
         if(user==null){
             throw new UserDoesNotExistException();
