@@ -13,7 +13,7 @@ import java.time.Month;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class CalendarServiceTests {
+public class CalendarServiceTest {
 
     @Autowired
     CalendarService calendarService;

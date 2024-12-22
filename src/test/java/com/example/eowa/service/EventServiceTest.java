@@ -18,7 +18,7 @@ import java.util.Set;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class EventServiceTests {
+public class EventServiceTest {
 
     @Autowired
     private SessionService sessionService;

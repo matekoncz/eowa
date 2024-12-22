@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class UserServiceTests {
+public class UserServiceTest {
 
     @Autowired
     private EventService eventService;

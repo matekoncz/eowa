@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class SessionServiceTests {
+public class SessionServiceTest {
 
     @Autowired
     private EventService eventService;
