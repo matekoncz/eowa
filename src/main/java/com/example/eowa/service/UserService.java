@@ -31,8 +31,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUserByUsername(String username){
-        return userRepository.findById(username).orElse(null);
+    public User getUserByUsername(String username) throws UserDoesNotExistException {
+        User user = userRepository.findById(username).orElse(null);
+        if(user == null){
+            throw new UserDoesNotExistException();
+        }
+        return user;
     }
 
     public void deleteUserByUsername(String username){
@@ -61,8 +65,11 @@ public class UserService {
     }
 
     private void checkUsername(User user) throws UsernameNotUniqueException {
-        if(getUserByUsername(user.getUsername())!=null){
-            throw new UsernameNotUniqueException();
+        try{
+            if(getUserByUsername(user.getUsername())!=null){
+                throw new UsernameNotUniqueException();
+            }
+        }catch (UserDoesNotExistException ignored){
         }
     }
 
