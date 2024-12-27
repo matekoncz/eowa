@@ -1,6 +1,8 @@
 package com.example.eowa.controller;
 
+import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
 import com.example.eowa.model.User;
+import com.example.eowa.service.AuthService;
 import com.example.eowa.service.SessionService;
 import com.example.eowa.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,12 +22,15 @@ public class UserController {
 
     private final SessionService sessionService;
 
-    public UserController(UserService userService, SessionService sessionService) {
+    private final AuthService authService;
+    public UserController(UserService userService, SessionService sessionService, AuthService authService) {
         this.sessionService = sessionService;
+        this.authService = authService;
     }
 
     @GetMapping("/currentuser")
-    public HttpServletResponse getCurrentUser(@CookieValue("jsessionid") String jsessionid, HttpServletResponse response) throws IOException {
+    public HttpServletResponse getCurrentUser(@CookieValue("jsessionid") String jsessionid, HttpServletResponse response) throws IOException, AuthenticationException {
+        authService.validateSession(jsessionid);
         User currentUser = sessionService.getUserBySessionId(jsessionid);
         String userJson = objectMapper.writeValueAsString(currentUser);
         response.getWriter().print(userJson);
