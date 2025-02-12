@@ -13,7 +13,7 @@ public class User {
     @Id
     private String username;
     @Column
-    @JsonProperty
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column
     private String email;
@@ -39,8 +39,6 @@ public class User {
     public String getUsername() {
         return username;
     }
-
-    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -60,8 +58,6 @@ public class User {
     public void addEvent(Event event){
         events.add(event);
     }
-
-    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
