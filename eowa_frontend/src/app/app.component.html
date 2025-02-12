@@ -1,0 +1,48 @@
+<mat-toolbar class="toolbar">
+  <button mat-button [routerLink]="['/']">
+    Home
+    <mat-icon>home</mat-icon>
+  </button>
+  <button mat-button [mat-menu-trigger-for]="menu">
+    Events
+    <mat-icon>event</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [routerLink]="['/create-event']">
+      Create new event
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-menu-item [routerLink]="['/join-event']">
+      Join event
+      <mat-icon>more</mat-icon>
+    </button>
+    <button mat-menu-item>
+      List my events
+      <mat-icon>list</mat-icon>
+    </button>
+  </mat-menu>
+  <button mat-button [matMenuTriggerFor]="profile">
+    Profile
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #profile="matMenu">
+    <button mat-menu-item [routerLink]="['/signup']">
+      Sign up
+      <mat-icon>input</mat-icon>
+    </button>
+    <button mat-menu-item [routerLink]="['/login']">
+      Log in
+      <mat-icon>lock_open</mat-icon>
+    </button>
+    <button mat-menu-item>
+      profile
+      <mat-icon>person</mat-icon>
+    </button>
+    <button mat-menu-item (click)="openDialog()">
+      Log out
+      <mat-icon>keyboard_tab</mat-icon>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
