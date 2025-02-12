@@ -42,4 +42,12 @@ public class SessionService {
     public Session updateSession(Session session){
         return sessionRepository.save(session);
     }
+
+    public void flush(){
+        sessionRepository.flush();
+    }
+
+    public int removeSessionById(String jsessionid) {
+        return sessionRepository.removeSessionById(jsessionid);
+    }
 }
