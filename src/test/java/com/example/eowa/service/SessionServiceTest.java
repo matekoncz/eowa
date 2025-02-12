@@ -65,4 +65,21 @@ public class SessionServiceTest {
         sessionService.saveSession(session);
         Assertions.assertEquals("felh",sessionService.getUserBySessionId("id").getUsername());
     }
+
+    @Test
+    public void shouldDeleteSession() throws UserException {
+        User user = new User("felh","asznalo3","email@gmail.com");
+        userService.saveUser(user);
+        Session session = new Session();
+        session.setJsessionid("id");
+        session.setUser(user);
+        sessionService.saveSession(session);
+
+        Assertions.assertNotNull(userService.getUserByUsername("felh"));
+
+        sessionService.removeSessionById(session.getJsessionid());
+
+        Assertions.assertNull(sessionService.getSessionById("id"));
+        Assertions.assertNotNull(userService.getUserByUsername("felh"));
+    }
 }
