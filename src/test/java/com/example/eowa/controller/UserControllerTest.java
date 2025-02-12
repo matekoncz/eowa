@@ -3,9 +3,11 @@ package com.example.eowa.controller;
 import com.example.eowa.EowaIntegrationTest;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.User;
+import com.example.eowa.model.WebToken;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,38 +16,27 @@ public class UserControllerTest extends EowaIntegrationTest {
     @Test
     public void shouldGetLoggedInUser() throws Exception {
         User user = new User("felh","asznalo1","email@gmail.com");
-        signUpUser(user);
-        loginuser(user);
+        authService.signUpUser(user);
+
+        Credentials credentials = new Credentials();
+        credentials.setUsername("felh");
+        credentials.setPassword("asznalo1");
+        authService.login(credentials);
 
         String jsessionid = userService.getUserByUsername("felh").getSession().getJsessionid();
-        Cookie cookie = new Cookie("jsessionid",jsessionid);
-        cookie.setMaxAge(60*60*4);
+
+        WebToken jwt = new WebToken();
+        jwt.setUser(user);
+        jwt.setTimestamp(System.currentTimeMillis());
+        jwt.setJsessionid(jsessionid);
+
         MockHttpServletResponse response = mockMvc.perform(get("/users/currentuser")
+                .contentType("application/json")
                 .accept("application/json")
-                .cookie(cookie))
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)))
                 .andReturn().getResponse();
 
         User currentuser = objectMapper.readValue(response.getContentAsString(),User.class);
         Assertions.assertEquals(currentuser.getUsername(),"felh");
-    }
-
-    private void loginuser(User user) throws Exception {
-        Credentials credentials = new Credentials();
-        credentials.setUsername(user.getUsername());
-        credentials.setPassword(user.getPassword());
-
-        String serializedCredentials = objectMapper.writeValueAsString(credentials);
-        mockMvc.perform(post("/auth/login")
-                .accept("application/json")
-                .contentType("application/json")
-                .content(serializedCredentials));
-    }
-
-    private void signUpUser(User user) throws Exception {
-        String serializedUser = objectMapper.writeValueAsString(user);
-        mockMvc.perform(post("/auth/signup")
-                .accept("application/json")
-                .content(serializedUser)
-                .contentType("application/json"));
     }
 }

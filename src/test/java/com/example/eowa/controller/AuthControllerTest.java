@@ -3,9 +3,10 @@ package com.example.eowa.controller;
 import com.example.eowa.EowaIntegrationTest;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.User;
-import jakarta.servlet.http.Cookie;
+import com.example.eowa.model.WebToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -16,22 +17,21 @@ public class AuthControllerTest extends EowaIntegrationTest {
 
     @Test
     public void shouldSignUpUser() throws Exception {
-        User user = new User("felh","asznalo1","email@gmail.com");
-        String serializedUser = objectMapper.writeValueAsString(user);
-        mockMvc.perform(post("/auth/signup")
+        String serializedUser = "{ \"username\" : \"felh\" , \"password\" : \"asznalo1\" , \"email\" : \"email@gmail.com\" }";
+        MockHttpServletResponse response = mockMvc.perform(post("/auth/signup")
                 .accept("application/json")
                 .content(serializedUser)
-                .contentType("application/json"));
+                .contentType("application/json")).andReturn().getResponse();
 
+        Assertions.assertEquals(response.getStatus(),HttpStatus.OK.value());
         Assertions.assertNotNull(userService.getUserByUsername("felh"));
     }
 
     @Test
     public void shouldNotSignUpNotUniqueUser() throws Exception {
-        userService.saveUser(new User("felh","asznalo1","email@gmail.com"));
+        authService.signUpUser(new User("felh","asznalo1","email@gmail.com"));
 
-        User user = new User("felh","asznalo1","email@gmail.com");
-        String serializedUser = objectMapper.writeValueAsString(user);
+        String serializedUser = "{ \"username\" : \"felh\" , \"password\" : \"asznalo1\" , \"email\" : \"email@gmail.com\" }";
         MockHttpServletResponse response = mockMvc.perform(post("/auth/signup")
                 .accept("application/json")
                 .content(serializedUser)
@@ -43,8 +43,7 @@ public class AuthControllerTest extends EowaIntegrationTest {
 
     @Test
     public void shouldNotSignUpInvalidUser() throws Exception {
-        User user = new User("felh","asznalo1",".@.@gmail.com");
-        String serializedUser = objectMapper.writeValueAsString(user);
+        String serializedUser = "{ \"username\" : \"felh\" , \"password\" : \"asznalo1\" , \"email\" : \". @.@gmail.com\"}";
         MockHttpServletResponse response = mockMvc.perform(post("/auth/signup")
                 .accept("application/json")
                 .content(serializedUser)
@@ -57,7 +56,7 @@ public class AuthControllerTest extends EowaIntegrationTest {
     @Test
     public void shouldLoginUser() throws Exception{
         User user = new User("felh","asznalo1","email@gmail.com");
-        userService.saveUser(user);
+        authService.signUpUser(user);
 
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
@@ -70,18 +69,15 @@ public class AuthControllerTest extends EowaIntegrationTest {
                 .content(serializedCredentials))
                 .andReturn().getResponse();
 
-        CookieReader cookieReader = new CookieReader(response.getCookies());
-        Assertions.assertTrue(cookieReader.hasCookie("jsessionid"));
+        WebToken jwt = objectMapper.readValue(response.getContentAsString(), WebToken.class);
 
-        String jsessionid = cookieReader.getCookie("jsessionid").getValue();
-        User currentuser = sessionService.getUserBySessionId(jsessionid);
-        Assertions.assertEquals(currentuser.getUsername(),"felh");
+        Assertions.assertEquals(user.getUsername(),sessionService.getUserBySessionId(jwt.getJsessionid()).getUsername());
     }
 
     @Test
     public void shouldNotLoginUserWithInvalidPassword() throws Exception{
         User user = new User("felh","asznalo1","email@gmail.com");
-        userService.saveUser(user);
+        authService.signUpUser(user);
 
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
@@ -116,11 +112,7 @@ public class AuthControllerTest extends EowaIntegrationTest {
     @Test
     public void shouldLogOutUser() throws Exception {
         User user = new User("felh","asznalo1","email@gmail.com");
-        String serializedUser = objectMapper.writeValueAsString(user);
-        mockMvc.perform(post("/auth/signup")
-                .accept("application/json")
-                .content(serializedUser)
-                .contentType("application/json"));
+        authService.signUpUser(user);
 
         Credentials credentials = new Credentials();
         credentials.setUsername("felh");
@@ -129,13 +121,12 @@ public class AuthControllerTest extends EowaIntegrationTest {
         String serializedCredentials = objectMapper.writeValueAsString(credentials);
         MockHttpServletResponse response = mockMvc.perform(post("/auth/login").accept("application/json").contentType("application/json").content(serializedCredentials)).andReturn().getResponse();
 
-        CookieReader cookieReader = new CookieReader(response.getCookies());
-        Assertions.assertTrue(cookieReader.hasCookie("jsessionid"));
+        Assertions.assertEquals(response.getStatus(),HttpStatus.OK.value());
 
-        Cookie sessionCookie = cookieReader.getCookie("jsessionid");
+        mockMvc.perform(delete("/auth/logout").header(HttpHeaders.AUTHORIZATION,response.getContentAsString())).andReturn().getResponse();
 
-        mockMvc.perform(delete("/auth/logout").cookie(sessionCookie)).andReturn().getResponse();
+        WebToken jwt = objectMapper.readValue(response.getContentAsString(), WebToken.class);
 
-        Assertions.assertNull(sessionService.getSessionById(sessionCookie.getValue()));
+        Assertions.assertNull(sessionService.getSessionById(jwt.getJsessionid()));
     }
 }
