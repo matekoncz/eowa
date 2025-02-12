@@ -114,7 +114,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = { UserMissingRequiredFieldsException.class})
     protected ResponseEntity<Object> handleUserMissingRequiredFields(
             UserMissingRequiredFieldsException ex, WebRequest request) {
-        String bodyOfResponse = "The given email address is in invalid format";
+        String bodyOfResponse = "Required fields are missing";
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
     }
@@ -122,7 +122,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = { UsernameNotUniqueException.class})
     protected ResponseEntity<Object> handleUsernameNotUnique(
             UsernameNotUniqueException ex, WebRequest request) {
-        String bodyOfResponse = "The given email address is in invalid format";
+        String bodyOfResponse = "The given username is already taken";
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
