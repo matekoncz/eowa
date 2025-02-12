@@ -1,16 +1,17 @@
 package com.example.eowa.controller;
 
-import com.example.eowa.exceptions.CookieDoesNotExistException;
 import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
 import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.Credentials;
 import com.example.eowa.model.User;
+import com.example.eowa.model.WebToken;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.SessionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,43 +34,41 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public HttpServletResponse signUp(
+    public void signUp(
             @RequestBody User user,
-            HttpServletResponse response) throws UserException {
+            HttpServletResponse response) throws UserException, IOException {
         authService.signUpUser(user);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PostMapping("/login")
-    public HttpServletResponse login(
+    public void login(
             @RequestBody Credentials credentials,
             HttpServletResponse response) throws AuthenticationException, IOException, UserException {
         String jsessionid = authService.login(credentials);
         User loggedInUser = sessionService.getUserBySessionId(jsessionid);
+        loggedInUser.setSession(sessionService.getSessionById(jsessionid));
 
-        String userJson = objectMapper.writeValueAsString(loggedInUser);
+        WebToken webToken = new WebToken();
+        webToken.setUser(loggedInUser);
+        webToken.setJsessionid(loggedInUser.getSession().getJsessionid());
+        webToken.setTimestamp(loggedInUser.getSession().getTimestamp());
+        String jwt = objectMapper.writeValueAsString(webToken);
 
-        Cookie cookie = new Cookie("jsessionid",jsessionid);
-        cookie.setMaxAge(60*60*4);
-
-        response.addCookie(cookie);
         response.setContentType("application/json");
-        response.getWriter().print(userJson);
+        response.getWriter().print(jwt);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @DeleteMapping("/logout")
-    public HttpServletResponse logout(
-            @CookieValue("jsessionid") String jsessionid,
-            HttpServletResponse response) {
-        authService.logout(jsessionid);
-        Cookie sessionCookie = new Cookie("jsessionid",jsessionid);
+    public void logout(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            HttpServletResponse response) throws JsonProcessingException {
+        authService.logout(jwt.getJsessionid());
+        Cookie sessionCookie = new Cookie("jsessionid",jwt.getJsessionid());
         sessionCookie.setMaxAge(0);
         response.addCookie(sessionCookie);
         response.setStatus(HttpStatus.OK.value());
-        return response;
 
     }
 }

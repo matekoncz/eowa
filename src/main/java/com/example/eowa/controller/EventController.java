@@ -8,12 +8,13 @@ import com.example.eowa.exceptions.authenticationExceptions.UserIsNotParticipant
 import com.example.eowa.model.Event;
 import com.example.eowa.model.Opinion;
 import com.example.eowa.model.User;
+import com.example.eowa.model.WebToken;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.EventService;
-import com.example.eowa.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,157 +39,145 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public HttpServletResponse createEvent(
+    public void createEvent(
             @RequestBody Event event,
-            @CookieValue("jsessionid") String jsessionid,
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws AuthenticationException, IOException {
-        authService.validateSession(jsessionid);
-        User owner = authService.getUserBySessionId(jsessionid);
+        authService.validateSession(jwt.getJsessionid());
+        User owner = authService.getUserBySessionId(jwt.getJsessionid());
         event.setOwner(owner);
         Event savedevent = eventService.saveEvent(event);
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().print(objectMapper.writeValueAsString(savedevent));
-        return response;
     }
 
     @GetMapping("/{id}")
-    public HttpServletResponse getEventById(
-            @CookieValue("jsessionid") String jsessionid,
+    public void getEventById(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long eventId,
             HttpServletResponse response) throws IOException, AuthenticationException {
-        authService.validateSession(jsessionid);
-        authService.validateParticipant(jsessionid,eventId);
+        authService.validateSession(jwt.getJsessionid());
+        authService.validateParticipant(jwt.getJsessionid(),eventId);
         Event event = eventService.getEventById(eventId);
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().print(objectMapper.writeValueAsString(event));
-        return response;
     }
 
     @GetMapping("/currentuser-events")
-    public HttpServletResponse getCurrentUserEvents(
-            @CookieValue("jsessionid") String jsessionid,
+    public void getCurrentUserEvents(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws AuthenticationException, IOException {
-        authService.validateSession(jsessionid);
-        User currentUser = authService.getUserBySessionId(jsessionid);
+        authService.validateSession(jwt.getJsessionid());
+        User currentUser = authService.getUserBySessionId(jwt.getJsessionid());
         Set<Event> events = currentUser.getEvents();
         response.getWriter().print(objectMapper.writeValueAsString(events));
-        return response;
     }
 
     @DeleteMapping("/{id}")
-    public HttpServletResponse deleteEventById(
-            @CookieValue("jsessionid") String jsessionid,
+    public void deleteEventById(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             HttpServletResponse response) throws AuthenticationException {
-        authService.validateSession(jsessionid);
-        authService.validateEventOwner(jsessionid, id);
+        authService.validateSession(jwt.getJsessionid());
+        authService.validateEventOwner(jwt.getJsessionid(), id);
         eventService.deleteEventById(id);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @Transactional
     @PutMapping("/{id}/add-users")
-    public HttpServletResponse addParticipants(
-            @CookieValue("jsessionid") String jsessionid,
+    public void addParticipants(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestBody Set<User> participants,
             HttpServletResponse response) throws AuthenticationException {
-        authService.validateSession(jsessionid);
-        authService.validateEventOwner(jsessionid, id);
+        authService.validateSession(jwt.getJsessionid());
+        authService.validateEventOwner(jwt.getJsessionid(), id);
         eventService.getEventById(id).addALlParticipant(participants);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/{id}/add-calendar")
-    public HttpServletResponse addCalendar(
-            @CookieValue("jsessionid") String jsessionid,
+    public void addCalendar(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestParam("start") String startString,
             @RequestParam("end") String endString,
             @RequestParam("zone") String zoneId,
             HttpServletResponse response) throws UserIsNotEventOwnerException, CalendarException {
-        authService.validateEventOwner(jsessionid,id);
+        authService.validateEventOwner(jwt.getJsessionid(),id);
         LocalDateTime startTime = LocalDateTime.parse(startString);
         LocalDateTime endTime = LocalDateTime.parse(endString);
         eventService.setEventCalendar(id,zoneId,startTime,endTime);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/{id}/set-unavailable-days")
-    public HttpServletResponse setUnavailableDays(
-            @CookieValue("jsessionid") String jsessionid,
+    public void setUnavailableDays(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestBody Set<Integer> serialNumbers,
             HttpServletResponse response) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jsessionid,id);
+        authService.validateEventOwner(jwt.getJsessionid(),id);
         eventService.setUnavailableDays(id,serialNumbers);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/{id}/set-unavailable-hours")
-    public HttpServletResponse setUnavailableHours(
-            @CookieValue("jsessionid") String jsessionid,
+    public void setUnavailableHours(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestBody Set<Integer> serialNumbers,
             HttpServletResponse response) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jsessionid,id);
+        authService.validateEventOwner(jwt.getJsessionid(),id);
         eventService.setUnavailableHours(id,serialNumbers);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/{id}/set-unavailable-hours-periodically")
-    public HttpServletResponse setUnavailableHoursPeriodically(
-            @CookieValue("jsessionid") String jsessionid,
+    public void setUnavailableHoursPeriodically(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestParam("period") int period,
             @RequestBody Set<Integer> hourNumbers,
             HttpServletResponse response) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jsessionid,id);
+        authService.validateEventOwner(jwt.getJsessionid(),id);
         eventService.setUnavailableHoursPeriodically(id,hourNumbers,period);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/{id}/set-user-opinion")
-    public HttpServletResponse setUserOpinion(
-            @CookieValue("jsessionid") String jsessionid,
+    public void setUserOpinion(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestParam("opinion") Opinion.UserOpinion userOpinion,
             @RequestBody Set<Integer> hourSerials,
             HttpServletResponse response) throws UserIsNotParticipantException {
-        authService.validateParticipant(jsessionid,id);
-        User user = authService.getUserBySessionId(jsessionid);
+        authService.validateParticipant(jwt.getJsessionid(),id);
+        User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.setUserOpinion(id,hourSerials,user,userOpinion);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/{id}/remove-user-opinion")
-    public HttpServletResponse removeUserOpinion(
-            @CookieValue("jsessionid") String jsessionid,
+    public void removeUserOpinion(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestBody Set<Integer> hourSerials,
             HttpServletResponse response) throws UserIsNotParticipantException {
-        authService.validateParticipant(jsessionid,id);
-        User user = authService.getUserBySessionId(jsessionid);
+        authService.validateParticipant(jwt.getJsessionid(),id);
+        User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.removeUserOpinion(id,hourSerials,user);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 
     @PutMapping("/join-event")
-    public HttpServletResponse joinEventWithInvitationCode(
-            @CookieValue("jsessionid") String jsessionid,
+    public void joinEventWithInvitationCode(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @RequestParam("invitation") String invitation,
             HttpServletResponse response) throws InvalidInvitationCodeException {
-        User user = authService.getUserBySessionId(jsessionid);
+        User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.joinEventWithInvitationCode(user,invitation);
         response.setStatus(HttpStatus.OK.value());
-        return response;
     }
 }
