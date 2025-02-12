@@ -42,17 +42,23 @@ public class AuthService {
         authenticate(credentials);
         User user = userService.getUserByUsername(credentials.getUsername());
         Session session = user.getSession();
-        if(session == null){
-            session = new Session();
-            session.setUser(user);
-            session.setJsessionid(UUID.randomUUID().toString().replace("-",""));
-            sessionService.saveSession(session);
+        if(session != null){
+            try{
+                validateSession(session.getJsessionid());
+                return session.getJsessionid();
+            } catch (AuthenticationException ignored){
+                sessionService.flush();
+            }
         }
-        return session.getJsessionid();
+        Session newsession = new Session();
+        newsession.setUser(user);
+        newsession.setJsessionid(UUID.randomUUID().toString().replace("-",""));
+        sessionService.saveSession(newsession);
+        return newsession.getJsessionid();
     }
 
     public void logout(String jsessionid){
-        sessionService.deleteSessionById(jsessionid);
+            sessionService.removeSessionById(jsessionid);
     }
 
     public void authenticate(Credentials credentials) throws AuthenticationException, UserDoesNotExistException {
@@ -72,7 +78,7 @@ public class AuthService {
         }
         long now = System.currentTimeMillis();
         if((now - session.getTimestamp())>sessionDuration*ONE_HOUR_IN_MILLIS){
-            sessionService.deleteSessionById(jsessionid);
+            sessionService.removeSessionById(jsessionid);
             throw new InvalidSessionException();
         }
     }
