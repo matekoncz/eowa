@@ -39,10 +39,17 @@ export class ApiService {
     return this.sendRequest(controller.toString()+path,getRequestInit)
   }
 
-  post(controller: Controller, path: string,content: Object,){
+  post(controller: Controller, path: string, content: Object,){
     let postRequestInit = this.getBaseRequestInit()
     postRequestInit.body = JSON.stringify(content)
     postRequestInit.method = 'POST'
+    return this.sendRequest(controller.toString()+path,postRequestInit)
+  }
+
+  put(controller: Controller, path: string, content: Object,){
+    let postRequestInit = this.getBaseRequestInit()
+    postRequestInit.body = JSON.stringify(content)
+    postRequestInit.method = 'PUT'
     return this.sendRequest(controller.toString()+path,postRequestInit)
   }
 
@@ -65,6 +72,6 @@ export class ApiService {
 export enum Controller{
   AUTH = "auth",
   USER = "user",
-  EVENT = "event"
+  EVENT = "events"
 }
 
