@@ -62,6 +62,7 @@ public class EventControllerTest extends EowaIntegrationTest {
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
+        eventService.setEventCalendar(id,"CET",LocalDateTime.now(),LocalDateTime.now().plusDays(2));
 
         var response = mockMvc.perform(get("/events/" + id)
                         .accept("application/json")
@@ -164,8 +165,6 @@ public class EventControllerTest extends EowaIntegrationTest {
         Assertions.assertEquals(savedEvent.getParticipants().size(), 3);
     }
 
-
-    //TODO: must look into this
     @Test
     public void shouldSetCalendar() throws Exception {
         User user = new User("felh", "asznalo1", "email@gmail.com");

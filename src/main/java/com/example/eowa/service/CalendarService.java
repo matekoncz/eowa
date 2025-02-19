@@ -42,15 +42,15 @@ public class CalendarService {
 
     public Calendar createCalendar(String zoneIdString, LocalDateTime startTime, LocalDateTime endTime) throws CalendarException {
         ZoneId zoneId = ZoneId.of(zoneIdString);
-        ZonedDateTime zonedStart = ZonedDateTime.of(startTime.withHour(0), zoneId);
-        ZonedDateTime zonedEnd = ZonedDateTime.of(endTime.plusDays(1).withHour(0), zoneId);
+        ZonedDateTime zonedStart = ZonedDateTime.of(startTime.withHour(0).withMinute(0).withSecond(0).withNano(0), zoneId);
+        ZonedDateTime zonedEnd = ZonedDateTime.of(endTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0), zoneId);
 
         if (zonedStart.isBefore(ZonedDateTime.now(ZoneId.of(zoneIdString)).withHour(0).withMinute(0).withSecond(0).withNano(0))
-                || startTime.plusDays(60).isBefore(endTime)) {
-            throw new WrongIntervalException();
-        }
-        if (endTime.withHour(0).isBefore(startTime.withHour(0))) {
+                || zonedStart.plusDays(60).isBefore(zonedEnd)) {
             throw new TimeTravelException();
+        }
+        if (zonedEnd.isBefore(zonedStart)) {
+            throw new WrongIntervalException();
         }
 
         Calendar calendar = new Calendar(zoneId, zonedStart, zonedEnd);
@@ -67,9 +67,16 @@ public class CalendarService {
         ZonedDateTime currentDay = calendar.getStartTime();
         int serial = 0;
         int hourSerial = 0;
-        for (ZonedDateTime currentHour = calendar.getStartTime().withHour(0); currentHour.isBefore(calendar.getEndTime()); currentHour = currentHour.plusHours(1)) {
+        Day day = null;
+        for (ZonedDateTime currentHour = calendar.getStartTime(); currentHour.isBefore(calendar.getEndTime().plusDays(1)); currentHour = currentHour.plusHours(1)) {
             if (currentHour.getDayOfYear() != currentDay.getDayOfYear()) {
-                Day day = new Day(currentDay, serial, true, false, dayHours);
+                if(day != null){
+                    if(day.getHours().size() != 24){
+                        day.setHourNumberAffectedByClockChange(getHourNumberAffected(day));
+                    }
+                }
+
+                day = new Day(currentDay, serial, true, false, dayHours);
                 days.add(day);
                 dayRepository.save(day);
                 currentDay = currentHour;
@@ -82,6 +89,22 @@ public class CalendarService {
             hourRepository.save(currentHourInHourFormat);
         }
         return days;
+    }
+
+    private int getHourNumberAffected(Day day) {
+        ZonedDateTime hourTime = day.getDayStartTime();
+        while(hourTime.isBefore(day.getDayStartTime().plusDays(1))){
+            ZonedDateTime nextHour = hourTime.plusHours(1);
+            int difference = nextHour.getHour() - hourTime.getHour();
+            if(difference == 0){
+                return hourTime.getHour();
+            }
+            if(difference == 2){
+                return hourTime.getHour() + 1;
+            }
+            hourTime = hourTime.plusHours(1);
+        }
+        return -1;
     }
 
     public void setUnavailableDays(Calendar calendar, Set<Integer> seralNumbers) {

@@ -25,7 +25,7 @@ public class CalendarServiceTest {
         Assertions.assertNotNull(calendar.getStartTime());
         Assertions.assertNotNull(calendar.getEndTime());
 
-        Assertions.assertEquals(14,calendar.getDays().size());
+        Assertions.assertEquals(15,calendar.getDays().size());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class CalendarServiceTest {
         Assertions.assertNotNull(calendar.getStartTime());
         Assertions.assertNotNull(calendar.getEndTime());
 
-        Assertions.assertEquals(4,calendar.getDays().size());
+        Assertions.assertEquals(5,calendar.getDays().size());
         Assertions.assertEquals(25,calendar.getDays().get(1).getHours().size());
     }
 }

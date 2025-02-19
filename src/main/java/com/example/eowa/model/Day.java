@@ -18,6 +18,9 @@ public class Day {
     @Column
     private boolean enabled;
 
+    @Column
+    private int hourNumberAffectedByClockChange = -1;
+
     @OneToMany(fetch = FetchType.EAGER)
     private List<Hour> hours;
 
@@ -55,4 +58,11 @@ public class Day {
         return hours;
     }
 
+    public int getHourNumberAffectedByClockChange() {
+        return hourNumberAffectedByClockChange;
+    }
+
+    public void setHourNumberAffectedByClockChange(int hourNumberAffectedByClockChange) {
+        this.hourNumberAffectedByClockChange = hourNumberAffectedByClockChange;
+    }
 }

@@ -2,6 +2,8 @@ package com.example.eowa;
 
 import com.example.eowa.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +37,10 @@ public abstract class EowaIntegrationTest {
     protected MockMvc mockMvc;
 
     protected ObjectMapper objectMapper = new ObjectMapper();
+
+    public EowaIntegrationTest(){
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     @BeforeEach
     public void beforeTests(){

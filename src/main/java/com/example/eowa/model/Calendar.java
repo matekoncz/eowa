@@ -1,5 +1,9 @@
 package com.example.eowa.model;
 
+import com.example.eowa.controller.ZoneIdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZoneIdSerializer;
 import jakarta.persistence.*;
 
 import java.time.ZoneId;
@@ -13,6 +17,8 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
+    @JsonSerialize(using = ZoneIdSerializer.class)
+    @JsonDeserialize(using = ZoneIdDeserializer.class)
     private ZoneId timeZone;
     @Column
     private ZonedDateTime startTime;

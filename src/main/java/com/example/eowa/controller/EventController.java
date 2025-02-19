@@ -12,6 +12,7 @@ import com.example.eowa.model.WebToken;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +35,7 @@ public class EventController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public EventController(EventService eventService, AuthService authService) {
+        objectMapper.registerModule(new JavaTimeModule());
         this.eventService = eventService;
         this.authService = authService;
     }
@@ -46,6 +48,7 @@ public class EventController {
         authService.validateSession(jwt.getJsessionid());
         User owner = authService.getUserBySessionId(jwt.getJsessionid());
         event.setOwner(owner);
+        event.generateInvitationCode();
         Event savedevent = eventService.saveEvent(event);
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().print(objectMapper.writeValueAsString(savedevent));
@@ -104,7 +107,8 @@ public class EventController {
             @RequestParam("start") String startString,
             @RequestParam("end") String endString,
             @RequestParam("zone") String zoneId,
-            HttpServletResponse response) throws UserIsNotEventOwnerException, CalendarException {
+            HttpServletResponse response) throws AuthenticationException, CalendarException {
+        authService.validateSession(jwt.getJsessionid());
         authService.validateEventOwner(jwt.getJsessionid(),id);
         LocalDateTime startTime = LocalDateTime.parse(startString);
         LocalDateTime endTime = LocalDateTime.parse(endString);
