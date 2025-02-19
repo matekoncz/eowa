@@ -7,6 +7,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.component';
+import { AuthService } from './services/auth.service';
+import {AuthStatus} from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +20,9 @@ import { LogoutDialogComponent } from './components/logout-dialog/logout-dialog.
 export class AppComponent {
   title = 'eowa';
   dialog = inject(MatDialog);
+  AuthStatus = AuthStatus;
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private authservice: AuthService){}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(LogoutDialogComponent);
@@ -27,5 +30,13 @@ export class AppComponent {
     dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
+  }
+
+  getAuthStatus(){
+    return this.authservice.getAuthStatus();
+  }
+
+  url(){
+    return this.router.url;
   }
 }

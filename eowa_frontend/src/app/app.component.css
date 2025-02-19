@@ -105,3 +105,12 @@
       margin-block: 1.5rem;
     }
   }
+
+  #duerer{
+    background-image: url("https://eclecticlight.co/wp-content/uploads/2015/02/willowmill.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }

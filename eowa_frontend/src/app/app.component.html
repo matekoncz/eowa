@@ -16,7 +16,7 @@
       Join event
       <mat-icon>more</mat-icon>
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item [routerLink]="['/my-events']">
       List my events
       <mat-icon>list</mat-icon>
     </button>
@@ -26,6 +26,7 @@
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #profile="matMenu">
+    @if(getAuthStatus()==AuthStatus.LOGGED_OUT){
     <button mat-menu-item [routerLink]="['/signup']">
       Sign up
       <mat-icon>input</mat-icon>
@@ -34,6 +35,8 @@
       Log in
       <mat-icon>lock_open</mat-icon>
     </button>
+  }
+  @if(getAuthStatus()==AuthStatus.LOGGED_IN){
     <button mat-menu-item>
       profile
       <mat-icon>person</mat-icon>
@@ -42,7 +45,10 @@
       Log out
       <mat-icon>keyboard_tab</mat-icon>
     </button>
+  }
   </mat-menu>
 </mat-toolbar>
-
+@if(this.url()=="/"){
+  <div id="duerer"></div>
+}
 <router-outlet></router-outlet>
