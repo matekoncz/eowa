@@ -36,7 +36,7 @@ public class Event {
         this.eventName = eventName;
         this.participants = participants;
         this.description = description;
-        this.invitationCode = eventName+"::"+UUID.randomUUID().toString();
+        this.invitationCode = eventName+"::"+ UUID.randomUUID();
     }
 
     public long getId() {
@@ -89,6 +89,12 @@ public class Event {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
+    }
+
+    public void generateInvitationCode(){
+        if(invitationCode == null){
+            invitationCode = eventName.replace(' ','-')+"::"+ UUID.randomUUID();
+        }
     }
 
     public String getInvitationCode() {
