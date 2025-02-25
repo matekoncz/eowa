@@ -1,0 +1,7 @@
+mat-list{
+    margin-left: 12px;
+    margin-right: 20px;
+}
+mat-list *{
+    margin-bottom: 6px;
+}
