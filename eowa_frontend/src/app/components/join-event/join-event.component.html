@@ -1,1 +1,14 @@
-<p>join-event works!</p>
+<h1> Join an event</h1>
+<h3> Ask the event organizer for an invitation code and enter it in the field below. </h3>
+<div id="formcontainer">
+  <form id="form" [formGroup]="joinform">
+    <mat-form-field id="invitationCode">
+      <mat-label>Enter your username</mat-label>
+      <input matInput placeholder="invitation code" formControlName="invitationCode" required />
+      @if (joinform.controls["invitationCode"].invalid) {
+      <mat-error>This field is required.</mat-error>
+      }
+    </mat-form-field>
+  </form>
+  <button mat-button (click)="join()" [disabled]="!joinform.valid">join event</button>
+</div>
