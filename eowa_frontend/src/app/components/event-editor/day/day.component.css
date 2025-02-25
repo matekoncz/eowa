@@ -1,0 +1,26 @@
+
+
+.daydiv{
+    width: 185px;
+    margin: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+}
+
+#hourcontainer *{
+    margin: 0px;
+}
+
+.enable{
+    background-color: rgb(113, 193, 113)
+}
+
+.disable{
+    background-color: rgb(168, 92, 103)
+}
+
+mat-card{
+    border: 1px solid rgb(203, 177, 229)
+}
