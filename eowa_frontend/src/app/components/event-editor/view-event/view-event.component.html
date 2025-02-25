@@ -1,0 +1,20 @@
+<div class="centered">
+    <h1>{{event?.eventName}}</h1>
+</div>
+<div class="centered">
+    <div>
+        <b>{{event?.description}}</b>
+        <p><b>Organizer: </b>{{event?.owner?.username}}</p>
+        <b>participants: </b>
+        @for(participant of event?.participants; track participant){
+        <p>{{participant.username}}</p>
+        }
+        <p><b>invitation code: </b> {{event?.invitationCode}}</p>
+        @if(event?.calendar == null){
+        <mat-chip><button mat-button (click)="addCalendar()">Add calendar</button></mat-chip>
+        }
+        @if(event?.calendar != null){
+        <mat-chip><button mat-button (click)="viewCalendar()">View calendar</button></mat-chip>
+        }
+    </div>
+</div>
