@@ -28,7 +28,6 @@ export class AppComponent {
     const dialogRef = this.dialog.open(LogoutDialogComponent);
 
     dialogRef.afterClosed().subscribe(() => {
-      console.log('The dialog was closed');
     });
   }
 

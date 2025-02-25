@@ -1,20 +1,20 @@
 <div id=formcontainer>
-    <form id="form" [formGroup]="loginform">
-      <mat-form-field id="username">
-        <mat-label>Enter your username</mat-label>
-        <input matInput placeholder="username" formControlName="username" required />
-        @if (loginform.controls["username"].invalid) {
-        <mat-error>enter at least 8 characters</mat-error>
-        }
-      </mat-form-field>
-  
-      <mat-form-field id="password">
-        <mat-label>Enter your password</mat-label>
-        <input type="password" matInput placeholder="password" formControlName="password" required />
-        @if (loginform.controls["password"].invalid) {
-        <mat-error>enter at least 8 characters</mat-error>
-        }
-      </mat-form-field>
-    </form>
-    <button mat-button (click)="login()" [disabled]="!loginform.valid">log in</button>
-  </div>
+  <form id="form" [formGroup]="loginform">
+    <mat-form-field id="username">
+      <mat-label>Enter your username</mat-label>
+      <input matInput placeholder="username" formControlName="username" required />
+      @if (loginform.controls["username"].invalid) {
+      <mat-error>enter at least 8 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field id="password">
+      <mat-label>Enter your password</mat-label>
+      <input type="password" matInput placeholder="password" formControlName="password" required />
+      @if (loginform.controls["password"].invalid) {
+      <mat-error>enter at least 8 characters</mat-error>
+      }
+    </mat-form-field>
+  </form>
+  <button mat-button (click)="login()" [disabled]="!loginform.valid">log in</button>
+</div>
