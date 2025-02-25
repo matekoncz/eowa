@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Share your opinion on the date {{data.title}}:00</h2>
+<mat-dialog-content>
+    <div class="flexRow spaced">
+        <div class="flexCol">
+            <p> {{getAnswerPercentage().toFixed(0)}}% answered</p>
+            <div class="flexRow centered">
+                <div class="stats">
+                    <h3>Good({{getParticipantsPercentage(UserOpinion.GOOD).toFixed(0)}}%)</h3>
+                    @for(participant of getParticipantsFor(UserOpinion.GOOD); track participant){
+                    <p>{{participant}}</p>
+                    }
+                </div>
+                <div class="stats">
+                    <h3>Tolerable({{getParticipantsPercentage(UserOpinion.TOLERABLE).toFixed(0)}}%)</h3>
+                    @for(participant of getParticipantsFor(UserOpinion.TOLERABLE); track participant){
+                    <p>{{participant}}</p>
+                    }
+                </div>
+                <div class="stats">
+                    <h3>Bad({{getParticipantsPercentage(UserOpinion.BAD).toFixed(0)}}%)</h3>
+                    @for(participant of getParticipantsFor(UserOpinion.BAD); track participant){
+                    <p>{{participant}}</p>
+                    }
+                </div>
+            </div>
+            <div class="centered">
+                <canvas #barCanvas id="barCanvas"></canvas>
+            </div>
+        </div>
+        <form id="form" [formGroup]="opinionForm">
+            <mat-form-field id="opinion">
+                <mat-label>Select the opinion</mat-label>
+                <mat-select formControlName="opinion">
+                    <mat-option value="GOOD">
+                        good
+                    </mat-option>
+                    <mat-option value="TOLERABLE">
+                        tolerable
+                    </mat-option>
+                    <mat-option value="BAD">
+                        bad
+                    </mat-option>
+                </mat-select>
+                @if (opinionForm.controls["opinion"].invalid) {
+                <mat-error>Please select an opinion</mat-error>
+                }
+            </mat-form-field>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onOkClick()" [disabled]="!opinionForm.valid">OK</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+</mat-dialog-actions>
