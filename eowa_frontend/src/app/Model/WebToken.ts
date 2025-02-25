@@ -1,7 +1,7 @@
-import { User } from "./User";
+import { User } from './User';
 
 export interface WebToken {
-    user: User;
-    jsessionid: string;
-    timestamp: number;
+  user: User;
+  jsessionid: string;
+  timestamp: number;
 }
