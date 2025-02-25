@@ -1,0 +1,12 @@
+<div class="hour" (click)="hourClicked()"
+    [ngClass]="{
+    'disabled': !hour!.enabled,
+    'perfect': calculateSatisfaction() == Satisfaction.PERFECT,
+    'good': calculateSatisfaction() == Satisfaction.GOOD,
+    'bad': calculateSatisfaction() == Satisfaction.BAD,
+    'terrific': calculateSatisfaction() == Satisfaction.TERRIFIC,
+    'terrible': calculateSatisfaction() == Satisfaction.TERRIBLE,
+    'horrible': calculateSatisfaction() == Satisfaction.HORRIBLE
+    }">
+    {{hour!.number | numberToHour}}
+</div>
