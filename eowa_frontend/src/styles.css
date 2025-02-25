@@ -1,4 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+     margin: 0;
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+     }
+
+h1,h2,h3{
+    font-weight: 300;
+}
+
+#formcontainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#form > *{
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+#form  {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-bottom: 1rem;
+}
+
+.flexRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
+    padding: 2px;
+  }
+
+  .flexRow *{
+    margin: 2px;
+  }
+
+  .flexCol{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    flex-wrap: wrap;
+    padding: 2px;
+  }
+
+  .flexCol *{
+    margin: 2px;
+  }
+
+  .centered{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 2px;
+  }
+  .spaced{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 2px;
+  }
+
+  .inverted{
+    background-color: black;
+    color: white;
+  }
