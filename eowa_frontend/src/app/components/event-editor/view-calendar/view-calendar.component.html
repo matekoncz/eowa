@@ -1,0 +1,72 @@
+<div class="centered">
+    <h1>Event Calendar</h1>
+</div>
+<div class="flexRow fillSpace">
+    @if(isUserEventOwner()){
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Organizer actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+            @if(!editMode){
+            <mat-chip><button mat-button (click)="editCalendar()">Edit calendar</button></mat-chip>
+            }@else {
+            <button mat-raised-button class="mainaction" (click)="exitEditMode(true)">Exit and save</button>
+            <button mat-raised-button class="mainaction" (click)="exitEditMode(false)">Exit and discard changes</button>
+            <button mat-raised-button (click)="disableHoursPeriodically()">Disable hours periodically</button>
+            }
+        </mat-card-content>
+    </mat-card>
+    }
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Opinions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="spaced">
+            <div class="flexCol">
+                <h3>Add opinions fast</h3>
+
+                <form [formGroup]="opinonForm">
+                    <mat-form-field id="opinion">
+                        <mat-label>Select the opinion</mat-label>
+                        <mat-select formControlName="opinion" [disabled]="opinionMode!=OpinionMode.DEFAULT">
+                            <mat-option [value]="OpinionMode.GOOD">
+                                good
+                            </mat-option>
+                            <mat-option [value]="OpinionMode.TOLERABLE">
+                                tolerable
+                            </mat-option>
+                            <mat-option [value]="OpinionMode.BAD">
+                                bad
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+
+                <button mat-raised-button [ngClass]="{'inverted': opinionMode != OpinionMode.DEFAULT}"
+                    (click)="opinionModeChanged()">
+                    @if(opinionMode==OpinionMode.DEFAULT){
+                    start
+                    }@else{
+                    finish
+                    }
+                </button>
+
+            </div>
+            <div class="centered" id="saveButton">
+                <button mat-raised-button [disabled]="changedOpinions.size==0" (click)="updateOpinions()"> Save
+                    opinions</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+@for(week of this.weeks; track week){
+<div class="week">
+    @for(day of week; track day){
+    <app-day [day]="day!" [editMode]="editMode" [participantNumber]="participantNumber!" [opinionMode]="opinionMode"
+        (dayChanged)="dayChanged($event)" (opinionsSet)="opinionsChanged($event)"
+        (dayHoursChanged)="hourChanged($event)"></app-day>
+    }
+</div>
+}
