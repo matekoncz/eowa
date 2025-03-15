@@ -45,6 +45,30 @@
 
 \linespread{1.3}
 
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
 
 
 \begin{document}
@@ -165,37 +189,37 @@ Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytárs
 
 Az alkalmazásban a felhasználók kezelése nem a legfontosabb feladat, számos, hasonló alkalmazásban gyakori funkciókat, mint a felhasználói profil szerkesztése, vagy a profil törlése, nem valósítottam meg. A felhasználók autentikációja és autorizációja azonban fontos feladat.
 
-	\subsection{regisztráció}
+	\subsection{Regisztráció}
 
 A felhasználó regisztrálhat egy egyedi felhasználónévvel, egyedi email-címmel, és a legalább 8 karakter hosszú jelszavának kétszer történő megadásával. Amennyiben a megadott névvel vagy email-címmel már foglalt, a rendszer értesíti erről a felhasználót.
 
-	\subsection{bejelentkezés, kijelentkezés}
+	\subsection{Bejelentkezés, kijelentkezés}
 
 A helyes felhasználónév és jelszó megadásával a létrejön egy session, ami 4 órán keresztül biztosít hozzáférést az alkalmazáshoz a felhasználó számára. A session lejárta után az alkalmazás automatikusan kijelentkezteti a felhasználót.
 
-	\subsection{autorizáció}
+	\subsection{Autorizáció}
 
 Az események adataihoz csak a szervező és a meghívottak férhetnek hozzá. Az eseményeket és az ezekhez tartozó naptárakat csak a szervezők szerkeszthetik.
 
 \section{Események kezelése}
 
-	\subsection{létrehozás}
+	\subsection{Létrehozás}
 
 Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni. Naptár hozzáadása opcionális, ez később is megadható, a részleteiről részletesebben lejjeb írtam.  Az esemény létrehozásakor a szervező automatikusan a meghívottak közé is bekerül.
 
-	\subsection{csatlakozás}
+	\subsection{Csatlakozás}
 
 A szervező és a meghívottak számára látható az esemény meghívó-kódja. Ők ezt a kódot továbbíthatják másoknak, akik ezt a kódot használva a meghívottak közé kerülnek.
 
-	\subsection{extra mezők}
+	\subsection{Extra mezők}
 
 A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új lehetséges értékeket az adott mezőhöz.
 
-	\subsection{eseménysémák használata}
+	\subsection{Eseménysémák használata}
 
 Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát készítsen. A séma tartalmazza az eseményhez rendelt extra mezőket azok tulajdonságaival és lehetséges értékeivel együtt, és alkalmas arra, hogy a használatával új eseményt lehessen létrehozni, amely extra mezői ugyanezekkel a tulajdonságokkal rendelkeznek.
 
-	\subsection{esemény adatainak véglegesítése}
+	\subsection{Esemény adatainak véglegesítése}
 
 Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény időpontja és az extra mezők értékei tartoznak bele).  Ezután az esemény adatai nem módosíthatóak, a meghívottak pedig értesítést kapnak az esemény véglegesítéséről. A művelet visszavonható, ekkor újra módosíthatóvá válnak az adatok, a meghívottak pedig erről is értesítést kapnak.
 
@@ -203,23 +227,23 @@ Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény
 
 A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segíse az esemény szervezőjét az ideális időpont kiválasztásában. (((ábra a naptárfelületről)))
 
-	\subsection{létrehozás}
+	\subsection{Létrehozás}
 
 Naptár hozzáadása az időintervallum (legfeljebb 60 nap) és az időzóna megadásával történik. Az intervallum kezdő időpontja nem lehet a múltban, és az intervallum kezdete és vége nem lehet ugyanaz az időpont.
 
-	\subsection{szerkesztés}
+	\subsection{Szerkesztés}
 
 Az esemény szervezője szűkítheti a választható időpontok körét. Az órákat és napokat letilthatja egyenként és naponta, illetve hetente ismétlődő jelleggel is. A szervező ezeket a műveleteket bármikor visszavonhatja.
 
-	\subsection{vélemény megadása}
+	\subsection{Vélemény megadása}
 
 Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden elérhető időpontról véleményt formálhatnak. Egy időpontról megadható, hogy megfelelő, elfogadható, vagy nem megfelelő. Vélemény megadásához órákat vagy egész napokat lehet kijelölni. A vélemény rögzítése visszavonható művelet.
 
-	\subsection{statisztikák megtekintése}
+	\subsection{Statisztikák megtekintése}
 
 Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. (((ide ábrák kellenek)))
 
-	\subsection{időzónák kezelése}
+	\subsection{Időzónák kezelése}
 
 Az időzóna megadása azért fontos, mert a  kiválasztható időpontok egész órák, amikből az óraátállítások esetén nem 24 van. A óraátállítások pedig különbözhetnek időzónánként. Fontos, hogy a felhasználók ne tudjanak olyan órákat kijelölni, amik nem léteznek, hiszen ez megtévesztő, és az esetleges plusz órát is jelölni kell.
 
@@ -227,12 +251,14 @@ Az időzóna megadása azért fontos, mert a  kiválasztható időpontok egész 
 
 \section{Spring Boot}
 
+A Spring Framework egy Java üzleti alkalmazások fejlesztését segítő keretrendszer. Legfontosabb funkciói közé tartozik a függőség befecskendezés és a Model-View-Controller modell (MVC) támogatása.
+
 A backend alkalmazásomat a Spring Boot használatával készítettem el. Ennek segítségével gyorsabban és egyszerűbben tudom elkezdeni a Spring Frameworkre épülő alkalmazásom fejlesztését, mivel a Spring Boot projektek rendelkeznek alapértelmezett konfigurációs beállításokkal, nekem ezeket csak akkor kell átírnom, ha valahol az alapértelmezettől eltérő viselkedést akarok elérni. A fejlesztést InteliJ IDEA (Community Edition) környezetben végeztem.
 
 https://spring.io/projects/spring-boot
 	\subsection{Jakarta Persistence API Hibernate ORM-el}
 
-A Hibernate segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Jakarta Persistence API-n keresztül használtam. A JPA-val emellett saját nativ query-ket is írtam, ahol az adatokat egyéni módon akartam kezelni.
+A Hibernate segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA) keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját nativ query-ket is írtam, ahol az adatokat egyéni módon akartam kezelni.
 
 https://jakarta.ee/specifications/persistence/
 
@@ -251,7 +277,7 @@ https://mariadb.org/
 
 \section{Angular}
 
-Az Angular egy Google által fejlesztett, nyílt forráskódú, TypeScript alapú keretrendszer webalkalmazások fejlesztésére. Az applikációm frontend részét ezzel valósítottam meg. A választásom azért erre esett, mert a hozzá hasonló keretrenszerek közül ezt ismerem a legjobban, és úgy ítéltem meg, hogy alkalmas modern, reszponzív felhasználói felületek létrehozására.
+Az Angular egy Google által fejlesztett, nyílt forráskódú, TypeScript alapú keretrendszer webalkalmazások fejlesztésére. Az applikációm frontend részét ezzel valósítottam meg. A választásom azért erre esett, mert a hozzá hasonló keretrenszerek közül ezt ismerem a legjobban, és úgy ítéltem meg, hogy alkalmas modern, reszponzív felhasználói felületek létrehozására. A fejlesztést Visual Studio Code környezetben végeztem.
 
 https://angular.dev/overview
 	\subsection{Angular Material}
@@ -277,43 +303,86 @@ https://github.com/about
 
 \section{A model réteg}
 
+A model osztályaim egyszerű POJO-k (Plain Old Java Object). Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányaiknak egyszerű másolására.
+
+\section{A repository réteg}
+
+Minden model osztályhoz létrehoztam egy repository interfészt, amelyeket a JPARepository interfésztől származtattam. A JPARepositoryban már az alapvető CRUD műveletek meg vannak valósítva, én azonban néhány helyen kiegészítettem ezeket új műveletekkel (például az eseményekre nem csupán az ID-jük, hanem a hozzájuk rendelt meghívó kód alapján is lehet keresni az adatbázisban).
+
 \section{A service réteg}
+
+A service komponenseket nem az általuk használt repository-k, hanem a funkcióik szerint különítettem el, így egy service több repository-val is rendelkezhet. A service-ek között tartalmazó kapcsolat is előfordul, pédául a naptárakkal kapcsolatos műveleteket végző CalendarService metódusai kizárólag az eseményeket kezelő EventService-ből hívódnak meg. A service osztályokat @Transactional annotációval láttam el, így az összes service metóduson keresztül történő művelet tranzakcióban folyik.
+
+\subsection{AuthService}
+
+ezt még később megírom ha elrendeztem a jwt-t
+
+\subsection{EventService}
+
+Az EventService-ben történnek az események kezelésével kapcsolatos műveletek, a naptár kezelésének kivételével. Kihívások az írása során:
+
+Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Ekkor az EventService az esemény összes extra mezőjéből és azoknak a lehetséges értékeiből másolatot készít, és ezeket egyetlen kollekcióba gyűjti össze, majd JSON objektumként tárolom el az eseményséma (EventBlueprint) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így elállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem.
+
+\subsection{CalendarService}
+
+A naptárak kezelése a CalendarService-en keresztül történik. Kihívások az írása során:
+
+Az óraátállítások kezelése.
+
+Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához kiszámítja, hogy milyen hosszú az az ettől az órától kezdődő időszak, amely eleget tesz a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak. Egy ilyen időszak esetében az számít részvevőnek, aki az az összes órára a paraméterben megadott véleménytípus egyikét választotta.
+
+\subsection{MailService}
+
+A felhasználóknak küldött rendszeren belüli üzenetek kezelését végzi. Kihívások az írása során:
+
+Formázott üzenet összeállítása.
 
 \section{Controller réteg}
 
+A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensérere, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal , a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
+
 \section{Kivételkezelés}
+
+Külön kivételosztályokat hoztam létre az események, felhasználók, naptárak kezelése, illetve felhasználók autorizációja során keletkező kivételeknek. A speciálisabb kivételosztályokat ezekből az ősosztályokból öröklődtettem. A controllerek működése során keletkező, el nem kapott kivételek részére létrehoztam egy ControllerAdvice interfészt implementáló globális kivételkezelő osztályt. Ebben megadtam, hogy a keletkezett kivétel függvényében a visszaküldendő válasz milyen üzenetettel és státuszkóddal rendelkezzen.
 
 \section{Tesztelés}
 
+Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A" (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégetzem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredmény sikerült-e elérni.
+
+\newpage
+{\Huge \bf Példa tesztesetre}
+\begin{lstlisting}
+
 @Test
-    public void shouldSelectOptionByMostVotes() throws Exception\{
+    public void shouldSelectOptionByMostVotes() throws Exception{
         User owner = new User("felh","asznalo1","email@gmail.com");
         User savedOwner = userService.saveUser(owner);
         User user = new User("felh2","asznalo1","email2@gmail.com");
         User savedUser = userService.saveUser(user);
-
         Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
 
         SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
         event.setSelectionFields(Set.of(selectionField));
-
         Event savedEvent = eventService.saveEvent(event);
 
-        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
-        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().get().getId();
-        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek2")).findFirst().get().getId();
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream()
+					.findFirst().get().getId();
+        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream()
+					.filter((o)->o.getValue().equals("ertek"))
+					.findFirst().get().getId();
+        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream()
+					.filter((o)->o.getValue().equals("ertek2"))
+					.findFirst().get().getId();
 
         eventService.addVote(firstOptionId,fieldid,user);
-
-        Assertions.assertTrue(eventService.getOptionById(firstOptionId).isSelected());
-        Assertions.assertFalse(eventService.getOptionById(secondOptionId).isSelected());
-
         eventService.addVote(secondOptionId,fieldid,user);
         eventService.addVote(secondOptionId,fieldid,owner);
 
         Assertions.assertFalse(eventService.getOptionById(firstOptionId).isSelected());
         Assertions.assertTrue(eventService.getOptionById(secondOptionId).isSelected());
-    \}
+    }
+
+\end{lstlisting}
 
 
 \section{Védelem}
@@ -401,57 +470,13 @@ A képletben használt mennyiségek legyenek megadva az első használatuknál.
 
 A dolgozat eredményeinek összefoglalása, következtetések levonása.
 
-Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/eredményei.
-
-
-
-
+Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/eredményei. \cite{knuthwebsite}
 
 \newpage
-\begin{bibdiv}
-\begin{biblist}
- \addcontentsline{toc}{chapter}{Irodalomjegyzék}
+{\Huge \bf Hivatkozások}
 
-
-\bib{ALE3}{article}{
-author={A. L. Edmonds},
-title={The geometry of an equifacetal simplex},
-journal={Indiana University Reprint},
-date={2003},
-}
-
-
-\bib{AC64}{book}{
-author={N. Altshiller-Court},
-title={Modern Pure Solid Geometry},
-publisher={Chelsea Publishing Co., N. Y.},
-date={1964},
-}
-
-
-\bib{WSB}{article}{
-author={J. Gipsz},
-author={M. Kalányos},
-author={Z. Kovács},
-title={The Chasm},
-journal={Doom II.},
-volume={76},
-date={1963},
-pages={661–669}
-}
-
-\bib{MD}{article}{
-author={J. Monroe},
-author={M. O'Donnel},
-title={The kiss},
-journal={Amer. Math. Monthly},
-volume={76},
-date={1969},
-pages={661–663}
-}
-\end{biblist}
-\end{bibdiv}
-
+\bibliographystyle{apalike} 
+\bibliography{mate_koncz} 
 
 \newpage
 {\Huge \bf Köszönetnyilvánítás}
