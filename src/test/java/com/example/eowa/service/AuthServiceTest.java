@@ -1,43 +1,21 @@
 package com.example.eowa.service;
 
+import com.example.eowa.EowaIntegrationTest;
 import com.example.eowa.exceptions.authenticationExceptions.*;
 import com.example.eowa.exceptions.userExceptions.UserDoesNotExistException;
 import com.example.eowa.exceptions.userExceptions.UserException;
-import com.example.eowa.model.*;
+import com.example.eowa.model.Credentials;
+import com.example.eowa.model.Event;
+import com.example.eowa.model.Session;
+import com.example.eowa.model.User;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.HashSet;
 import java.util.Set;
-
-@ActiveProfiles("test")
-@SpringBootTest
-public class AuthServiceTest {
+public class AuthServiceTest extends EowaIntegrationTest {
 
     private static final long ONE_HOUR_IN_MILLIS = 60*60*1000;
-
-    @Autowired
-    private EventService eventService;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SessionService sessionService;
-
-    @BeforeEach
-    public void beforeTests(){
-        eventService.deleteAllEvent();
-        sessionService.deleteAllSession();
-        userService.deleteAllUsers();
-    }
 
     @Test
     public void shouldLoginUser() throws UserException, AuthenticationException {

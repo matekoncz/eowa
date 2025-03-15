@@ -1,34 +1,12 @@
 package com.example.eowa.service;
 
+import com.example.eowa.EowaIntegrationTest;
 import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.Session;
 import com.example.eowa.model.User;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
-@ActiveProfiles("test")
-@SpringBootTest
-public class SessionServiceTest {
-
-    @Autowired
-    private EventService eventService;
-
-    @Autowired
-    private SessionService sessionService;
-
-    @Autowired
-    private UserService userService;
-
-    @BeforeEach
-    public void beforeTests(){
-        eventService.deleteAllEvent();
-        sessionService.deleteAllSession();
-        userService.deleteAllUsers();
-    }
+public class SessionServiceTest extends EowaIntegrationTest {
 
     @Test
     public void shouldSaveSession() throws UserException {

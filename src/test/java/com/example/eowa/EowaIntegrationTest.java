@@ -34,6 +34,9 @@ public abstract class EowaIntegrationTest {
     protected CalendarService calendarService;
 
     @Autowired
+    protected MailService mailService;
+
+    @Autowired
     protected MockMvc mockMvc;
 
     protected ObjectMapper objectMapper = new ObjectMapper();
@@ -44,6 +47,7 @@ public abstract class EowaIntegrationTest {
 
     @BeforeEach
     public void beforeTests(){
+        mailService.deleteEveryMail();
         eventService.deleteAllEvent();
         userService.deleteAllUsers();
         sessionService.deleteAllSession();
