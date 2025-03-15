@@ -1,6 +1,8 @@
 package com.example.eowa.model;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,18 +27,30 @@ public class Event {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> participants;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<SelectionField> selectionFields;
+
+    @Column
+    private boolean finalized = false;
+
     @Column(name = "code")
     private String invitationCode;
 
     public Event() {
     }
 
-    public Event( User owner, String eventName, Set<User> participants, String description) {
+    public Event (User owner, String eventName, Set<User> participants, String description, Set<SelectionField> selectionFields,boolean finalized){
+        this.selectionFields = selectionFields;
         this.owner = owner;
         this.eventName = eventName;
         this.participants = participants;
         this.description = description;
         this.invitationCode = eventName+"::"+ UUID.randomUUID();
+        this.finalized = finalized;
+
+    }
+    public Event( User owner, String eventName, Set<User> participants, String description) {
+        this(owner,eventName,participants,description,new HashSet<>(),false);
     }
 
     public long getId() {
@@ -99,5 +113,30 @@ public class Event {
 
     public String getInvitationCode() {
         return invitationCode;
+    }
+
+    public Set<SelectionField> getSelectionFields() {
+        return selectionFields;
+    }
+
+    public void setSelectionFields(Set<SelectionField> selectionFields) {
+        this.selectionFields = selectionFields;
+    }
+
+
+    public void addSelectionFields(Set<SelectionField> selectionFields) {
+        this.selectionFields.addAll(selectionFields);
+    }
+
+    public void removeSelectionFields(Set<SelectionField> selectionfield){
+        this.selectionFields.removeAll(selectionfield);
+    }
+
+    public boolean isFinalized() {
+        return finalized;
+    }
+
+    public void setFinalized(boolean finalized) {
+        this.finalized = finalized;
     }
 }
