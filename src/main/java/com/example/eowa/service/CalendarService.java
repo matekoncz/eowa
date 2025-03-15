@@ -4,19 +4,20 @@ import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.CalendarExceptions.TimeTravelException;
 import com.example.eowa.exceptions.CalendarExceptions.WrongIntervalException;
 import com.example.eowa.model.*;
+import com.example.eowa.model.Calendar;
 import com.example.eowa.repository.CalendarRepository;
 import com.example.eowa.repository.DayRepository;
 import com.example.eowa.repository.HourRepository;
 import com.example.eowa.repository.OpinionRepository;
+import jakarta.persistence.Entity;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -107,6 +108,14 @@ public class CalendarService {
         return -1;
     }
 
+    public Calendar getCalendarById(long id){
+        return calendarRepository.findById(id).orElse(null);
+    }
+
+    private Hour getHourById(long id){
+        return hourRepository.findById(id).orElse(null);
+    }
+
     public void setUnavailableDays(Calendar calendar, Set<Integer> seralNumbers) {
         calendar.getDays().forEach(d -> d.setEnabled(!seralNumbers.contains(d.getSerialNumber())));
     }
@@ -118,6 +127,8 @@ public class CalendarService {
                 )
         );
     }
+
+    //TODO: clean up this mess
 
     public void setUnavailableHoursPeriodically(Calendar calendar, Set<Integer> hourNumbers, int period) {
         calendar.getDays().forEach(day -> {
@@ -164,6 +175,76 @@ public class CalendarService {
                 }
             });
         });
+    }
+
+    public void setTimeInterval(Calendar calendar, long startHourSerial, long endHourSerial){
+        if(startHourSerial>=endHourSerial){
+            return;
+        }
+        long hourNumber = calendar.getDays().stream().map(Day::getHours).mapToLong(Collection::size).sum();
+        if(hourNumber == 0 || hourNumber < endHourSerial){
+            return;
+        }
+
+        calendar.setStarthour(startHourSerial);
+        calendar.setEndhour(endHourSerial);
+        calendarRepository.save(calendar);
+    }
+
+    public void resetTimeInterval(Calendar calendar){
+        calendar.setStarthour(-1);
+        calendar.setEndhour(-1);
+        calendarRepository.save(calendar);
+    }
+
+    public List<MomentDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
+        List<Hour> everyHour = new ArrayList<>(calendar.getDays().stream().map(Day::getHours).flatMap(Collection::stream).toList());
+        everyHour.sort(Comparator.comparingInt(Hour::getNumberInTotal));
+
+        List<MomentDetails> momentDetails = new ArrayList<>();
+
+        everyHour.forEach(hour->{
+            Set<User> sharedParticipants = getPositiveParticipants(hour,allowedOpinions);
+            if(sharedParticipants.size()<minParticipants){
+                return;
+            }
+
+            int nextNumber = hour.getNumberInTotal()+1;
+            Hour nextHour = getHourByNumber(everyHour,nextNumber);
+            int participantNumber = 0;
+            while(nextHour != null){
+                 participantNumber = sharedParticipants.size();
+                updateSharedParticipants(sharedParticipants,getPositiveParticipants(nextHour,allowedOpinions));
+                if(sharedParticipants.size()<minParticipants){
+                    break;
+                }
+                nextNumber++;
+                nextHour=getHourByNumber(everyHour,nextNumber);
+            }
+            momentDetails.add(new MomentDetails(hour.getId(),nextNumber-hour.getNumberInTotal(),participantNumber));
+        });
+
+        return momentDetails.stream().filter(detail->detail.getLength()>=minLength).collect(Collectors.toList());
+    }
+
+    private void updateSharedParticipants(Set<User> sharedParticipants, Set<User> positiveParticipants) {
+        Set<User> participantsToRemove = new HashSet<>();
+        sharedParticipants.forEach(
+                user -> {
+                    if(!positiveParticipants.contains(user)){
+                        participantsToRemove.add(user);
+                    }
+                }
+        );
+        sharedParticipants.removeAll(participantsToRemove);
+    }
+
+    private Set<User> getPositiveParticipants(Hour hour, Set<Opinion.UserOpinion> allowedOpinions) {
+        return hour.getOpinions().stream().filter(o->allowedOpinions.contains(o.getUserOpinion())).map(Opinion::getUser).collect(Collectors.toSet());
+    }
+
+    private static Hour getHourByNumber(List<Hour> everyHour, long nextNumber) {
+        return everyHour.stream().filter(h -> h.getNumberInTotal() == nextNumber).findFirst().orElse(null);
     }
 
     public static class Period {

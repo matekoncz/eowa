@@ -27,13 +27,25 @@ public class Calendar {
     @OneToMany(fetch = FetchType.EAGER)
     private List<Day> days;
 
+    @Column
+    private long starthour;
+
+    @Column
+    private long endhour;
+
     public Calendar() {
     }
 
     public Calendar(ZoneId timeZone, ZonedDateTime startTime, ZonedDateTime endTime) {
+        this(timeZone,startTime,endTime,-1,-1);
+    }
+
+    public Calendar(ZoneId timeZone, ZonedDateTime startTime, ZonedDateTime endTime,long starthour, long endhour) {
         this.timeZone = timeZone;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.starthour = starthour;
+        this.endhour = endhour;
     }
 
     public ZoneId getTimeZone() {
@@ -58,5 +70,21 @@ public class Calendar {
 
     public long getId() {
         return id;
+    }
+
+    public long getStarthour() {
+        return starthour;
+    }
+
+    public void setStarthour(long starthour) {
+        this.starthour = starthour;
+    }
+
+    public long getEndhour() {
+        return endhour;
+    }
+
+    public void setEndhour(long endhour) {
+        this.endhour = endhour;
     }
 }
