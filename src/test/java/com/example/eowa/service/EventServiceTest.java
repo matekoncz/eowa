@@ -1,43 +1,20 @@
 package com.example.eowa.service;
 
+import com.example.eowa.EowaIntegrationTest;
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.authenticationExceptions.InvalidInvitationCodeException;
+import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
+import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
 import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-@ActiveProfiles("test")
-@SpringBootTest
-public class EventServiceTest {
-
-    @Autowired
-    private SessionService sessionService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private EventService eventService;
-
-    @Autowired
-    private CalendarService calendarService;
-
-    @BeforeEach
-    public void beforeTests(){
-        sessionService.deleteAllSession();
-        eventService.deleteAllEvent();
-        userService.deleteAllUsers();
-    }
+public class EventServiceTest extends EowaIntegrationTest {
 
     @Test
     public void shouldSaveEvent() throws UserException {
@@ -99,7 +76,7 @@ public class EventServiceTest {
         eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(3));
         Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
         Assertions.assertNotNull(savedCalendar);
-        Assertions.assertEquals(savedCalendar.getDays().size(),3);
+        Assertions.assertEquals(savedCalendar.getDays().size(),4);
     }
 
     @Test
@@ -267,5 +244,332 @@ public class EventServiceTest {
         Event updatedEvent = eventService.joinEventWithInvitationCode(savedParticipant, event.getInvitationCode());
 
         Assertions.assertTrue(updatedEvent.getParticipants().contains(savedParticipant));
+    }
+
+    @Test
+    public void shouldAddSelectionFields() throws UserException {
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti", new HashSet<>(),"");
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        SelectionField selectionField = new SelectionField("mezo",false,false);
+        Option option = new Option("ertek");
+        selectionField.addOptions(Set.of(option));
+
+        eventService.addFieldsToEvent(savedEvent.getId(),Set.of(selectionField));
+
+        Event updatedEvent = eventService.getEventById(savedEvent.getId());
+
+        Assertions.assertEquals(updatedEvent.getSelectionFields().size(),1);
+        Assertions.assertEquals(updatedEvent.getSelectionFields().stream().findFirst().get().getOptions().size(), 1);
+    }
+
+    @Test
+    public void shouldRemoveSelectionFields() throws UserException {
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti", new HashSet<>(),"");
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        SelectionField selectionField = new SelectionField("mezo",false,false);
+        Option option = new Option("ertek");
+        selectionField.addOptions(Set.of(option));
+
+        eventService.addFieldsToEvent(savedEvent.getId(),Set.of(selectionField));
+        eventService.removeFieldsFromEvent(savedEvent.getId(),Set.of(eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId()));
+
+        Event updatedEvent = eventService.getEventById(savedEvent.getId());
+
+        Assertions.assertEquals(updatedEvent.getSelectionFields().size(),0);
+    }
+
+    @Test
+    public void shouldAddOptionsToField() throws UserException {
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti", new HashSet<>(),"");
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        SelectionField selectionField = new SelectionField("mezo",false,false);
+
+        eventService.addFieldsToEvent(savedEvent.getId(),Set.of(selectionField));
+
+        Option option = new Option("ertek");
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        eventService.addFieldOptions(fieldid,Set.of(option),true);
+
+        Event updatedEvent = eventService.getEventById(savedEvent.getId());
+
+        Assertions.assertEquals(updatedEvent.getSelectionFields().size(),1);
+        Assertions.assertEquals(updatedEvent.getSelectionFields().stream().findFirst().get().getOptions().size(), 1);
+    }
+
+    @Test
+    public void shouldRemoveOptionsFromField() throws UserException {
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti", new HashSet<>(),"");
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        SelectionField selectionField = new SelectionField("mezo",false,false);
+
+        eventService.addFieldsToEvent(savedEvent.getId(),Set.of(selectionField));
+
+        Option option = new Option("ertek");
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        eventService.addFieldOptions(fieldid,Set.of(option),true);
+
+        SelectionField savedField = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get();
+        eventService.removeFieldOptions(savedField.getId(),Set.of(savedField.getOptions().stream().findFirst().get().getId()),true);
+
+        SelectionField updatedField = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get();
+
+        Assertions.assertEquals(updatedField.getOptions().size(),0);
+    }
+
+    @Test
+    public void shouldAddVoteToOption() throws Exception{
+        User user = new User("felh","asznalo1","email@gmail.com");
+        User savedUser = userService.saveUser(user);
+        Event event = new Event(savedUser,"kertiparti", new HashSet<>(),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long optionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.addVote(optionid,fieldid,user);
+
+        Assertions.assertEquals(eventService.getOptionById(optionid).getVoters().size(),1);
+    }
+
+    @Test
+    public void shouldRemoveVoteFromOption() throws Exception{
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long optionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.addVote(optionid,fieldid,owner);
+
+        eventService.removeVote(optionid,fieldid,owner);
+
+        Assertions.assertEquals(eventService.getOptionById(optionid).getVoters().size(),0);
+    }
+
+    @Test
+    public void shouldSelectOptionByMostVotes() throws Exception{
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        User user = new User("felh2","asznalo1","email2@gmail.com");
+        User savedUser = userService.saveUser(user);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().get().getId();
+        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek2")).findFirst().get().getId();
+
+        eventService.addVote(firstOptionId,fieldid,user);
+
+        Assertions.assertTrue(eventService.getOptionById(firstOptionId).isSelected());
+        Assertions.assertFalse(eventService.getOptionById(secondOptionId).isSelected());
+
+        eventService.addVote(secondOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,owner);
+
+        Assertions.assertFalse(eventService.getOptionById(firstOptionId).isSelected());
+        Assertions.assertTrue(eventService.getOptionById(secondOptionId).isSelected());
+    }
+
+    @Test
+    public void shouldSelectOptionManually() throws Exception{
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        User user = new User("felh2","asznalo1","email2@gmail.com");
+        User savedUser = userService.saveUser(user);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().get().getId();
+        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek2")).findFirst().get().getId();
+
+        eventService.addVote(firstOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,owner);
+
+        eventService.selectOption(firstOptionId,fieldid);
+
+        Assertions.assertTrue(eventService.getOptionById(firstOptionId).isSelected());
+        Assertions.assertFalse(eventService.getOptionById(secondOptionId).isSelected());
+    }
+
+    @Test
+    public void shouldFinalizeEvent() throws UserException, EventCannotBeFinalizedException, CalendarException {
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        User user = new User("felh2","asznalo1","email2@gmail.com");
+        User savedUser = userService.saveUser(user);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(Set.of(savedUser)),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(2));
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().get().getId();
+        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek2")).findFirst().get().getId();
+
+        eventService.addVote(firstOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,owner);
+
+        eventService.selectOption(firstOptionId,fieldid);
+
+        eventService.setStartTimeAndEndTime(event.getId(), 5,10);
+
+        eventService.finalizeEvent(event.getId());
+
+        Assertions.assertEquals(mailService.getUnreadMails(user).size(),1);
+        Assertions.assertEquals(mailService.getUnreadMails(owner).size(),1);
+
+        Assertions.assertTrue(eventService.getEventById(event.getId()).isFinalized());
+    }
+
+    @Test
+    public void shouldNotFinalizeEventIfFieldsAreNotSet() throws Exception {
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        User user = new User("felh2","asznalo1","email2@gmail.com");
+        User savedUser = userService.saveUser(user);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(Set.of(savedUser)),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(2));
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().get().getId();
+        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek2")).findFirst().get().getId();
+
+        eventService.addVote(firstOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,user);
+        eventService.addVote(secondOptionId,fieldid,owner);
+
+        eventService.selectOption(firstOptionId,fieldid);
+
+        Assertions.assertThrows(EventCannotBeFinalizedException.class,()->{
+            eventService.finalizeEvent(event.getId());
+        });
+    }
+
+    @Test
+    public void shouldThrowExceptionIfFinalizedEventIsModified() throws Exception{
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        User user = new User("felh2","asznalo1","email2@gmail.com");
+        User savedUser = userService.saveUser(user);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().get().getId();
+
+        eventService.selectOption(firstOptionId,fieldid);
+
+        eventService.finalizeEvent(event.getId());
+
+        Assertions.assertThrows(EventIsFinalizedException.class, ()->{
+            eventService.checkIfEventIsFinalized(event.getId());
+        });
+    }
+
+    @Test
+    public void shouldCreateEventBlueprint() throws Exception{
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
+        event.setSelectionFields(Set.of(selectionField));
+
+        eventService.addFieldsToEvent(savedEvent.getId(), Set.of(selectionField));
+
+        EventBlueprint blueprint = eventService.createEventBlueprint(savedEvent.getId(),"schema");
+
+        Assertions.assertNotNull(blueprint);
+
+        Event newEvent = new Event(savedOwner,"ujparti", new HashSet<>(),"");
+
+        Event savedNewEvent = eventService.saveEvent(newEvent);
+
+        eventService.addFieldsFromBluePrint(savedNewEvent.getId(),blueprint.getId());
+
+        long fieldid = eventService.getEventById(savedNewEvent.getId()).getSelectionFields().stream().findFirst().get().getId();
+        Assertions.assertNotNull(eventService.getSelectionFieldById(fieldid).getOptions().stream().filter((o)->o.getValue().equals("ertek")).findFirst().orElse(null));
+    }
+
+    @Test
+    public void shouldUnFinalizeEvent() throws Exception{
+        User owner = new User("felh","asznalo1","email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        User user = new User("felh2","asznalo1","email2@gmail.com");
+        User savedUser = userService.saveUser(user);
+
+        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(Set.of(savedUser)),"");
+
+        Event savedEvent = eventService.saveEvent(event);
+
+        eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(2));
+
+        eventService.setStartTimeAndEndTime(savedEvent.getId(),1,3);
+
+        eventService.finalizeEvent(event.getId());
+
+        eventService.unFinalizeEvent(event.getId());
+
+        Assertions.assertFalse(eventService.getEventById(event.getId()).isFinalized());
     }
 }
