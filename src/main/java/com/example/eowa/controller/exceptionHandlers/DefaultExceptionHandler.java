@@ -3,6 +3,8 @@ package com.example.eowa.controller.exceptionHandlers;
 import com.example.eowa.exceptions.CalendarExceptions.TimeTravelException;
 import com.example.eowa.exceptions.CalendarExceptions.WrongIntervalException;
 import com.example.eowa.exceptions.authenticationExceptions.*;
+import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
+import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
 import com.example.eowa.exceptions.userExceptions.*;
 import com.mysql.cj.exceptions.PasswordExpiredException;
 import org.springframework.http.HttpHeaders;
@@ -125,5 +127,21 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         String bodyOfResponse = "The given username is already taken";
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(value = { EventIsFinalizedException.class})
+    protected ResponseEntity<Object> handleEventIsFinalized(
+            EventIsFinalizedException ex, WebRequest request) {
+        String bodyOfResponse = "The event is finalized, cannot be modified";
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.LOCKED, request);
+    }
+
+    @ExceptionHandler(value = { EventCannotBeFinalizedException.class})
+    protected ResponseEntity<Object> handleEventCannotBeFinalized(
+            EventIsFinalizedException ex, WebRequest request) {
+        String bodyOfResponse = "The event cannot be finalized, all selection fields have to be set beforehand";
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
     }
 }
