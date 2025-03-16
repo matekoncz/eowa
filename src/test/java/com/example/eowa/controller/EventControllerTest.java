@@ -1,6 +1,9 @@
 package com.example.eowa.controller;
 
 import com.example.eowa.EowaIntegrationTest;
+import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
+import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
+import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -25,12 +26,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
 
@@ -53,12 +49,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -82,12 +73,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         eventService.saveEvent(event);
@@ -112,12 +98,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -144,12 +125,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -173,12 +149,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
 
@@ -203,7 +174,7 @@ public class EventControllerTest extends EowaIntegrationTest {
 
         savedEvent = eventService.getEventById(savedEvent.getId());
 
-        Assertions.assertEquals(3, savedEvent.getCalendar().getDays().size());
+        Assertions.assertEquals(4, savedEvent.getCalendar().getDays().size());
     }
 
     @Test
@@ -214,12 +185,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
 
@@ -254,12 +220,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -289,12 +250,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -324,12 +280,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -366,12 +317,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -405,19 +351,14 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
 
         eventService.setEventCalendar(id, "CET", LocalDateTime.now(), LocalDateTime.now().plusDays(3));
 
-        eventService.setUserOpinion(id, Set.of(0, 1, 2), sessionService.getUserBySessionId(jsessionid), Opinion.UserOpinion.GOOD);
+        eventService.setUserOpinion(id, Set.of(0, 1, 2), sessionService.getUserBySessionId(jwt.getJsessionid()), Opinion.UserOpinion.GOOD);
 
         String hourSerials = objectMapper.writeValueAsString(Set.of(2, 1));
 
@@ -452,24 +393,19 @@ public class EventControllerTest extends EowaIntegrationTest {
         eventService.setEventCalendar(id, "CET", LocalDateTime.now(), LocalDateTime.now().plusDays(3));
 
         User participant = new User("felh", "asznalo1", "email@gmail.com");
-        userService.saveUser(participant);
+        User savedParticipant = userService.saveUser(participant);
         Credentials participantCredentials = new Credentials();
         participantCredentials.setPassword("asznalo1");
         participantCredentials.setUsername("felh");
 
-        String participantJsessionid = authService.login(participantCredentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(participant);
-        jwt.setJsessionid(participantJsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(participantCredentials,savedParticipant);
 
         mockMvc.perform(put("/events/join-event")
                 .accept("application/json")
                 .queryParam("invitation", eventService.getEventById(id).getInvitationCode())
                 .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
 
-        authService.validateParticipant(participantJsessionid, id);
+        authService.validateParticipant(jwt.getJsessionid(), id);
     }
 
     @Test
@@ -488,16 +424,8 @@ public class EventControllerTest extends EowaIntegrationTest {
 
         User participant = new User("felh", "asznalo1", "email@gmail.com");
         userService.saveUser(participant);
-        Credentials participantCredentials = new Credentials();
-        participantCredentials.setPassword("asznalo1");
-        participantCredentials.setUsername("felh");
 
-        String participantJsessionid = authService.login(participantCredentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(participant);
-        jwt.setJsessionid(participantJsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,participant);
 
         MockHttpServletResponse response = mockMvc.perform(put("/events/join-event")
                         .accept("application/json")
@@ -518,12 +446,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("stranger");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(savedUser, "buli", new HashSet<>(), "");
         event.addParticipant(stranger);
@@ -552,12 +475,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         credentials.setUsername("felh");
 
-        String jsessionid = authService.login(credentials);
-
-        WebToken jwt = new WebToken();
-        jwt.setUser(user);
-        jwt.setJsessionid(jsessionid);
-        jwt.setTimestamp(System.currentTimeMillis());
+        WebToken jwt = loginUserAndGetWebToken(credentials,user);
 
         Event event = new Event(owner, "buli", new HashSet<>(), "");
         long id = eventService.saveEvent(event).getId();
@@ -577,4 +495,362 @@ public class EventControllerTest extends EowaIntegrationTest {
         Assertions.assertEquals(response.getStatus(), HttpStatus.FORBIDDEN.value());
     }
 
+    @Test()
+    public void shouldAddSelectionFieldToEvent() throws Exception {
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials,owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        Event savedEvent = eventService.saveEvent(event);
+        long id = savedEvent.getId();
+
+        SelectionField field = new SelectionField("mezo",true,false);
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        mockMvc.perform(put("/events/"+id+"/add-fields")
+                .contentType("application/json")
+                .accept("application/json")
+                .content(objectMapper.writeValueAsString(fieldset))
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertEquals(eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getTitle(),"mezo");
+    }
+
+    @Test
+    public void shouldRemoveSelectionFieldFromEvent() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,false,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        Assertions.assertEquals(eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getTitle(),"mezo");
+
+        mockMvc.perform(delete("/events/"+id+"/remove-fields")
+                .contentType("application/json")
+                .accept("application/json")
+                .content(objectMapper.writeValueAsString(Set.of(1)))
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertEquals(eventService.getEventById(id).getSelectionFields().size(),0);
+    }
+
+
+    @Test
+    public void shouldAddVote() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long optionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        mockMvc.perform(put("/events/"+id+"/fields/"+fieldid+"/vote/"+optionid)
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertEquals(eventService.getOptionById(optionid).getVoters().size(),1);
+
+    }
+
+    @Test
+    public void shouldRemoveVote() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long optionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.addVote(optionid,fieldid,owner);
+
+        mockMvc.perform(delete("/events/"+id+"/fields/"+fieldid+"/remove-vote/"+optionid)
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertEquals(eventService.getOptionById(optionid).getVoters().size(),0);
+    }
+
+    @Test
+    public void shouldSetOption() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long firstoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.addVote(firstoptionid,fieldid,owner);
+
+        eventService.addFieldOptions(fieldid,Set.of(new Option("ujertek")),true);
+
+        long secondoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream()
+                .filter(o->o.getId() != firstoptionid)
+                .findFirst().get().getId();
+
+        mockMvc.perform(put("/events/"+id+"/fields/"+fieldid+"/select/"+secondoptionid)
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertTrue(eventService.getOptionById(secondoptionid).isSelected());
+    }
+
+    @Test
+    public void shouldSetStartAndEnd() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        eventService.setEventCalendar(id, "CET", LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+
+        mockMvc.perform(put("/events/"+id+"/set-start-and-end?start=1&end=3")
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertEquals(eventService.getEventById(id).getCalendar().getStarthour(),1);
+        Assertions.assertEquals(eventService.getEventById(id).getCalendar().getEndhour(),3);
+    }
+
+    @Test
+    public void shouldResetStartAndEnd() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        eventService.setEventCalendar(id, "CET", LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+
+        eventService.setStartTimeAndEndTime(id,1,3);
+
+        mockMvc.perform(delete("/events/"+id+"/set-start-and-end")
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertEquals(eventService.getEventById(id).getCalendar().getStarthour(),-1);
+        Assertions.assertEquals(eventService.getEventById(id).getCalendar().getEndhour(),-1);
+    }
+
+    @Test
+    public void shouldFinalizeEvent() throws Exception {
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long firstoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.selectOption(firstoptionid,fieldid);
+
+        mockMvc.perform(put("/events/"+id+"/finalize")
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertTrue(eventService.getEventById(id).isFinalized());
+    }
+
+    @Test
+    public void shouldUnFinalizeEvent() throws Exception{
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long firstoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.selectOption(firstoptionid,fieldid);
+
+        eventService.finalizeEvent(id);
+
+        mockMvc.perform(delete("/events/"+id+"/finalize")
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertFalse(eventService.getEventById(id).isFinalized());
+    }
+
+    @Test
+    public void shouldNotLetUserModifyFinalizedEvent() throws Exception {
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long optionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        eventService.selectOption(optionid,fieldid);
+
+        eventService.finalizeEvent(id);
+
+        int status = mockMvc.perform(put("/events/" + id + "/fields/" + fieldid + "/select/" + optionid)
+                        .contentType("application/json")
+                        .accept("application/json")
+                        .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)))
+                .andReturn().getResponse().getStatus();
+
+        Assertions.assertEquals(status,HttpStatus.LOCKED.value());
+    }
+
+    @Test
+    public void shouldGetBestTimeIntervals() throws Exception{
+        User owner = new User("felh", "asznalo1", "email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        Credentials ownerCredentials = new Credentials();
+        ownerCredentials.setPassword("asznalo1");
+        ownerCredentials.setUsername("felh");
+
+        WebToken ownerJwt = loginUserAndGetWebToken(ownerCredentials,owner);
+
+        User participant = new User("felh2", "asznalo1", "email2@gmail.com");
+        User savedParticipant = userService.saveUser(participant);
+        Credentials participantCredentials = new Credentials();
+        participantCredentials.setPassword("asznalo1");
+        participantCredentials.setUsername("felh2");
+
+        WebToken participantJwt = loginUserAndGetWebToken(participantCredentials,participant);
+
+        Event event = new Event(savedOwner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        eventService.setEventCalendar(id, "CET", LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+
+        eventService.setUserOpinion(id,Set.of(0,1,2,3,4,5),savedOwner, Opinion.UserOpinion.TOLERABLE);
+        eventService.setUserOpinion(id,Set.of(3,4,5,6,7,8),savedParticipant, Opinion.UserOpinion.GOOD);
+
+        String responseJson = mockMvc.perform(get("/events/" + id + "/get-best-time-intervals?participants=2&length=3")
+                        .contentType("application/json")
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsString(Set.of(Opinion.UserOpinion.GOOD, Opinion.UserOpinion.TOLERABLE)))
+                        .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(ownerJwt)))
+                .andReturn().getResponse().getContentAsString();
+
+        List<MomentDetails> momentDetails = new ArrayList<>(List.of(objectMapper.readValue(responseJson, MomentDetails[].class)));
+
+        momentDetails.sort(Comparator.comparingInt(MomentDetails::getLength).reversed());
+
+        Assertions.assertEquals(momentDetails.getFirst().getParticipantNumber(),2);
+        Assertions.assertEquals(momentDetails.getFirst().getLength(),3);
+
+    }
+
+    private WebToken loginUserAndGetWebToken(Credentials credentials, User user) throws AuthenticationException, UserException {
+        String jsessionid = authService.login(credentials);
+
+        WebToken jwt = new WebToken();
+        jwt.setUser(user);
+        jwt.setJsessionid(jsessionid);
+        jwt.setTimestamp(System.currentTimeMillis());
+        return jwt;
+    }
 }

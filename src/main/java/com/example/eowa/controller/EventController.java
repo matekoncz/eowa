@@ -5,10 +5,10 @@ import com.example.eowa.exceptions.authenticationExceptions.AuthenticationExcept
 import com.example.eowa.exceptions.authenticationExceptions.InvalidInvitationCodeException;
 import com.example.eowa.exceptions.authenticationExceptions.UserIsNotEventOwnerException;
 import com.example.eowa.exceptions.authenticationExceptions.UserIsNotParticipantException;
-import com.example.eowa.model.Event;
-import com.example.eowa.model.Opinion;
-import com.example.eowa.model.User;
-import com.example.eowa.model.WebToken;
+import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
+import com.example.eowa.exceptions.eventExceptions.EventException;
+import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
+import com.example.eowa.model.*;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -183,5 +184,167 @@ public class EventController {
         User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.joinEventWithInvitationCode(user,invitation);
         response.setStatus(HttpStatus.OK.value());
+    }
+
+    @PutMapping("/{id}/add-fields")
+    public void addSelectionFieldToEvent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @RequestBody Set<SelectionField> selectionFields
+    ) throws UserIsNotEventOwnerException, EventException {
+        eventService.checkIfEventIsFinalized(id);
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.addFieldsToEvent(id,selectionFields);
+    }
+
+    @DeleteMapping("/{id}/remove-fields")
+    public void removeSelectionFieldFromToEvent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @RequestBody Set<Long> selectionids
+    ) throws UserIsNotEventOwnerException, EventException {
+        eventService.checkIfEventIsFinalized(id);
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.removeFieldsFromEvent(id,selectionids);
+    }
+
+    @PutMapping("/{id}/fields/{fieldid}")
+    public void addOptionsToField(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @PathVariable("fieldid") long fieldid,
+            @RequestBody Set<Option> options
+    ) throws UserIsNotParticipantException, EventException {
+        boolean owner;
+
+        try{
+            authService.validateEventOwner(jwt.getJsessionid(),id);
+            owner = true;
+        } catch (UserIsNotEventOwnerException ignored){
+            authService.validateParticipant(jwt.getJsessionid(),id);
+            owner = false;
+        }
+
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.addFieldOptions(id,options,owner);
+    }
+
+    @DeleteMapping("/{id}/fields/{fieldid}")
+    public void removeOptionsFromField(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @PathVariable("fieldid") long fieldid,
+            @RequestBody Set<Long> optionids
+    ) throws UserIsNotParticipantException, EventException {
+
+        boolean owner;
+
+        try{
+            authService.validateEventOwner(jwt.getJsessionid(),id);
+            owner = true;
+        } catch (UserIsNotEventOwnerException ignored){
+            authService.validateParticipant(jwt.getJsessionid(),id);
+            owner = false;
+        }
+
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.removeFieldOptions(id,optionids,owner);
+    }
+
+    @PutMapping("/{id}/fields/{fieldid}/vote/{optionid}")
+    public void voteForOption(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @PathVariable("fieldid") long fieldid,
+            @PathVariable("optionid") long optionid
+    ) throws UserIsNotParticipantException, EventException {
+        authService.validateParticipant(jwt.getJsessionid(),id);
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.addVote(optionid,fieldid,jwt.getUser());
+    }
+
+    @DeleteMapping("/{id}/fields/{fieldid}/remove-vote/{optionid}")
+    public void removeOptionVote(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @PathVariable("fieldid") long fieldid,
+            @PathVariable("optionid") long optionid
+    ) throws UserIsNotParticipantException, EventException {
+        authService.validateParticipant(jwt.getJsessionid(),id);
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.removeVote(optionid,fieldid,jwt.getUser());
+    }
+
+    @PutMapping("/{id}/fields/{fieldid}/select/{optionid}")
+    public void selectOption(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @PathVariable("fieldid") long fieldid,
+            @PathVariable("optionid") long optionid
+    ) throws EventException, UserIsNotEventOwnerException {
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.selectOption(optionid,fieldid);
+    }
+
+    @PutMapping("/{id}/set-start-and-end")
+    public void setStartAndEndTime(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @RequestParam("start") long start,
+            @RequestParam("end") long end
+    ) throws EventException, UserIsNotEventOwnerException {
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.setStartTimeAndEndTime(id,start,end);
+    }
+
+    @DeleteMapping("/{id}/set-start-and-end")
+    public void resetStartAndEnd(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id
+    ) throws EventException, UserIsNotEventOwnerException {
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.checkIfEventIsFinalized(id);
+
+        eventService.resetStartHourAndEndHour(id);
+    }
+
+    @PutMapping("/{id}/finalize")
+    public void finalizeEvent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id
+    ) throws EventCannotBeFinalizedException, UserIsNotEventOwnerException {
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.finalizeEvent(id);
+    }
+
+    @DeleteMapping("/{id}/finalize")
+    public void unFinalizeEvent(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id
+    ) throws EventIsFinalizedException, UserIsNotEventOwnerException {
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.unFinalizeEvent(id);
+    }
+
+    @GetMapping("/{id}/get-best-time-intervals")
+    public void getBestTimeIntervals(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @RequestParam("participants") int minParticipants,
+            @RequestParam("length") int minLength,
+            @RequestBody() Set<Opinion.UserOpinion> allowedOpinions,
+            HttpServletResponse response
+    ) throws UserIsNotEventOwnerException, IOException {
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        List<MomentDetails> details = eventService.getBestTimeIntervals(id,minParticipants,minLength,allowedOpinions);
+        response.getWriter().print(objectMapper.writeValueAsString(details));
     }
 }

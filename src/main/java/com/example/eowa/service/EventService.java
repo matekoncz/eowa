@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -295,11 +296,16 @@ public class EventService {
         event.setFinalized(false);
     }
 
-    public void checkIfEventIsFinalized(long eventid) throws EventException {
+    public void checkIfEventIsFinalized(long eventid) throws EventIsFinalizedException {
         Event event = getEventById(eventid);
         if(event.isFinalized()){
             throw new EventIsFinalizedException();
         }
+    }
+
+    public List<MomentDetails> getBestTimeIntervals(long eventId, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
+        Calendar calendar = getEventById(eventId).getCalendar();
+        return calendarService.getBestTimeIntervals(calendar,minParticipants,minLength,allowedOpinions);
     }
 
     public Event updateEvent(Event event) {
