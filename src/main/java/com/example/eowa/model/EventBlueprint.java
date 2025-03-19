@@ -12,7 +12,7 @@ public class EventBlueprint {
     @Column
     private String name;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     public EventBlueprint() {

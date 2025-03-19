@@ -3,7 +3,6 @@ package com.example.eowa.service;
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.authenticationExceptions.InvalidInvitationCodeException;
 import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
-import com.example.eowa.exceptions.eventExceptions.EventException;
 import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
 import com.example.eowa.model.*;
 import com.example.eowa.repository.EventBluePrintRepository;
@@ -13,6 +12,7 @@ import com.example.eowa.repository.SelectionFieldRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.example.eowa.service.HTMLWriter.*;
 
 @Service
 @Transactional
@@ -252,7 +254,7 @@ public class EventService {
         return event;
     }
 
-    public void setStartTimeAndEndTime(long eventid, long startHour, long endHour){
+    public void setStartTimeAndEndTime(long eventid, int startHour, int endHour){
         Calendar calendar = getEventById(eventid).getCalendar();
         calendarService.setTimeInterval(calendar,startHour,endHour);
     }
@@ -288,7 +290,62 @@ public class EventService {
 
     private String getMailContentForEvent(Event event) {
         //TODO
-        return "Yeah I'm just gonna implement this later";
+
+        String message = h2("An event you're participating in has been finalized");
+
+        String header = h1(event.getEventName());
+
+        String description = p(event.getDescription());
+
+        String tableContent = "";
+
+        if(event.getCalendar() != null){
+            int start = event.getCalendar().getStarthour();
+            int end = event.getCalendar().getEndhour();
+
+            List<Day> days = event.getCalendar().getDays();
+
+            Day startDay = days.stream()
+                    .filter(d-> d.getHours().stream().anyMatch(h->h.getNumberInTotal() == start))
+                    .findFirst().get();
+
+            Hour startHour = startDay.getHours().stream()
+                    .filter(h->h.getNumberInTotal() == start).findFirst().get();
+
+            Day endDay = days.stream()
+                    .filter(d-> d.getHours().stream().anyMatch(h->h.getNumberInTotal() == end))
+                    .findFirst().get();
+
+            Hour endHour = endDay.getHours().stream()
+                    .filter(h->h.getNumberInTotal() == end).findFirst().get();
+
+            tableContent+=tr(
+                    td("Start of the event")
+                            +td(startDay.getDayStartTime().toLocalDate()+":"+getHourString(startHour.getNumber()))
+                            +td("End of the event")
+                            +td(endDay.getDayStartTime().toLocalDate().toString()+":"+getHourString(endHour.getNumber()))
+            );
+        }
+
+        for (SelectionField field : event.getSelectionFields()){
+            Option option = field.getOptions().stream().filter(Option::isSelected).findFirst().get();
+            tableContent += tr(td(field.getTitle()+td(option.getValue())));
+        }
+
+        String table = table(
+                tr(th("Field")+th("Value"))
+                +tableContent
+        );
+
+        return message+header+description+table;
+    }
+
+    private String getHourString(int number){
+        if(number>9){
+            return String.valueOf(number);
+        } else {
+            return "0"+String.valueOf(number);
+        }
     }
 
     public void unFinalizeEvent(long eventid){

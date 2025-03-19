@@ -20,7 +20,7 @@ public class Mail {
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "isread")

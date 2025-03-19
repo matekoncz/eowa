@@ -296,8 +296,8 @@ public class EventController {
     public void setStartAndEndTime(
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
-            @RequestParam("start") long start,
-            @RequestParam("end") long end
+            @RequestParam("start") int start,
+            @RequestParam("end") int end
     ) throws EventException, UserIsNotEventOwnerException {
         authService.validateEventOwner(jwt.getJsessionid(),id);
         eventService.checkIfEventIsFinalized(id);

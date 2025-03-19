@@ -28,10 +28,10 @@ public class Calendar {
     private List<Day> days;
 
     @Column
-    private long starthour;
+    private int starthour;
 
     @Column
-    private long endhour;
+    private int endhour;
 
     public Calendar() {
     }
@@ -40,7 +40,7 @@ public class Calendar {
         this(timeZone,startTime,endTime,-1,-1);
     }
 
-    public Calendar(ZoneId timeZone, ZonedDateTime startTime, ZonedDateTime endTime,long starthour, long endhour) {
+    public Calendar(ZoneId timeZone, ZonedDateTime startTime, ZonedDateTime endTime,int starthour, int endhour) {
         this.timeZone = timeZone;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -72,19 +72,19 @@ public class Calendar {
         return id;
     }
 
-    public long getStarthour() {
+    public int getStarthour() {
         return starthour;
     }
 
-    public void setStarthour(long starthour) {
+    public void setStarthour(int starthour) {
         this.starthour = starthour;
     }
 
-    public long getEndhour() {
+    public int getEndhour() {
         return endhour;
     }
 
-    public void setEndhour(long endhour) {
+    public void setEndhour(int endhour) {
         this.endhour = endhour;
     }
 }

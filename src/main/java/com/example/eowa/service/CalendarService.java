@@ -177,7 +177,7 @@ public class CalendarService {
         });
     }
 
-    public void setTimeInterval(Calendar calendar, long startHourSerial, long endHourSerial){
+    public void setTimeInterval(Calendar calendar, int startHourSerial, int endHourSerial){
         if(startHourSerial>=endHourSerial){
             return;
         }
