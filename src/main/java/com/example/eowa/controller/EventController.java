@@ -5,6 +5,7 @@ import com.example.eowa.exceptions.authenticationExceptions.AuthenticationExcept
 import com.example.eowa.exceptions.authenticationExceptions.InvalidInvitationCodeException;
 import com.example.eowa.exceptions.authenticationExceptions.UserIsNotEventOwnerException;
 import com.example.eowa.exceptions.authenticationExceptions.UserIsNotParticipantException;
+import com.example.eowa.exceptions.eventExceptions.BlueprintCannotBeAccessedException;
 import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
 import com.example.eowa.exceptions.eventExceptions.EventException;
 import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
@@ -329,7 +330,7 @@ public class EventController {
     public void unFinalizeEvent(
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id
-    ) throws EventIsFinalizedException, UserIsNotEventOwnerException {
+    ) throws UserIsNotEventOwnerException {
         authService.validateEventOwner(jwt.getJsessionid(),id);
         eventService.unFinalizeEvent(id);
     }
@@ -346,5 +347,28 @@ public class EventController {
         authService.validateEventOwner(jwt.getJsessionid(),id);
         List<MomentDetails> details = eventService.getBestTimeIntervals(id,minParticipants,minLength,allowedOpinions);
         response.getWriter().print(objectMapper.writeValueAsString(details));
+    }
+
+    @PostMapping("/{id}/create-blueprint")
+    public void createBlueprint(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @RequestParam("name") String name
+    ) throws UserIsNotParticipantException {
+        authService.validateParticipant(jwt.getJsessionid(),id);
+        User user = authService.getUserBySessionId(jwt.getJsessionid());
+        eventService.createEventBlueprint(id,name,user);
+    }
+
+    @PutMapping("/{id}/add-from-blueprint/{bpid}")
+    public void addFieldsFromBluePrint(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            @PathVariable("id") long id,
+            @PathVariable("bpid") long blueprintId
+    ) throws UserIsNotEventOwnerException, EventIsFinalizedException, BlueprintCannotBeAccessedException {
+        eventService.checkIfEventIsFinalized(id);
+        eventService.checkIfUserHasRightsToBlueprint(blueprintId,jwt.getUser());
+        authService.validateEventOwner(jwt.getJsessionid(),id);
+        eventService.addFieldsFromBluePrint(id,blueprintId);
     }
 }

@@ -2,7 +2,6 @@ package com.example.eowa.controller;
 
 import com.example.eowa.EowaIntegrationTest;
 import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
-import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
 import com.example.eowa.exceptions.userExceptions.UserException;
 import com.example.eowa.model.*;
 import org.junit.jupiter.api.Assertions;
@@ -842,6 +841,77 @@ public class EventControllerTest extends EowaIntegrationTest {
         Assertions.assertEquals(momentDetails.getFirst().getParticipantNumber(),2);
         Assertions.assertEquals(momentDetails.getFirst().getLength(),3);
 
+    }
+
+    @Test
+    public void shouldCreateEventBluePrint() throws Exception {
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long firstoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        mockMvc.perform(post("/events/"+id+"/create-blueprint?name=schema")
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Assertions.assertNotNull(eventService.getEventBlueprintByName("schema").getContent());
+    }
+
+    @Test
+    public void shouldAddFieldsFromEventBluePrint() throws Exception {
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long firstoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        EventBlueprint savedBlueprint = eventService.createEventBlueprint(id,"schema",owner);
+
+        Event newevent = new Event(owner, "ujbuli", new HashSet<>(), "");
+        long newid = eventService.saveEvent(event).getId();
+
+        mockMvc.perform(put("/events/"+newid+"/add-from-blueprint/"+savedBlueprint.getId())
+                .contentType("application/json")
+                .accept("application/json")
+                .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
+
+        Option importedOption = eventService.getEventById(newid).getSelectionFields().stream()
+                .findFirst().get()
+                .getOptions()
+                .stream()
+                .findFirst().get();
+
+        Assertions.assertEquals(importedOption.getValue(),"ertek");
     }
 
     private WebToken loginUserAndGetWebToken(Credentials credentials, User user) throws AuthenticationException, UserException {

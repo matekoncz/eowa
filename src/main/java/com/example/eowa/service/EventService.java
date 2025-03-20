@@ -2,6 +2,7 @@ package com.example.eowa.service;
 
 import com.example.eowa.exceptions.CalendarExceptions.CalendarException;
 import com.example.eowa.exceptions.authenticationExceptions.InvalidInvitationCodeException;
+import com.example.eowa.exceptions.eventExceptions.BlueprintCannotBeAccessedException;
 import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
 import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
 import com.example.eowa.model.*;
@@ -12,7 +13,6 @@ import com.example.eowa.repository.SelectionFieldRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -72,6 +72,7 @@ public class EventService {
     }
 
     public void deleteAllEvent() {
+        eventBluePrintRepository.deleteAll();
         optionRepository.deleteAll();
         selectionFieldRepository.deleteAll();
         calendarService.deleteAllCalendarData();
@@ -140,6 +141,10 @@ public class EventService {
 
     public EventBlueprint getEventBlueprintById(Long id) {
         return eventBluePrintRepository.findById(id).orElse(null);
+    }
+
+    public EventBlueprint getEventBlueprintByName(String name) {
+        return eventBluePrintRepository.findEventBlueprintByName(name);
     }
 
     public Event joinEventWithInvitationCode(User user, String invitationCode) throws InvalidInvitationCodeException {
@@ -221,10 +226,11 @@ public class EventService {
         winner.setSelected(true);
     }
 
-    public EventBlueprint createEventBlueprint(long id, String name) {
+    public EventBlueprint createEventBlueprint(long id, String name,User user) {
         Event event = getEventById(id);
         EventBlueprint blueprint = new EventBlueprint();
         blueprint.setName(name);
+        blueprint.setInsertUser(user);
 
         Set<SelectionField> fields = event.getSelectionFields()
                 .stream()
@@ -363,6 +369,13 @@ public class EventService {
     public List<MomentDetails> getBestTimeIntervals(long eventId, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
         Calendar calendar = getEventById(eventId).getCalendar();
         return calendarService.getBestTimeIntervals(calendar,minParticipants,minLength,allowedOpinions);
+    }
+
+    public void checkIfUserHasRightsToBlueprint(long blueprintId, User user) throws BlueprintCannotBeAccessedException {
+        EventBlueprint blueprint = getEventBlueprintById(blueprintId);
+        if(!blueprint.getInsertUser().equals(user)){
+            throw new BlueprintCannotBeAccessedException();
+        }
     }
 
     public Event updateEvent(Event event) {

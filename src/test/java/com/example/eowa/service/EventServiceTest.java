@@ -537,7 +537,7 @@ public class EventServiceTest extends EowaIntegrationTest {
 
         eventService.addFieldsToEvent(savedEvent.getId(), Set.of(selectionField));
 
-        EventBlueprint blueprint = eventService.createEventBlueprint(savedEvent.getId(),"schema");
+        EventBlueprint blueprint = eventService.createEventBlueprint(savedEvent.getId(),"schema",owner);
 
         Assertions.assertNotNull(blueprint);
 
