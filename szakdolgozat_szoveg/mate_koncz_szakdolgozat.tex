@@ -253,51 +253,36 @@ Az időzóna megadása azért fontos, mert a  kiválasztható időpontok egész 
 
 A Spring Framework egy Java üzleti alkalmazások fejlesztését segítő keretrendszer. Legfontosabb funkciói közé tartozik a függőség befecskendezés és a Model-View-Controller modell (MVC) támogatása.
 
-A backend alkalmazásomat a Spring Boot használatával készítettem el. Ennek segítségével gyorsabban és egyszerűbben tudom elkezdeni a Spring Frameworkre épülő alkalmazásom fejlesztését, mivel a Spring Boot projektek rendelkeznek alapértelmezett konfigurációs beállításokkal, nekem ezeket csak akkor kell átírnom, ha valahol az alapértelmezettől eltérő viselkedést akarok elérni. A fejlesztést InteliJ IDEA (Community Edition) környezetben végeztem.
+A backend alkalmazásomat a Spring Boot\cite{Springwebsite} használatával készítettem el. Ennek segítségével gyorsabban és egyszerűbben tudom elkezdeni a Spring Frameworkre épülő alkalmazásom fejlesztését, mivel a Spring Boot projektek rendelkeznek alapértelmezett konfigurációs beállításokkal, nekem ezeket csak akkor kell átírnom, ha valahol az alapértelmezettől eltérő viselkedést akarok elérni. A fejlesztést InteliJ IDEA (Community Edition)\cite{IDEAwebsite} környezetben végeztem.
 
-https://spring.io/projects/spring-boot
 	\subsection{Jakarta Persistence API Hibernate ORM-el}
 
-A Hibernate segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA) keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját nativ query-ket is írtam, ahol az adatokat egyéni módon akartam kezelni.
+A Hibernate\cite{Hibernatewebsite} segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA)\cite{JPAwebsite} keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját natív query-ket is írtam, ahol az adatokat egyéni módon akartam kezelni.
 
-https://jakarta.ee/specifications/persistence/
-
-https://hibernate.org/orm/
 	\subsection{H2 In-memory DB}
 
-A H2 memórián belüli adatbázis megvalósítását az integrációs tesztjeimhez használtam. Mivel ez az adatbázis minden futtatás esetében újra inicializálódik, fejlesztés közben egyszerűbb a tesztjeimet futtatnom, hiszen nem kell minden, a leképezendő objektumok kapcsolatait érintő változás esetén a megfelelő strukturális változtatásokat véghezvinnem az adatbázisban. Emellett általánosságban egyszerűbben kezelhető, hiszen nincs szükségem adatbázisszerverre.
-
-https://www.h2database.com/html/main.html
+A H2\cite{H2website} memórián belüli adatbázis megvalósítását az integrációs tesztjeimhez használtam. Mivel ez az adatbázis minden futtatás esetében újra inicializálódik, fejlesztés közben egyszerűbb a tesztjeimet futtatnom, hiszen nem kell minden, a leképezendő objektumok kapcsolatait érintő változás esetén a megfelelő strukturális változtatásokat véghezvinnem az adatbázisban. Emellett általánosságban egyszerűbben kezelhető, hiszen nincs szükségem adatbázisszerverre.
 
 \section{MariaDB}
 
-A backend alkalmazás éles futtatása során egy MariaDB adatbázisszerverre kapcsolódik. A MariaDB egy nyílt forráskódú, SQL alapú relációs adatbázis-kezelő rendszer (RDBMS). Más hasonló adatbázisszerverek közül azért erre esett a választásom, mert a tanulmányaim során ezt használtam a legtöbbet.
-
-https://mariadb.org/
+A backend alkalmazás éles futtatása során egy MariaDB\cite{Mariawebsite} adatbázisszerverre kapcsolódik. A MariaDB egy nyílt forráskódú, SQL alapú relációs adatbázis-kezelő rendszer (RDBMS). Más hasonló adatbázisszerverek közül azért erre esett a választásom, mert a tanulmányaim során ezt használtam a legtöbbet.
 
 \section{Angular}
 
-Az Angular egy Google által fejlesztett, nyílt forráskódú, TypeScript alapú keretrendszer webalkalmazások fejlesztésére. Az applikációm frontend részét ezzel valósítottam meg. A választásom azért erre esett, mert a hozzá hasonló keretrenszerek közül ezt ismerem a legjobban, és úgy ítéltem meg, hogy alkalmas modern, reszponzív felhasználói felületek létrehozására. A fejlesztést Visual Studio Code környezetben végeztem.
+Az Angular\cite{Angularwebsite} egy Google által fejlesztett, nyílt forráskódú, TypeScript alapú keretrendszer webalkalmazások fejlesztésére. Az applikációm frontend részét ezzel valósítottam meg. A választásom azért erre esett, mert a hozzá hasonló keretrenszerek közül ezt ismerem a legjobban, és úgy ítéltem meg, hogy alkalmas modern, reszponzív felhasználói felületek létrehozására. A fejlesztést Visual Studio Code\cite{VSCwebsite} környezetben végeztem.
 
-https://angular.dev/overview
 	\subsection{Angular Material}
 
-A frontenden nagy számban használtam az Angular Material könyvtár komponenseit. Az Angular Material a Google hivatalos UI komponenskönyvtára, számos termékükben használják.
+A frontenden nagy számban használtam az Angular Material\cite{Materialwebsite} könyvtár komponenseit. Az Angular Material a Google hivatalos UI komponenskönyvtára, számos termékükben használják.
 
-https://material.angular.io/
 	\subsection{RxJs}
 
-Az RxJs könyvtár aszinkron műveletek kezelését segítő függvényeket és típusokat tartalmaz. A frontendemen könyvtárban található Observable típust használtam az aszinkron API lekérdezések megvalósításához, valamint a Subject típust használtam azokban az esetekben, amikor gyerek komponensben kellett szülő komponensben bekövetkező eseményre reagálni.
-
-https://rxjs.dev/
+Az RxJs\cite{Rxjswebsite} könyvtár aszinkron műveletek kezelését segítő függvényeket és típusokat tartalmaz. A frontendemen könyvtárban található Observable típust használtam az aszinkron API lekérdezések megvalósításához, valamint a Subject típust használtam azokban az esetekben, amikor gyerek komponensben kellett szülő komponensben bekövetkező eseményre reagálni.
 
 \section{git}
 
-A git verziókövető rendszert használtam a teljes fejlesztési folyamat során. Hogy a konzulensem is követhesse a projekt alakulását, létrehoztam egy nyilvános Github repository-t, és oda sűrűn pusholtam a local repository commit-jait.
+A git\cite{Gitwebsite} verziókövető rendszert használtam a teljes fejlesztési folyamat során. Hogy a konzulensem is követhesse a projekt alakulását, létrehoztam egy nyilvános Github\cite{GitHubwebsite} repository-t, és oda sűrűn pusholtam a local repository commit-jait.
 
-https://git-scm.com/
-
-https://github.com/about
 
 \chapter{Az API fejlesztése}
 
@@ -359,7 +344,7 @@ Minden service és controller komponenshez saját tesztosztályt hoztam létre, 
         User savedOwner = userService.saveUser(owner);
         User user = new User("felh2","asznalo1","email2@gmail.com");
         User savedUser = userService.saveUser(user);
-        Event event = new Event(savedOwner,"kertiparti", new HashSet<>(),"");
+        Event event = new Event(savedOwner,"kertiparti", Set.of(user),"");
 
         SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
         event.setSelectionFields(Set.of(selectionField));
@@ -470,12 +455,11 @@ A képletben használt mennyiségek legyenek megadva az első használatuknál.
 
 A dolgozat eredményeinek összefoglalása, következtetések levonása.
 
-Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/eredményei. \cite{knuthwebsite}
+Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/eredményei.
 
 \newpage
-{\Huge \bf Hivatkozások}
 
-\bibliographystyle{apalike} 
+\bibliographystyle{alphadin}
 \bibliography{mate_koncz} 
 
 \newpage
