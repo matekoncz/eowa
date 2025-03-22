@@ -345,7 +345,7 @@ public class EventController {
             HttpServletResponse response
     ) throws UserIsNotEventOwnerException, IOException {
         authService.validateEventOwner(jwt.getJsessionid(),id);
-        List<MomentDetails> details = eventService.getBestTimeIntervals(id,minParticipants,minLength,allowedOpinions);
+        List<TimeIntervalDetails> details = eventService.getBestTimeIntervals(id,minParticipants,minLength,allowedOpinions);
         response.getWriter().print(objectMapper.writeValueAsString(details));
     }
 
@@ -370,5 +370,16 @@ public class EventController {
         eventService.checkIfUserHasRightsToBlueprint(blueprintId,jwt.getUser());
         authService.validateEventOwner(jwt.getJsessionid(),id);
         eventService.addFieldsFromBluePrint(id,blueprintId);
+    }
+
+    @GetMapping("/my-blueprints")
+    public void getCurrentUserBluePrints(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
+            HttpServletResponse response
+    ) throws IOException {
+        Set<EventBlueprint> blueprints = eventService.getBlueprintsForUser(jwt.getUser());
+        blueprints.forEach(bp->bp.setContent(null));
+        response.getWriter().print(objectMapper.writeValueAsString(blueprints));
+        response.setStatus(HttpStatus.OK.value());
     }
 }

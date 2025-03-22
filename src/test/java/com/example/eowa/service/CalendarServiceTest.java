@@ -80,9 +80,9 @@ public class CalendarServiceTest extends EowaIntegrationTest {
         calendarService.setUserOpinion(calendar,user2,Set.of(6,7,8,9,10,11,12,13,14,15,16,17), Opinion.UserOpinion.GOOD);
 
         //calendar = calendarService.getCalendarById(calendar.getId());
-        List<MomentDetails> bestTimeIntervals = calendarService.getBestTimeIntervals(calendar,2,3, Set.of(Opinion.UserOpinion.GOOD));
+        List<TimeIntervalDetails> bestTimeIntervals = calendarService.getBestTimeIntervals(calendar,2,3, Set.of(Opinion.UserOpinion.GOOD));
 
-        bestTimeIntervals.sort(Comparator.comparingInt(MomentDetails::getLength).reversed());
+        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed());
 
         Assertions.assertEquals(bestTimeIntervals.size(),4);
         Assertions.assertEquals(bestTimeIntervals.getFirst().getLength(),6);

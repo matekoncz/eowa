@@ -1,16 +1,16 @@
 package com.example.eowa.model;
 
-public class MomentDetails {
+public class TimeIntervalDetails {
     private long hourId;
 
     private int length;
 
     private int participantNumber;
 
-    public MomentDetails() {
+    public TimeIntervalDetails() {
     }
 
-    public MomentDetails(long hourId, int length, int participantNumber) {
+    public TimeIntervalDetails(long hourId, int length, int participantNumber) {
         this.hourId = hourId;
         this.length = length;
         this.participantNumber = participantNumber;

@@ -366,7 +366,7 @@ public class EventService {
         }
     }
 
-    public List<MomentDetails> getBestTimeIntervals(long eventId, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
+    public List<TimeIntervalDetails> getBestTimeIntervals(long eventId, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
         Calendar calendar = getEventById(eventId).getCalendar();
         return calendarService.getBestTimeIntervals(calendar,minParticipants,minLength,allowedOpinions);
     }
@@ -376,6 +376,10 @@ public class EventService {
         if(!blueprint.getInsertUser().equals(user)){
             throw new BlueprintCannotBeAccessedException();
         }
+    }
+
+    public Set<EventBlueprint> getBlueprintsForUser(User user){
+        return eventBluePrintRepository.getBlueprintsForUser(user.getUsername());
     }
 
     public Event updateEvent(Event event) {

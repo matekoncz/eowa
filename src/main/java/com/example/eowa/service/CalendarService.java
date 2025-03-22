@@ -9,7 +9,6 @@ import com.example.eowa.repository.CalendarRepository;
 import com.example.eowa.repository.DayRepository;
 import com.example.eowa.repository.HourRepository;
 import com.example.eowa.repository.OpinionRepository;
-import jakarta.persistence.Entity;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -197,11 +196,11 @@ public class CalendarService {
         calendarRepository.save(calendar);
     }
 
-    public List<MomentDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
+    public List<TimeIntervalDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
         List<Hour> everyHour = new ArrayList<>(calendar.getDays().stream().map(Day::getHours).flatMap(Collection::stream).toList());
         everyHour.sort(Comparator.comparingInt(Hour::getNumberInTotal));
 
-        List<MomentDetails> momentDetails = new ArrayList<>();
+        List<TimeIntervalDetails> momentDetails = new ArrayList<>();
 
         everyHour.forEach(hour->{
             Set<User> sharedParticipants = getPositiveParticipants(hour,allowedOpinions);
@@ -221,7 +220,7 @@ public class CalendarService {
                 nextNumber++;
                 nextHour=getHourByNumber(everyHour,nextNumber);
             }
-            momentDetails.add(new MomentDetails(hour.getId(),nextNumber-hour.getNumberInTotal(),participantNumber));
+            momentDetails.add(new TimeIntervalDetails(hour.getId(),nextNumber-hour.getNumberInTotal(),participantNumber));
         });
 
         return momentDetails.stream().filter(detail->detail.getLength()>=minLength).collect(Collectors.toList());

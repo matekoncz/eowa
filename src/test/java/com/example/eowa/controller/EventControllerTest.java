@@ -834,9 +834,9 @@ public class EventControllerTest extends EowaIntegrationTest {
                         .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(ownerJwt)))
                 .andReturn().getResponse().getContentAsString();
 
-        List<MomentDetails> momentDetails = new ArrayList<>(List.of(objectMapper.readValue(responseJson, MomentDetails[].class)));
+        List<TimeIntervalDetails> momentDetails = new ArrayList<>(List.of(objectMapper.readValue(responseJson, TimeIntervalDetails[].class)));
 
-        momentDetails.sort(Comparator.comparingInt(MomentDetails::getLength).reversed());
+        momentDetails.sort(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed());
 
         Assertions.assertEquals(momentDetails.getFirst().getParticipantNumber(),2);
         Assertions.assertEquals(momentDetails.getFirst().getLength(),3);
@@ -914,6 +914,41 @@ public class EventControllerTest extends EowaIntegrationTest {
         Assertions.assertEquals(importedOption.getValue(),"ertek");
     }
 
+    @Test
+    public void shouldGetBlueprintsForUser() throws Exception {
+        User owner = userService.saveUser(new User("felh1", "asznalo1", "email1@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setPassword("asznalo1");
+        credentials.setUsername("felh1");
+
+        WebToken jwt = loginUserAndGetWebToken(credentials, owner);
+
+        Event event = new Event(owner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        Option option = new Option("ertek");
+        SelectionField field = new SelectionField("mezo",true,true,Set.of(option));
+        Set<SelectionField> fieldset = new HashSet<>();
+        fieldset.add(field);
+
+        eventService.addFieldsToEvent(id,fieldset);
+
+        long fieldid = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+        long firstoptionid = eventService.getSelectionFieldById(fieldid).getOptions().stream().findFirst().get().getId();
+
+        EventBlueprint savedBlueprint = eventService.createEventBlueprint(id,"schema",owner);
+
+        MockHttpServletResponse response = mockMvc.perform(get("/events/my-blueprints")
+                        .contentType("application/json")
+                        .accept("application/json")
+                        .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)))
+                .andReturn()
+                .getResponse();
+
+        EventBlueprint blueprint = objectMapper.readValue(response.getContentAsString(),EventBlueprint[].class)[0];
+
+        Assertions.assertEquals(blueprint.getName(),"schema");
+    }
     private WebToken loginUserAndGetWebToken(Credentials credentials, User user) throws AuthenticationException, UserException {
         String jsessionid = authService.login(credentials);
 
