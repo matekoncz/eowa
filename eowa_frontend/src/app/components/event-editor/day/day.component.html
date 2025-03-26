@@ -4,7 +4,7 @@
 
     <mat-card-content>
         <div class="centered">
-            @if(editMode){
+            @if(editMode == EditMode.EDIT){
 
             @if(day.enabled){
             <button mat-stroked-button class="disable" (click)="disableDay()">disable</button>
@@ -24,10 +24,19 @@
         <div class="flexCol" id="hourcontainer">
             @if(day.enabled){
             @for(hour of this.day.hours; track hour){
-            <app-hour [hour]="hour" [editMode]="editMode" [participantNumber]="participantNumber"
-                [date]="day.dayStartTime" [opinionMode]="opinionMode" [wholeDayChanged]="wholeDayChanged"
-                (opinionSet)="opinionSet($event)" (hourChanged)="hourChanged(hour)">
-            </app-hour>
+            <div class="centered">
+                <app-hour
+                    [hour]="hour"
+                    [editMode]="editMode"
+                    [participantNumber]="participantNumber"
+                    [date]="day.dayStartTime"
+                    [opinionMode]="opinionMode"
+                    [wholeDayChanged]="wholeDayChanged"
+                    (hourSelected)="selectHour($event)"
+                    (opinionSet)="opinionSet($event)"
+                    (hourChanged)="hourChanged(hour)">
+                </app-hour>   
+            </div>
             }
             } @else{
             <p>day is disabled</p>

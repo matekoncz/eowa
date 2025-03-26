@@ -6,7 +6,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { HourComponent } from '../hour/hour.component';
 import { Hour } from '../../../Model/Hour';
 import { Opinion } from '../../../Model/Opinion';
-import { OpinionMode } from '../view-calendar/view-calendar.component';
+import {
+  EditMode,
+  OpinionMode,
+} from '../view-calendar/view-calendar.component';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -19,7 +22,7 @@ import { Subject } from 'rxjs';
 export class DayComponent {
   @Input() day?: Day;
 
-  @Input() editMode: Boolean = false;
+  @Input() editMode: EditMode = EditMode.DEFAULT;
 
   @Input() participantNumber = 0;
 
@@ -31,9 +34,13 @@ export class DayComponent {
 
   @Output() opinionsSet = new EventEmitter<Opinion[]>();
 
+  @Output() hourSelected = new EventEmitter<Hour>();
+
   wholeDayChanged: Subject<void> = new Subject();
 
   OpinionMode = OpinionMode;
+
+  EditMode = EditMode;
 
   disableDay() {
     this.day!.enabled = false;
@@ -55,5 +62,9 @@ export class DayComponent {
 
   addOpinion() {
     this.wholeDayChanged.next();
+  }
+
+  selectHour(hour: Hour) {
+    this.hourSelected.emit(hour);
   }
 }
