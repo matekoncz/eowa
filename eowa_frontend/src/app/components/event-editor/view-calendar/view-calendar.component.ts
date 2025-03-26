@@ -10,7 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { Hour } from '../../../Model/Hour';
-import { User } from '../../../Model/User';
 import { UserService } from '../../../services/user.service';
 import {
   PeriodicalHourDisablerComponentComponent,
@@ -32,6 +31,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { StartAndEndHourPipePipe } from '../../../pipes/start-and-end-hour-pipe.pipe';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { GetBestTimeIntervalsDialogComponent } from '../get-best-time-intervals-dialog/get-best-time-intervals-dialog.component';
+import { TimeIntervalDetails } from '../../../Model/TimeIntervalDetails';
 
 @Component({
   selector: 'app-view-calendar',
@@ -48,33 +51,23 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatSelectModule,
     CommonModule,
+    StartAndEndHourPipePipe,
   ],
   templateUrl: './view-calendar.component.html',
   styleUrl: './view-calendar.component.css',
 })
 export class ViewCalendarComponent implements OnInit {
-
   eventId?: number;
 
-  eventowner?: User;
+  event?: EowaEvent;
 
   calendar?: Calendar;
 
   participantNumber?: number;
 
-  weekDays = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
-
   weeks: (Day | null)[][] = [];
 
-  editMode = false;
+  editMode = EditMode.DEFAULT;
 
   opinionMode = OpinionMode.DEFAULT;
 
@@ -82,15 +75,25 @@ export class ViewCalendarComponent implements OnInit {
 
   changedHours: Set<Hour> = new Set();
 
+  newStartAndEnd: number[] = [];
+
+  bestIntervals: TimeIntervalDetails[] = [];
+
+  filteredIntervals: TimeIntervalDetails[] = [];
+
   changedOpinions: Set<Opinion> = new Set();
 
   dialog = inject(MatDialog);
+
+  snackbar = inject(MatSnackBar);
 
   opinonForm = new FormGroup({
     opinion: new FormControl('GOOD'),
   });
 
   OpinionMode = OpinionMode;
+
+  EditMode = EditMode;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -103,9 +106,8 @@ export class ViewCalendarComponent implements OnInit {
     this.eventId = this.activatedRoute.snapshot.queryParams['id'];
     this.eventservice.getEvent(this.eventId!).subscribe((response) => {
       from(response.json()).subscribe((event: EowaEvent) => {
-        this.eventowner = event.owner;
+        this.event = event;
         this.calendar = event.calendar;
-        this.participantNumber = event.participants.length;
         let firstDay = this.calendar!.days![0];
         let firstDate = this.convertTimeStampToDate(
           firstDay.dayStartTime as unknown as number
@@ -152,12 +154,12 @@ export class ViewCalendarComponent implements OnInit {
   }
 
   editCalendar() {
-    this.editMode = true;
+    this.editMode = EditMode.EDIT;
   }
   exitEditMode(save: boolean) {
     console.log('this.changedDays', this.changedDays);
     console.log('this.changedHours', this.changedHours);
-    this.editMode = false;
+    this.editMode = EditMode.DEFAULT;
     if (!save) {
       this.ngOnInit();
     } else {
@@ -274,11 +276,11 @@ export class ViewCalendarComponent implements OnInit {
   }
 
   isUserEventOwner() {
-    if (this.eventowner == null) {
+    if (this.event?.owner == null) {
       return false;
     }
     return (
-      this.userService.getCurrentUser().username === this.eventowner.username
+      this.userService.getCurrentUser().username === this.event.owner.username
     );
   }
 
@@ -302,7 +304,8 @@ export class ViewCalendarComponent implements OnInit {
 
   opinionModeChanged() {
     console.log(this.opinionMode);
-    if (this.opinionMode == OpinionMode.DEFAULT) {
+    if (this.editMode == EditMode.DEFAULT) {
+      this.editMode = EditMode.OPINION;
       this.opinionMode =
         OpinionModeLookup[
           this.opinonForm.controls['opinion']
@@ -310,8 +313,132 @@ export class ViewCalendarComponent implements OnInit {
         ];
     } else {
       this.opinionMode = OpinionMode.DEFAULT;
+      this.editMode = EditMode.DEFAULT;
     }
   }
+
+  startAndEnd() {
+    if (this.editMode == EditMode.DEFAULT) {
+      this.editMode = EditMode.START_AND_END;
+      this.newStartAndEnd = [];
+      this.snackbar.open('select the start hour', 'close');
+    } else {
+      this.editMode = EditMode.DEFAULT;
+    }
+  }
+
+  selectHour(hour: Hour) {
+    console.log('hour selected', hour);
+    console.log('newStartAndEnd', this.newStartAndEnd);
+    this.newStartAndEnd.push(hour.numberInTotal);
+    this.newStartAndEnd.sort();
+
+    switch (this.newStartAndEnd.length) {
+      case 1:
+        this.snackbar.open('select the end hour', 'close');
+        break;
+      case 2:
+        this.eventservice
+          .setStartAndEndTime(
+            this.eventId!,
+            this.newStartAndEnd[0],
+            this.newStartAndEnd[1]
+          )
+          .subscribe((response) => {
+            if (response.ok) {
+              this.ngOnInit();
+              this.snackbar.open(
+                'successfully updated start and end time',
+                'close'
+              );
+            }
+          });
+        this.editMode = EditMode.DEFAULT;
+        break;
+    }
+  }
+
+  openGetBestTimeIntervalsDialog() {
+    let dialogref = this.dialog.open(GetBestTimeIntervalsDialogComponent, {
+      data: this.event,
+    });
+
+    dialogref.afterClosed().subscribe((result) => {
+      if (result != null) {
+        this.getBestTimeIntervals(
+          result.participants,
+          result.length,
+          result.allowedOpinions
+        );
+      }
+    });
+  }
+
+  getBestTimeIntervals(
+    participants: number,
+    length: number,
+    allowedOpinions: UserOpinion[]
+  ) {
+    this.eventservice
+      .getBestTimeIntervals(
+        this.eventId!,
+        participants,
+        length,
+        allowedOpinions
+      )
+      .subscribe((response) => {
+        let status = response.status;
+        if (status == 200) {
+          from(response.json()).subscribe(
+            (intervals: TimeIntervalDetails[]) => {
+              console.log(intervals);
+              this.bestIntervals = intervals;
+              this.filteredIntervals = [];
+              this.editMode = EditMode.SHOW_BEST;
+            }
+          );
+        }
+      });
+  }
+
+  sortAndFilterIntervalsByParticipants() {
+    console.log(this.bestIntervals);
+    let fn = (o1: TimeIntervalDetails, o2: TimeIntervalDetails) => {
+      return o2.participantNumber - o1.participantNumber;
+    };
+    this.sortAndFiltertIntervalsBy(fn);
+  }
+
+  sortAndFilterIntervalsByLength() {
+    console.log(this.bestIntervals);
+    let fn = (o1: TimeIntervalDetails, o2: TimeIntervalDetails) => {
+      return o2.length - o1.length;
+    };
+    this.sortAndFiltertIntervalsBy(fn);
+  }
+
+  sortAndFiltertIntervalsBy(
+    fn: (a: TimeIntervalDetails, b: TimeIntervalDetails) => number
+  ) {
+    this.filteredIntervals = this.bestIntervals.sort(fn);
+    if (this.filteredIntervals.length > 5) {
+      this.filteredIntervals = this.filteredIntervals.slice(0, 5);
+    }
+  }
+
+  exitSHowBestMode() {
+    this.editMode = EditMode.DEFAULT;
+  }
+
+  showBestIntervals() {}
+}
+
+export enum EditMode {
+  DEFAULT = 'DEFAULT',
+  EDIT = 'EDIT',
+  OPINION = 'OPINION',
+  START_AND_END = 'START_AND_END',
+  SHOW_BEST = 'SHOW_BEST',
 }
 
 export enum OpinionMode {

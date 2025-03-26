@@ -1,5 +1,5 @@
 <div class="centered">
-    <h1>Event Calendar</h1>
+    <h1>Event calendar of {{event?.eventName}}</h1>
 </div>
 <div class="flexRow fillSpace">
     @if(isUserEventOwner()){
@@ -9,16 +9,55 @@
         </mat-card-header>
         <mat-card-content>
 
-            @if(!editMode){
-            <mat-chip><button mat-button (click)="editCalendar()">Edit calendar</button></mat-chip>
-            }@else {
+            <button mat-raised-button (click)="editCalendar()" [disabled]="editMode != EditMode.DEFAULT">Edit
+                calendar</button>
+            @if(editMode == EditMode.EDIT) {
             <button mat-raised-button class="mainaction" (click)="exitEditMode(true)">Exit and save</button>
             <button mat-raised-button class="mainaction" (click)="exitEditMode(false)">Exit and discard changes</button>
             <button mat-raised-button (click)="disableHoursPeriodically()">Disable hours periodically</button>
             }
+            <button mat-raised-button (click)="startAndEnd()" [disabled]="editMode != EditMode.DEFAULT">Set start and
+                end hour</button>
+            <button mat-raised-button (click)="openGetBestTimeIntervalsDialog()"
+                [disabled]="editMode != EditMode.DEFAULT">Get best time intervals</button>
         </mat-card-content>
     </mat-card>
+    @if(editMode == EditMode.SHOW_BEST){
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Best Time intervals</mat-card-title>
+        </mat-card-header>
+        <div class="flexRow">
+            <button mat-raised-button (click)="sortAndFilterIntervalsByLength()">get best options by length</button>
+            <button mat-raised-button (click)="sortAndFilterIntervalsByParticipants()">get best options by
+                participants</button>
+        </div>
+        <div class="flexCol">
+            @for(option of filteredIntervals; track option){
+            <div class="flexRow">
+                {{option.hourSerial | startAndEndHourPipe : this.event!.calendar!}} - {{option.hourSerial +
+                option.length | startAndEndHourPipe : this.event!.calendar! }} participants:
+                {{option.participantNumber}} length: {{option.length}} hours</div>
+            }
+        </div>
+        <button mat-raised-button (click)="exitSHowBestMode()">Exit</button>
+    </mat-card>
     }
+    }
+    <mat-card>
+        <mat-card-content>
+            <div class="flexCol">
+                <div class="flexRow aligned">
+                    <b>Start hour</b>
+                    <div class="group">{{calendar!.starthour | startAndEndHourPipe : calendar!}}</div>
+                </div>
+                <div class="flexRow aligned">
+                    <b>End hour</b>
+                    <div class="group">{{calendar!.endhour | startAndEndHourPipe : calendar!}}</div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
     <mat-card>
         <mat-card-header>
             <mat-card-title>Opinions</mat-card-title>
@@ -64,9 +103,16 @@
 @for(week of this.weeks; track week){
 <div class="week">
     @for(day of week; track day){
-    <app-day [day]="day!" [editMode]="editMode" [participantNumber]="participantNumber!" [opinionMode]="opinionMode"
-        (dayChanged)="dayChanged($event)" (opinionsSet)="opinionsChanged($event)"
-        (dayHoursChanged)="hourChanged($event)"></app-day>
+    <app-day
+        [day]="day!"
+        [editMode]="editMode"
+        [participantNumber]="event!.participants!.length"
+        [opinionMode]="opinionMode"
+        (dayChanged)="dayChanged($event)"
+        (opinionsSet)="opinionsChanged($event)"
+        (dayHoursChanged)="hourChanged($event)"
+        (hourSelected)="selectHour($event)">
+    </app-day>
     }
 </div>
 }

@@ -1,40 +1,39 @@
-.week{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 10px;
+.week {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
 }
 
-.mainaction{
-    background-color: blueviolet;
-    color: white;
+.mainaction {
+  background-color: blueviolet;
+  color: white;
 }
 
-mat-card-content{
-    display: flex;
-    flex-direction: row;
-
+mat-card-content {
+  display: flex;
+  flex-direction: row;
 }
 
-mat-card-content *{
-    margin: 2px;
+mat-card-content * {
+  margin: 2px;
 }
 
-mat-card{
-    border: solid rgb(203, 177, 229);
-    margin: 10px;
-    width: 100%;
+mat-card {
+  border: solid rgb(203, 177, 229);
+  margin: 10px;
+  width: 100%;
 }
 
 .inverted {
-    background-color: black;
-    color: white;
-  }
+  background-color: black;
+  color: white;
+}
 
-  .fillSpace{
-    width: 100%;
-  }
+.fillSpace {
+  width: 100%;
+}
 
-  #saveButton{
-    align-items: center;
-  }
+#saveButton {
+  align-items: center;
+}
