@@ -173,7 +173,11 @@ public class EventService {
                 .map(this::getSelectionFieldById)
                 .collect(Collectors.toSet());
         event.removeSelectionFields(selectionFields);
-        selectionFieldIds.forEach(selectionFieldRepository::deleteById);
+        eventRepository.save(event);
+        selectionFields.forEach(field->{
+            field.getOptions().forEach(option -> optionRepository.deleteById(option.getId()));
+            selectionFieldRepository.deleteById(field.getId());
+        });
     }
 
     public void addFieldOptions(long selectionId, Set<Option> options, boolean owner){
@@ -283,7 +287,7 @@ public class EventService {
         );
     }
 
-    private void checkIfEventCanBeFinalized(Event event) throws EventCannotBeFinalizedException {
+    public void checkIfEventCanBeFinalized(Event event) throws EventCannotBeFinalizedException {
         Calendar calendar = event.getCalendar();
         if(calendar != null && (calendar.getStarthour() == -1 || calendar.getEndhour() == -1)){
             throw new EventCannotBeFinalizedException();
@@ -328,9 +332,10 @@ public class EventService {
             tableContent+=tr(
                     td("Start of the event")
                             +td(startDay.getDayStartTime().toLocalDate()+":"+getHourString(startHour.getNumber()))
-                            +td("End of the event")
+                            )
+                    +tr(td("End of the event")
                             +td(endDay.getDayStartTime().toLocalDate().toString()+":"+getHourString(endHour.getNumber()))
-            );
+                    );
         }
 
         for (SelectionField field : event.getSelectionFields()){

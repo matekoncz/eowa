@@ -94,7 +94,7 @@ public class SelectionField {
 
     @Override
     public int hashCode() {
-        return options.size();
+        return title.charAt(0);
     }
 
     @Override
@@ -106,6 +106,6 @@ public class SelectionField {
             return true;
         }
 
-        return this.getId() == ((SelectionField) obj).getId();
+        return this.getId() == ((SelectionField) obj).getId() && this.getTitle().equals(((SelectionField) obj).getTitle());
     }
 }

@@ -128,8 +128,8 @@ public class Event {
         this.selectionFields.addAll(selectionFields);
     }
 
-    public void removeSelectionFields(Set<SelectionField> selectionfield){
-        this.selectionFields.removeAll(selectionfield);
+    public void removeSelectionFields(Set<SelectionField> selectionfields){
+        this.selectionFields.removeAll(selectionfields);
     }
 
     public boolean isFinalized() {
