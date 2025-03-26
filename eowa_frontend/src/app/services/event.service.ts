@@ -4,6 +4,8 @@ import { EowaEvent } from '../Model/EowaEvent';
 import { User } from '../Model/User';
 import { Calendar } from '../Model/Calendar';
 import { UserOpinion } from '../Model/Opinion';
+import { SelectionField } from '../Model/SelectionField';
+import { Option } from '../Model/Option';
 
 @Injectable({
   providedIn: 'root',
@@ -96,5 +98,111 @@ export class EventService {
       '/join-event?invitation=' + invitationCode,
       ''
     );
+  }
+
+  addFields(id: number, fields: SelectionField[]) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/add-fields',
+      fields
+    );
+  }
+
+  removeFields(id: number, ids: number[]) {
+    return this.apiservice.delete(
+      Controller.EVENT,
+      '/' + id + '/remove-fields',
+      ids
+    );
+  }
+
+  addOptions(id: number, fieldid: number, options: Option[]) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/fields/' + fieldid,
+      options
+    );
+  }
+
+  removeOptions(id: number, fieldid: number, ids: number[]) {
+    return this.apiservice.delete(
+      Controller.EVENT,
+      '/' + id + '/fields/' + fieldid,
+      ids
+    );
+  }
+
+  voteForOption(id: number, fieldid: number, optionid: number) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/fields/' + fieldid + '/vote/' + optionid
+    );
+  }
+
+  removeOptionVote(id: number, fieldid: number, optionid: number) {
+    return this.apiservice.delete(
+      Controller.EVENT,
+      '/' + id + '/fields/' + fieldid + '/remove-vote/' + optionid
+    );
+  }
+
+  selectOption(id: number, fieldid: number, optionid: number) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/fields/' + fieldid + '/select/' + optionid
+    );
+  }
+
+  setStartAndEndTime(id: number, start: number, end: number) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/set-start-and-end?start=' + start + '&end=' + end
+    );
+  }
+
+  resetStartAndEndTime(id: number) {
+    return this.apiservice.delete(
+      Controller.EVENT,
+      '/' + id + '/set-start-and-end'
+    );
+  }
+
+  finalizeEvent(id: number) {
+    return this.apiservice.put(Controller.EVENT, '/' + id + '/finalize');
+  }
+
+  unFinalizeEvent(id: number) {
+    return this.apiservice.delete(Controller.EVENT, '/' + id + '/finalize');
+  }
+
+  getBestTimeIntervals(
+    id: number,
+    participants: number,
+    length: number,
+    allowedOptionions: UserOpinion[]
+  ) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/get-best-time-intervals?participants=' + participants + '&length=' + length,
+      allowedOptionions
+    );
+  }
+
+  createBlueprint(id: number, name: string) {
+    return this.apiservice.post(
+      Controller.EVENT,
+      '/' + id + '/create-blueprint?name=' + name
+    );
+  }
+
+  addFieldsFromBlueprint(id: number, blueprintid: number) {
+    return this.apiservice.put(
+      Controller.EVENT,
+      '/' + id + '/add-from-blueprint/' + blueprintid
+    );
+  }
+
+  getBluePrintsForCurrentUser() {
+    return this.apiservice.get(Controller.EVENT, '/my-blueprints');
   }
 }
