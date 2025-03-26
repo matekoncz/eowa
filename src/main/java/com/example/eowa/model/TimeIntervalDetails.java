@@ -1,7 +1,7 @@
 package com.example.eowa.model;
 
 public class TimeIntervalDetails {
-    private long hourId;
+    private long hourSerial;
 
     private int length;
 
@@ -10,18 +10,18 @@ public class TimeIntervalDetails {
     public TimeIntervalDetails() {
     }
 
-    public TimeIntervalDetails(long hourId, int length, int participantNumber) {
-        this.hourId = hourId;
+    public TimeIntervalDetails(long hourSerial, int length, int participantNumber) {
+        this.hourSerial = hourSerial;
         this.length = length;
         this.participantNumber = participantNumber;
     }
 
-    public long getHourId() {
-        return hourId;
+    public long getHourSerial() {
+        return hourSerial;
     }
 
-    public void setHourId(long hourId) {
-        this.hourId = hourId;
+    public void setHourSerial(long hourSerial) {
+        this.hourSerial = hourSerial;
     }
 
     public int getLength() {
