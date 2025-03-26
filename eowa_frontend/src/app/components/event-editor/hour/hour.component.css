@@ -1,41 +1,16 @@
-.hour{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    height: 13px;
-    border-radius: 3px;
-    border: 2px solid black;
-    width: 80px;
-    font-size: small;
-    padding-top: 0px;
-    align-items: center;
-    
-}   
-
-.disabled{
-    background-color: grey;
+.hour {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 13px;
+  border-radius: 3px;
+  border: 2px solid black;
+  width: 80px;
+  font-size: small;
+  padding-top: 0px;
+  align-items: center;
 }
 
-.perfect{
-    background-color: rgb(124, 190, 145) ;
-}
-
-.terrific{
-    background-color: rgb(164, 190, 124) ;
-}
-
-.good{
-    background-color: rgb(190, 187, 124) ;
-}
-
-.bad{
-    background-color: rgb(190, 156, 124) ;
-}
-
-.terrible{
-    background-color: rgb(190, 143, 124) ;
-}
-
-.horrible{
-    background-color: rgb(190, 124, 124) ;
+.selected {
+  border: 4px solid blueviolet;
 }

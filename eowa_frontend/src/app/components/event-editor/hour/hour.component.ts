@@ -1,160 +1,189 @@
-import { Component, EventEmitter, inject, Input, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  OnInit,
+} from '@angular/core';
 import { Hour } from '../../../Model/Hour';
-import { NumberToHourPipe } from "../../../pipes/number-to-hour.pipe";
+import { NumberToHourPipe } from '../../../pipes/number-to-hour.pipe';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../Model/User';
-import { Opinion, UserOpinion, UserOpinionLookup } from '../../../Model/Opinion';
+import {
+  Opinion,
+  UserOpinion,
+  UserOpinionLookup,
+} from '../../../Model/Opinion';
 import { MatDialog } from '@angular/material/dialog';
 import { OpinionDialogComponent } from '../opinion-dialog/opinion-dialog.component';
-import { EventService } from '../../../services/event.service';
 import { UserService } from '../../../services/user.service';
-import { OpinionMode } from '../view-calendar/view-calendar.component';
-import { coerceStringArray } from '@angular/cdk/coercion';
+import {
+  EditMode,
+  OpinionMode,
+} from '../view-calendar/view-calendar.component';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-hour',
   standalone: true,
-  imports: [NumberToHourPipe,CommonModule],
+  imports: [NumberToHourPipe, CommonModule],
   templateUrl: './hour.component.html',
-  styleUrl: './hour.component.css'
+  styleUrl: './hour.component.css',
 })
-export class HourComponent implements OnInit{
-
+export class HourComponent implements OnInit {
   @Input() hour?: Hour;
 
-  @Input() editMode: Boolean = false;
+  @Input() editMode: EditMode = EditMode.DEFAULT;
 
   @Input() participantNumber = 0;
 
   @Input() date?: Date;
 
-  @Input() wholeDayChanged?: Subject<void>
+  @Input() wholeDayChanged?: Subject<void>;
 
-  @Input() opinionMode = OpinionMode.DEFAULT
+  @Input() opinionMode = OpinionMode.DEFAULT;
 
   @Output() hourChanged = new EventEmitter<Hour>();
 
   @Output() opinionSet = new EventEmitter<Opinion>();
 
+  @Output() hourSelected = new EventEmitter<Hour>();
 
-  dialog = inject(MatDialog)
+  selected = false;
 
-  satisfaction: Satisfaction = Satisfaction.NEUTRAL;
+  dialog = inject(MatDialog);
 
-  constructor(private userservice: UserService){}
+  Editmode = EditMode;
+
+  backgroundColor = '';
+
+  constructor(private userservice: UserService) {}
 
   ngOnInit(): void {
-    this.wholeDayChanged?.subscribe(()=>{
-      this.addOpinion(this.opinionMode.valueOf())
-    })
+    this.wholeDayChanged?.subscribe(() => {
+      this.addOpinion(this.opinionMode.valueOf());
+      this.calculateBackgroundColor();
+    });
+    this.calculateBackgroundColor();
   }
 
-  public get Satisfaction(){
-    return Satisfaction;
+  mouseEnter() {
+    if (this.hour?.enabled && this.editMode == EditMode.START_AND_END)
+      this.backgroundColor = 'blueviolet';
   }
 
-  hourClicked(){
-    if(!this.hour?.enabled){
+  mouseLeave() {
+    this.calculateBackgroundColor();
+  }
+
+  calculateBackgroundColor() {
+    if (!this.hour?.enabled) {
+      this.backgroundColor = 'grey';
       return;
     }
-    if(this.editMode) {
-      this.hour!.enabled = !this.hour!.enabled;
-      this.hourChanged.emit(this.hour!);
-    } else {
-      if(this.opinionMode!=OpinionMode.DEFAULT){
-        this.addOpinion(this.opinionMode.valueOf())
-      } else{
-        this.openOpinionDialog();
-      }
-      
+    let sat = this.calculateSatisfaction();
+    if (sat == -1) {
+      this.backgroundColor = 'transparent';
+      return;
     }
+    let red = 3 * (1 - sat) * 255;
+    let green = 3 * sat * 255;
+
+    this.backgroundColor = 'rgb(' + red + ', ' + green + ', 0)';
   }
 
-  calculateSatisfaction(): Satisfaction{
-    if(this.hour != null && this.hour.enabled){
-      if(this.hour.opinions.length != 0){
+  hourClicked() {
+    if (!this.hour?.enabled) {
+      return;
+    }
+    switch (this.editMode) {
+      case EditMode.EDIT:
+        this.hour!.enabled = !this.hour!.enabled;
+        this.hourChanged.emit(this.hour!);
+        break;
+      case EditMode.OPINION:
+        this.addOpinion(this.opinionMode.valueOf());
+        break;
+      case EditMode.START_AND_END:
+        this.hourSelected.emit(this.hour!);
+        this.selected = true;
+        break;
+      case EditMode.DEFAULT:
+        this.openOpinionDialog();
+        break;
+    }
+    this.calculateBackgroundColor();
+  }
+
+  calculateSatisfaction(): number {
+    if (this.hour != null && this.hour.enabled) {
+      if (this.hour.opinions.length != 0) {
         let satisfactionLevel = 0;
-        for(let opinion of this.hour.opinions){
-          if(opinion.userOpinion == UserOpinion.GOOD){
-            satisfactionLevel += 1
+        for (let opinion of this.hour.opinions) {
+          if (opinion.userOpinion == UserOpinion.GOOD) {
+            satisfactionLevel += 1;
           }
-          if(opinion.userOpinion == UserOpinion.TOLERABLE){
-            satisfactionLevel += 0.5
+          if (opinion.userOpinion == UserOpinion.TOLERABLE) {
+            satisfactionLevel += 0.5;
           }
-          
         }
-        satisfactionLevel = (satisfactionLevel/this.participantNumber);
-        if(satisfactionLevel == 1){
-          return Satisfaction.PERFECT
-        }
-        if(satisfactionLevel > 0.75){
-          return Satisfaction.TERRIFIC
-        }
-        if(satisfactionLevel > 0.5){
-          return Satisfaction.GOOD
-        }
-        if(satisfactionLevel > 0.25){
-          return Satisfaction.BAD
-        }
-        if(satisfactionLevel > 0){
-          return Satisfaction.TERRIBLE
-        }
-        if(satisfactionLevel == 0){
-          return Satisfaction.HORRIBLE
-        }
+        return (satisfactionLevel = satisfactionLevel / this.participantNumber);
       }
     }
-    return Satisfaction.NEUTRAL
+    return -1;
   }
 
   openOpinionDialog() {
     const numberToHourPipe = new NumberToHourPipe();
-    let dialogRef = this.dialog.open(OpinionDialogComponent,{data: {
-      title: this.date!.toDateString()+" "+numberToHourPipe.transform(this.hour!.number),
-      hour: this.hour,
-      participantNumber: this.participantNumber
-    }})
+    let dialogRef = this.dialog.open(OpinionDialogComponent, {
+      data: {
+        title:
+          this.date!.toDateString() +
+          ' ' +
+          numberToHourPipe.transform(this.hour!.number),
+        hour: this.hour,
+        participantNumber: this.participantNumber,
+      },
+    });
 
-    dialogRef.afterClosed().subscribe((result: string)=>{
-      if(result == undefined || result == null){
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result == undefined || result == null) {
         return;
       }
-      this.addOpinion(result)
-    })
+      this.addOpinion(result);
+      this.calculateBackgroundColor();
+    });
   }
 
-  addOpinion(opinionType: string){
-    let opinion: Opinion  = {
+  addOpinion(opinionType: string) {
+    let opinion: Opinion = {
       userOpinion: UserOpinionLookup[opinionType as keyof typeof UserOpinion],
       number: this.hour?.numberInTotal,
-      user: this.userservice.getCurrentUser()
-    }
+      user: this.userservice.getCurrentUser(),
+    };
     this.opinionSet.emit(opinion);
     this.setUserOpinion(opinion);
   }
 
   setUserOpinion(opinion: Opinion) {
-    for(let i = 0;i< this.hour!.opinions.length;i++){
-      let existingOpinion = this.hour!.opinions[i]
-      if(existingOpinion.user.username == opinion.user.username){
+    for (let i = 0; i < this.hour!.opinions.length; i++) {
+      let existingOpinion = this.hour!.opinions[i];
+      if (existingOpinion.user.username == opinion.user.username) {
         this.hour!.opinions[i] = opinion;
         return;
       }
     }
-    this.hour?.opinions.push(opinion)
+    this.hour?.opinions.push(opinion);
+    this.calculateBackgroundColor();
+  }
+
+  isSelected() {
+    if (
+      this.editMode != EditMode.START_AND_END &&
+      this.editMode != EditMode.SHOW_BEST
+    ) {
+      this.selected = false;
+    }
+    return this.selected;
   }
 }
-
-
-export enum Satisfaction{
-  HORRIBLE,
-  TERRIBLE,
-  BAD,
-  NEUTRAL,
-  GOOD,
-  TERRIFIC,
-  PERFECT
-}
-
-

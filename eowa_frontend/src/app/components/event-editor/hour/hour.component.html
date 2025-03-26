@@ -1,12 +1,7 @@
 <div class="hour" (click)="hourClicked()"
-    [ngClass]="{
-    'disabled': !hour!.enabled,
-    'perfect': calculateSatisfaction() == Satisfaction.PERFECT,
-    'good': calculateSatisfaction() == Satisfaction.GOOD,
-    'bad': calculateSatisfaction() == Satisfaction.BAD,
-    'terrific': calculateSatisfaction() == Satisfaction.TERRIFIC,
-    'terrible': calculateSatisfaction() == Satisfaction.TERRIBLE,
-    'horrible': calculateSatisfaction() == Satisfaction.HORRIBLE
-    }">
+    [style.background-color]="backgroundColor"
+    [ngClass]="{'selected': selected}"
+    (mouseenter)="mouseEnter()"
+    (mouseleave)="mouseLeave()">
     {{hour!.number | numberToHour}}
 </div>
