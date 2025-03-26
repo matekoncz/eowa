@@ -71,3 +71,42 @@ h1,h2,h3{
     background-color: black;
     color: white;
   }
+
+  .group{
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    padding: 10px;
+    border: 1px solid #ac1bb1;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #e0e0e0;
+}
+
+.aligned{
+  align-items: center;
+  align-content: center;
+}
+
+.mainaction{
+  background-color: blueviolet;
+  color: white;
+}
+
+.mailcontent *{
+  margin: 10px;
+}
+
+.mailcontent table {
+  border: collapse;
+}
+
+.mailcontent table td{
+  border-top: 2px solid blueviolet;
+  padding: 2px;
+  border-collapse: collapse;
+}
+
+.mailcontent table td:first-child{
+  font-weight: bold;
+  color: blueviolet;
+}
