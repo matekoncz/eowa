@@ -24,7 +24,6 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { PeriodicalHourDisablerComponentComponent } from '../periodical-hour-disabler-component/periodical-hour-disabler-component.component';
 import { Hour } from '../../../Model/Hour';
 import { UserOpinion } from '../../../Model/Opinion';
 
@@ -47,13 +46,10 @@ import { UserOpinion } from '../../../Model/Opinion';
   styleUrl: './opinion-dialog.component.css',
 })
 export class OpinionDialogComponent implements AfterViewInit {
-
   @ViewChild('barCanvas')
   canvas?: ElementRef<HTMLCanvasElement>;
 
-  readonly dialogRef = inject(
-    MatDialogRef<PeriodicalHourDisablerComponentComponent>
-  );
+  readonly dialogRef = inject(MatDialogRef<OpinionDialogComponent>);
 
   readonly data = inject<OpinionData>(MAT_DIALOG_DATA);
 
@@ -71,18 +67,21 @@ export class OpinionDialogComponent implements AfterViewInit {
 
   private drawStats() {
     this.context = this.canvas?.nativeElement.getContext('2d') || undefined;
-    let redX = this.getPercentage(
-      this.data.participantNumber,
-      this.getParticipantsFor(UserOpinion.BAD).length
-    ) * 3;
-    let yellowX = this.getPercentage(
-      this.data.participantNumber,
-      this.getParticipantsFor(UserOpinion.TOLERABLE).length
-    ) * 3;
-    let greenX = this.getPercentage(
-      this.data.participantNumber,
-      this.getParticipantsFor(UserOpinion.GOOD).length
-    ) * 3;
+    let redX =
+      this.getPercentage(
+        this.data.participantNumber,
+        this.getParticipantsFor(UserOpinion.BAD).length
+      ) * 3;
+    let yellowX =
+      this.getPercentage(
+        this.data.participantNumber,
+        this.getParticipantsFor(UserOpinion.TOLERABLE).length
+      ) * 3;
+    let greenX =
+      this.getPercentage(
+        this.data.participantNumber,
+        this.getParticipantsFor(UserOpinion.GOOD).length
+      ) * 3;
 
     if (this.context) {
       this.context.fillStyle = 'grey';

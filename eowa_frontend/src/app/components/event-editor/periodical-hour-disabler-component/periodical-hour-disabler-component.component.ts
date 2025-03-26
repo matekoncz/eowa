@@ -39,16 +39,17 @@ import { NumberToHourPipe } from '../../../pipes/number-to-hour.pipe';
   styleUrl: './periodical-hour-disabler-component.component.css',
 })
 export class PeriodicalHourDisablerComponentComponent {
-  
   readonly dialogRef = inject(
     MatDialogRef<PeriodicalHourDisablerComponentComponent>
   );
 
   periodForm: FormGroup = new FormGroup({
-
     hours: new FormControl([], [Validators.required]),
 
-    period: new FormControl(1, [Validators.required,Validators.pattern('^1|7$'),]),
+    period: new FormControl(1, [
+      Validators.required,
+      Validators.pattern('^1|7$'),
+    ]),
   });
 
   hours: number[] = this.getNumbers();

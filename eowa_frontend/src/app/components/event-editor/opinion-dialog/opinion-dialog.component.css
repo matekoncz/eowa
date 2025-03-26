@@ -1,12 +1,12 @@
-.stats{
-    width: 140px;
-    padding: 2px;
-    border-right: 2px solid black;
-    border-left: 2px solid black;
+.stats {
+  width: 140px;
+  padding: 2px;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
 }
 
-#barCanvas{
-    width: 445px;
-    height: 20px;
-    border: 1px solid black;
+#barCanvas {
+  width: 445px;
+  height: 20px;
+  border: 1px solid black;
 }

@@ -11,6 +11,7 @@ import { from } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpInfoComponent } from '../popup-info/popup-info.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signup',
@@ -40,6 +41,8 @@ export class LoginComponent {
 
   dialog = inject(MatDialog);
 
+  snackbar = inject(MatSnackBar);
+
   constructor(private authservice: AuthService, private router: Router) {}
 
   login() {
@@ -54,8 +57,8 @@ export class LoginComponent {
       .subscribe((response) => {
         let status = response.status;
         if (status == HttpStatusCode.Ok) {
-          const dialogRef = this.dialog.open(PopUpInfoComponent, {
-            data: { title: 'Success', content: 'Login successful' },
+          this.snackbar.open('Logged in successfully', 'Close', {
+            duration: 5000,
           });
           this.router.navigate(['/']);
         } else {

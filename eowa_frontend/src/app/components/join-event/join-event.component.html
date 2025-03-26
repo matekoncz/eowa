@@ -3,7 +3,7 @@
 <div id="formcontainer">
   <form id="form" [formGroup]="joinform">
     <mat-form-field id="invitationCode">
-      <mat-label>Enter your username</mat-label>
+      <mat-label>Enter invitation code</mat-label>
       <input matInput placeholder="invitation code" formControlName="invitationCode" required />
       @if (joinform.controls["invitationCode"].invalid) {
       <mat-error>This field is required.</mat-error>
