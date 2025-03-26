@@ -56,6 +56,8 @@ export class CreateEventComponent {
         description: this.createEventForm.value['description']!,
         owner: this.userservice.getCurrentUser(),
         participants: [],
+        selectionFields: [],
+        finalized: false
       })
       .subscribe((response) => {
         let status = response.status;
