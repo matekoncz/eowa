@@ -27,9 +27,8 @@ import { Router } from '@angular/router';
   ],
 })
 export class PopUpInfoComponent {
-
   readonly dialogRef = inject(MatDialogRef<PopUpInfoComponent>);
-  
+
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
   constructor(private router: Router) {}
@@ -42,4 +41,5 @@ export class PopUpInfoComponent {
 export interface DialogData {
   title: string;
   content: string;
+  html?: string;
 }
