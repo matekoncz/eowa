@@ -33,27 +33,27 @@ export class ApiService {
     return this.sendRequest(controller.toString() + path, getRequestInit);
   }
 
-  post(controller: Controller, path: string, content: Object) {
+  post(controller: Controller, path: string, content?: Object) {
     let postRequestInit = this.getBaseRequestInit();
     postRequestInit.body = JSON.stringify(content);
     postRequestInit.method = 'POST';
     return this.sendRequest(controller.toString() + path, postRequestInit);
   }
 
-  put(controller: Controller, path: string, content: Object) {
-    let postRequestInit = this.getBaseRequestInit();
-    postRequestInit.body = JSON.stringify(content);
-    postRequestInit.method = 'PUT';
-    return this.sendRequest(controller.toString() + path, postRequestInit);
+  put(controller: Controller, path: string, content?: Object) {
+    let putRequestInit = this.getBaseRequestInit();
+    putRequestInit.body = JSON.stringify(content);
+    putRequestInit.method = 'PUT';
+    return this.sendRequest(controller.toString() + path, putRequestInit);
   }
 
   delete(controller: Controller, path: string, content?: Object) {
-    let postRequestInit = this.getBaseRequestInit();
+    let deleteRequestInit = this.getBaseRequestInit();
     if (content) {
-      postRequestInit.body = JSON.stringify(content);
+      deleteRequestInit.body = JSON.stringify(content);
     }
-    postRequestInit.method = 'Delete';
-    return this.sendRequest(controller.toString() + path, postRequestInit);
+    deleteRequestInit.method = 'Delete';
+    return this.sendRequest(controller.toString() + path, deleteRequestInit);
   }
 
   sendRequest(url: string, request: RequestInit): Observable<Response> {
@@ -65,4 +65,5 @@ export enum Controller {
   AUTH = 'auth',
   USER = 'user',
   EVENT = 'events',
+  MAIL = 'mails',
 }
