@@ -6,6 +6,8 @@ export interface Calendar {
   startTime: Date;
   endTime: Date;
   days?: Day[];
+  starthour: number;
+  endhour: number;
 }
 
 export enum ZoneId {

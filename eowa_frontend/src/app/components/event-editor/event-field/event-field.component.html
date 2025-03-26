@@ -1,0 +1,48 @@
+<div class="group">
+    <div class="flexRow" id="header">
+
+        <b>{{field?.title}}</b>
+        @if(field?.openForModification && !isEventFinalized){
+        @if(editMode){
+        <input matInput placeholder="Enter a new option" [(ngModel)]="newValue">
+        <button mat-icon-button (click)="addOption()"><mat-icon>done</mat-icon></button>
+        <button mat-icon-button (click)="changeEditMode()"><mat-icon>cancel</mat-icon></button>
+        }
+        @else{
+        <button mat-icon-button (click)="changeEditMode()"><mat-icon>add</mat-icon></button>
+        }
+        }
+        @if(isUserOwner && !isEventFinalized){
+        <button mat-icon-button (click)="deleteField()" class="right"><mat-icon>delete</mat-icon></button>
+        }
+    </div>
+
+    @for(option of sortedOptions; track option){
+    <div class="flexRow aligned">
+        <p>
+            {{option.value}}
+            @if(field?.selectedByPoll){
+            - {{option.voters.length}} votes
+            }
+
+            @if(option.selected){
+            (selected)
+            }
+        </p>
+        @if(field?.selectedByPoll && !isEventFinalized){
+        @if(alreadyVoted(option)){
+        <button mat-icon-button (click)="removeVote(option)"><mat-icon>remove</mat-icon></button>
+        }
+        @else{
+        <button mat-icon-button (click)="vote(option)"><mat-icon>add</mat-icon> </button>
+        }
+        }
+        @if(isUserOwner && !option.selected && !isEventFinalized){
+        <button mat-icon-button (click)="selectOption(option)"><mat-icon>check</mat-icon></button>
+        }
+        @if(isUserOwner && field?.openForModification && !isEventFinalized){
+        <button mat-icon-button (click)="deleteOption(option)" class="right"><mat-icon>delete</mat-icon></button>
+        }
+    </div>
+    }
+</div>

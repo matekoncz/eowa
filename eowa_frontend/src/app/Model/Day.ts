@@ -1,9 +1,9 @@
-import { Hour } from "./Hour";
+import { Hour } from './Hour';
 
 export interface Day {
-    id: number,
-    dayStartTime: Date,
-    serialNumber: number,
-    enabled: Boolean,
-    hours: Hour[]
+  id: number;
+  dayStartTime: Date;
+  serialNumber: number;
+  enabled: Boolean;
+  hours: Hour[];
 }

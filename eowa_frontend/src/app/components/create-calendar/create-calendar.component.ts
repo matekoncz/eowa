@@ -82,6 +82,8 @@ export class CreateCalendarComponent {
       timeZone: this.createCalendarForm.value['timeZone']!,
       startTime: this.createCalendarForm.value['startTime']!,
       endTime: this.createCalendarForm.value['endTime']!,
+      starthour: -1,
+      endhour: -1,
     };
 
     this.eventservice
