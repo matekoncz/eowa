@@ -211,16 +211,19 @@ public class CalendarService {
             int nextNumber = hour.getNumberInTotal()+1;
             Hour nextHour = getHourByNumber(everyHour,nextNumber);
             int participantNumber = 0;
-            while(nextHour != null){
+            while(nextHour != null && nextHour.isEnabled()){
                  participantNumber = sharedParticipants.size();
                 updateSharedParticipants(sharedParticipants,getPositiveParticipants(nextHour,allowedOpinions));
                 if(sharedParticipants.size()<minParticipants){
                     break;
                 }
+                if(sharedParticipants.size()<participantNumber){
+                    momentDetails.add(new TimeIntervalDetails(hour.getNumberInTotal(),nextNumber-hour.getNumberInTotal(),participantNumber));
+                }
                 nextNumber++;
                 nextHour=getHourByNumber(everyHour,nextNumber);
             }
-            momentDetails.add(new TimeIntervalDetails(hour.getId(),nextNumber-hour.getNumberInTotal(),participantNumber));
+            momentDetails.add(new TimeIntervalDetails(hour.getNumberInTotal(),nextNumber-hour.getNumberInTotal(),participantNumber));
         });
 
         return momentDetails.stream().filter(detail->detail.getLength()>=minLength).collect(Collectors.toList());
