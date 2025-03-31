@@ -72,39 +72,6 @@
 
 
 \begin{document}
-\thispagestyle{empty}
-
-\begin{center}
- {\Large A dolgozat formai követelményei}   
-\end{center}
- 
-\vspace{1 cm}
-
-{\bf Ajánlott oldalszám:}
-\begin{itemize}
-\item BSc szakdolgozat: 20-25 oldal, 
-\item MSc diplomamunka: 35-50 oldal
-\item Tanárszakos szakdolgozat: 50000-80000 karakter szóközökkel (lásd. TKK szabályzat)
-\end{itemize}
-
-\vspace{1 cm}
-
-{\bf Másfeles sorköz, sorkizárt, 12-es betű méret (általában Computer Modern), margók: jobb, bal, lent és fent 2,5 cm} (ahogy ez a template van beállítva, az jó).
-
-\vspace{1 cm}
-
-{\bf Kötelező elemei a dolgozatnak}
-\begin{itemize}
-    \item Címlap
-    \item Tartalmi összefoglaló (kivonat)
-    \item Tartalomjegyzék
-    \item \textcolor{red}{Érdemi rész}
-(Szakterület specifikus fejezeteket tartalmaz, kérjük, konzultáljon a témavezetővel, hogy a példában közzétett kísérletes tudományterületeken használt fejezetekből az Ön dolgozatában melyikre van szükség!)
-\item Irodalomjegyzék
-\item Nyilatkozat
-\end{itemize}
-\newpage
-
 
 
 \pagenumbering{roman}
@@ -300,7 +267,7 @@ A service komponenseket nem az általuk használt repository-k, hanem a funkció
 
 \subsection{AuthService}
 
-ezt még később megírom ha elrendeztem a jwt-t
+Az AuthService feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megdott felhasználónevet és jelszavat veti össze az adatbázisban tárolt felhasználónévvel és dekódolt jelszóval. A sikeres bejelentkezéskor az AuthService létrehoz egy Session objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az AuthService metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végpontjoz tartozó művelet végrehajtására.
 
 \subsection{EventService}
 
@@ -312,7 +279,7 @@ Az események résztvevőinek jogosultsága van abból eseménysémát készíte
 
 A naptárak kezelése a CalendarService-en keresztül történik. Kihívások az írása során:
 
-Az óraátállítások kezelése.
+Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órák amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
 
 Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához kiszámítja, hogy milyen hosszú az az ettől az órától kezdődő időszak, amely eleget tesz a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak. Egy ilyen időszak esetében az számít részvevőnek, aki az az összes órára a paraméterben megadott véleménytípus egyikét választotta.
 
@@ -320,11 +287,15 @@ Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmaz
 
 A felhasználóknak küldött rendszeren belüli üzenetek kezelését végzi. Kihívások az írása során:
 
-Formázott üzenet összeállítása.
+A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az eseményt lezáró művelet esetleges visszavonásáról. Az események lezárásaról tájékoztató üzenet tartalmazza az eseményhez tartozó mező-érték párokat (ebbe az esemény kezdete és vége is bele tartozik, amennyiben naptárt is rendelt a szervező az eseményhez). Ezeket egyszerű szövegként nehéz értelmezni, ezért ezt formázott szövgként táblázatos formában terveztem megjeleníteni. Mivel a frontend oldalon nem terveztem módosításokat végrehajtani a backendről érkező levéleken, ezért a formázott üzenetet a backenden készítettem el, HTML formátumban. Mivel nem találtam az igényeimnek megfelelő Java könyvtárat, ezért készítettem egy HTMLWriter osztályt amelyben HTML elemeket előállító statikus metódusokat írtam. A formázott levelek frontend oldalon történő kezeléséről lejjebb értekezem.
 
 \section{Controller réteg}
 
 A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensérere, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal , a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
+
+\subsection{Szerializálció, deszerializáció}
+
+A model osztályaim példányait nem lehet egy-az-egyben JSON objektumokká alakítani. Az egyik probléma az osztályok közötti körkörös hivatkozások fennállása, ez megoldható annyival, hogy az kapcsolat egyik, vagy akár mindkét felét ignoráljuk a szerializálás során (ez a Jackson @JsonIgnore annotációjával tehető meg). Egyes osztályok esetén fennállhat az igény arra, hogy egyes tulajdonságait csak deszerializálni lehessen. Ilyen például a felhasználó osztály jelszó mezeje, hiszen, bár titkosítva van, ezt nem célszerű a frontend felé továbbítani, ellenben a deszerializálására szükség lehet a regisztráció során. Ezt úgy oldottam meg, hogy az adott tulajdonságot @JsonProperty(access = JsonProperty.Access.WRITE\_ONLY) annotációval láttam el.
 
 \section{Kivételkezelés}
 
@@ -334,121 +305,77 @@ Külön kivételosztályokat hoztam létre az események, felhasználók, naptá
 
 Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A" (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégetzem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredmény sikerült-e elérni.
 
-\newpage
-{\Huge \bf Példa tesztesetre}
-\begin{lstlisting}
-
-@Test
-    public void shouldSelectOptionByMostVotes() throws Exception{
-        User owner = new User("felh","asznalo1","email@gmail.com");
-        User savedOwner = userService.saveUser(owner);
-        User user = new User("felh2","asznalo1","email2@gmail.com");
-        User savedUser = userService.saveUser(user);
-        Event event = new Event(savedOwner,"kertiparti", Set.of(user),"");
-
-        SelectionField selectionField = new SelectionField("mezo",false,true, Set.of(new Option("ertek"),new Option("ertek2")));
-        event.setSelectionFields(Set.of(selectionField));
-        Event savedEvent = eventService.saveEvent(event);
-
-        long fieldid = eventService.getEventById(savedEvent.getId()).getSelectionFields().stream()
-					.findFirst().get().getId();
-        long firstOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream()
-					.filter((o)->o.getValue().equals("ertek"))
-					.findFirst().get().getId();
-        long secondOptionId = eventService.getSelectionFieldById(fieldid).getOptions().stream()
-					.filter((o)->o.getValue().equals("ertek2"))
-					.findFirst().get().getId();
-
-        eventService.addVote(firstOptionId,fieldid,user);
-        eventService.addVote(secondOptionId,fieldid,user);
-        eventService.addVote(secondOptionId,fieldid,owner);
-
-        Assertions.assertFalse(eventService.getOptionById(firstOptionId).isSelected());
-        Assertions.assertTrue(eventService.getOptionById(secondOptionId).isSelected());
-    }
-
-\end{lstlisting}
-
 
 \section{Védelem}
 
-\subsection{CORS}
+	\subsection{CORS}
 
-\subsection{Json Web Token}
+A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource Sharing configuráció megadására. Ebben megadható, hogy a szerver mely domainekről fogad kéréseket, és azt is, hogy azok esetében mely kérés metódusokat és header-öket engedélyezi. 
+
+	\subsection{CSRF elleni védekezés}
+
+A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélül küld kérést a szerver felé. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
 
 \chapter{A frontend fejlesztése}
 
+\section{Model réteg}
+
+Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket írtam, hogy megfelelően szerializálhassam és deszerializálhassam őket. Ezek nem tekinthetőek viewmodel osztályoknak, hiszen nem csupán a megjelenítés a céljuk, pédául az id tulajdonságokat is tartalmazzák. A megjelenítésüket Angular Pipe-ok használatával végzem.
+
 \section{Service réteg}
+
+Az ApiService-ben írtam meg a fetch API-t használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze. A többi service osztályba pedig az ApiService-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
+
+\section{Pipe-ok}
+
+\section{Navigáció az oldalon}
 
 \section{Fő komponensek}
 
-\subsection{Dialógusablak}
+	\subsection{Dialógusablak}
 
-\subsection{Naptárfelület}
+Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázot szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban.
 
-\section{Routing}
+	\subsection{Naptárfelület}
 
-	\subsection{Auth Guard-ok}
+A naptárfelület több standalone komponensből tevődik össze. A ViewCalendarComponent-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az EventService-t csak a ViewCalendarComponent-ben injektáltam, a DayComponent-ben és az HourComponent-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak.
 
-\section{UX}
+\section{Űrlapok reaktív módon történő kezelése}
+
+Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek.
+
+\section{UX, UI}
+
+	\subsection{Guard-ok}
+
+Az Angular-ban a guard-ok olyan függvények, amelyek segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a UserService-t injektáltam, hogy annak getCurrentUser metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
+
+	\subsection{Folytonos színátmenet style binding segítségével}
 
 	\subsection{Canvas Angularban}
 
 \section{Aszinkron programozási megoldások}
 
+Az aszinkron műveletekhez az RxJs könyvtár eszköztárát használtam. Hogy ez mindenhol egységes legyen, a Promise-okat visszaadó függvények eredményeit RxJs Observable objektumokká alakítottam, ilyen az összes, HTTP kérést tartalmazó service függvényem, hiszen ezek a fetch API-t használják. Az RxJs Subject típusát is használtam arra az esetre, amikor szülő komponensben keletkező eseményre a gyerek komponensnek kell reagálnia.
+ 
 \chapter{Továbbfejlesztési lehetőségek}
 
+Az egyik lehetőség a továbbfejlesztésre a JWT (Jason Web Token) használata az autorizációs folyamatokra. A jelenlegi megoldásom, bár a localstorage-ben tárolt json objektum segítségével zajlik, nem nevezhető jwt-nek, mivel az autorizáció a benne tárolt session id alapján történik, amitnek hitelességét a backend oldalon kell lellenőrizni, és nem egy digitális aláírás segítségével.
+
+Az alkalmazás reszponzivitása javítható, jelen állapotban például mobilról nehezen használható. Emellett a felhasználói felület akadálymentesítésével is érdemes lehet foglalkozni.
+
+Az értesítések nagyobb valószínűséggel juthatnak el a felhasználókhoz, ha megvalósítanám, hogy az értesítéseket a megadott emal-címükre is megkapják a felhasználók.
+
+\chapter{Hasonló alkalmazások}
+
+Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írása közben többen felhívták rá a figyelmemet, hogy hasonló célra készült alkalmazások már léteznek, ezért ezeknek utánanéztem, hogy összehasonlíthassam őket a saját megoldásommal. A legtöbbet a Doodle alkalmazást említették, emellett a ClickUp, valamint a WhenAvailable merült még fel. Az alábbiakban az alkalmazásomat a Doodle ingyenes változatával vetem össze.
+
+\section{Doodle}
+
+A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak.  További hasonlóság, hogy lehetőség van az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni.
+
 \chapter{Összefoglalás az eredményekről}
-\section{Táblázatok, képletek, egyéb értéssegítők}
 
-Tartalmazhat táblázatokat, melyekre hivatkozni kell a szövegben, például \ref{table:2}. táblázat. A táblázatot középre kell rendezni és a szövegben lévő hivatkozás közelében kell elhelyezni.
-
-\begin{table}[h!]
-\centering
-\caption{A táblázat címe a táblázat fölé kerül.}
-\label{table:2}
-\vspace{.2 cm}
-\begin{tabular}{||c c c c||} 
- \hline
- Col1 & Col2 & Col2 & Col3 \\ [0.5ex] 
- \hline\hline
-  4 & 545 & 18744 & 7560 \\
- 5 & 88 & 788 & 6344 \\ [1ex] 
- \hline
-\end{tabular}
-\end{table}
-
-
-
-
-Tartalmazhat ábrákat. Ezeket középre kell rendezni és hivatkozni kell rájuk a szövegben (lásd \ref{fig:korokuj}). Ha az Irodalmi áttekintés fejezet tartalmazott ábrá(ka)t, akkor a számozás ebben a fejezetben nem újra kezdődik, hanem folytatódik.
-
-Egész oldalas ábrák mellékletben legyenek elhelyezve!
-
-Használjuk bátran a \LaTeX  brilliáns egyenletszerkesztő rendszerét!
-
-A szövegközi $x^2$ képletetket nem, de a kiemelt formulákat általában számozzuk:
-
- \begin{equation}\label{circle-area}
-\mathrm{Var} (A(K_n^r)))\ll n^{-2},
-\end{equation}
-
-kivéve a hosszabb számolásokat
-
-\begin{align}
-E (& F_n(x_{n+1})^2) = \frac 1{A(K)^{n+1}}\int_K\int_{K^n} \left (\sum_I \mathbf I (F_I\in\mathcal F_{n}(x_{n+1}))\right )^2 d X_n d x_{n+1}\nonumber\\
-& = \frac 1{A(K)^{n+1}} \int_K\int_{K^n} \left (\sum_I \mathbb I (F_I\in\mathcal F_{n}(x_{n+1}))\right ) \nonumber \\
-& \quad \quad \times \left (\sum_J \mathbf I (F_J\in\mathcal F_{n}(x_{n+1}))\right ) d X_n d x_{n+1}\nonumber\\
-&\leq \frac 1{A(K)^{n+1}}\sum_I\sum_J \int_K\int_{K^n} \mathbf I (F_I\in\mathcal F_{n}(x_{n+1}))
-\mathbf I (F_J\in\mathcal F_{n}(x_{n+1}))\nonumber\\
-&\quad\quad\times\mathbf I(d_H(K,K_n)\leq\varepsilon_K) d X_n d x_{n+1}
-+O((1-c_K)^n)\label{ineq1}
-%\label{Fn-first} & \ll \frac 1{A(K)^{n+1}} \sum_I\sum_J \int_K\cdots \int_K \indi (F_I\in\F_{n}(x_{n+1}))
-%\indi (F_J\in\F_{n}(x_{n+1}))\\ %\notag\\
-%&\quad\quad\times\indi(d_H(K,K_n)\leq\varepsilon_K) \d X_n \d x_{n+1} %\textcolor{red}{\sout{+O((1-c_K)^n)}}
-%\notag
-\end{align}
-A képletben használt mennyiségek legyenek megadva az első használatuknál.
 \chapter{Összefoglalás}
 
 (új oldalon kezdve)
@@ -459,7 +386,7 @@ Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/e
 
 \newpage
 
-\bibliographystyle{alphadin}
+\bibliographystyle{unsrt}
 \bibliography{mate_koncz} 
 
 \newpage
