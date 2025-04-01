@@ -55,7 +55,7 @@ export class HourComponent implements OnInit {
 
   Editmode = EditMode;
 
-  backgroundColor = '';
+  backgroundColor: string = '';
 
   constructor(private userservice: UserService) {}
 
@@ -86,8 +86,8 @@ export class HourComponent implements OnInit {
       this.backgroundColor = 'transparent';
       return;
     }
-    let red = 3 * (1 - sat) * 255;
-    let green = 3 * sat * 255;
+    let red = 2 * (1 - sat) * 255;
+    let green = 2 * sat * 255;
 
     this.backgroundColor = 'rgb(' + red + ', ' + green + ', 0)';
   }
@@ -109,6 +109,7 @@ export class HourComponent implements OnInit {
         this.selected = true;
         break;
       case EditMode.DEFAULT:
+      case EditMode.SHOW_BEST:
         this.openOpinionDialog();
         break;
     }
@@ -159,7 +160,7 @@ export class HourComponent implements OnInit {
     let opinion: Opinion = {
       userOpinion: UserOpinionLookup[opinionType as keyof typeof UserOpinion],
       number: this.hour?.numberInTotal,
-      user: this.userservice.getCurrentUser(),
+      user: this.userservice.getCurrentUser()!,
     };
     this.opinionSet.emit(opinion);
     this.setUserOpinion(opinion);
