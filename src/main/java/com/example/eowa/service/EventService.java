@@ -362,6 +362,13 @@ public class EventService {
     public void unFinalizeEvent(long eventid){
         Event event = getEventById(eventid);
         event.setFinalized(false);
+
+        String title = "An event you are participating in has been unfinalized";
+        String content = h1(event.getEventName()+" was un-finalized by "+event.getOwner().getUsername())
+                        + p("This happened at "+LocalDateTime.now()+". The event fields can now be modified again until the next finalisation.");
+        event.getParticipants().forEach(
+                participant -> mailService.sendMail(event.getOwner(),participant,title,content)
+        );
     }
 
     public void checkIfEventIsFinalized(long eventid) throws EventIsFinalizedException {
