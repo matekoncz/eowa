@@ -62,7 +62,7 @@ export class EventFieldComponent implements OnInit {
   alreadyVoted(option: Option): boolean {
     let usernames: string[] = [];
     usernames = option.voters.map((voter) => voter.username!);
-    return usernames.includes(this.userService.getCurrentUser().username!);
+    return usernames.includes(this.userService.getCurrentUser()!.username!);
   }
 
   deleteField() {

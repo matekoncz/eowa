@@ -54,7 +54,7 @@ export class CreateEventComponent {
       .createEvent({
         eventName: this.createEventForm.value['name']!,
         description: this.createEventForm.value['description']!,
-        owner: this.userservice.getCurrentUser(),
+        owner: this.userservice.getCurrentUser()!,
         participants: [],
         selectionFields: [],
         finalized: false

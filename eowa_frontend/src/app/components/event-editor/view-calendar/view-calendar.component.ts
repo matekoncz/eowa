@@ -280,7 +280,7 @@ export class ViewCalendarComponent implements OnInit {
       return false;
     }
     return (
-      this.userService.getCurrentUser().username === this.event.owner.username
+      this.userService.getCurrentUser()!.username === this.event.owner.username
     );
   }
 

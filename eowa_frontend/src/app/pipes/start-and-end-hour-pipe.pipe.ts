@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Calendar } from '../Model/Calendar';
 import { NumberToHourPipe } from './number-to-hour.pipe';
-import { pipe } from 'rxjs';
 
 @Pipe({
   name: 'startAndEndHourPipe',
@@ -18,10 +17,6 @@ export class StartAndEndHourPipePipe implements PipeTransform {
     let hour = day?.hours.find((hour) => hour.numberInTotal == number);
 
     if (!hour?.number) {
-      console.log('hour: ' + hour);
-      console.log('day: ' + day);
-      console.log('calendar: ' + calendar);
-      console.log('number: ' + number);
       return 'end of the event';
     }
 

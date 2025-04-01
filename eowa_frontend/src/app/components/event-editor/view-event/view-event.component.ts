@@ -344,7 +344,7 @@ export class ViewEventComponent implements OnInit {
 
   isUserOwner(): boolean {
     return (
-      this.event?.owner.username == this.userService.getCurrentUser().username
+      this.event?.owner.username == this.userService.getCurrentUser()!.username
     );
   }
 }

@@ -34,7 +34,7 @@ export class MyEventsComponent implements OnInit {
   }
 
   getRole(event: EowaEvent): string {
-    if (event.owner.username == this.userservice.getCurrentUser().username) {
+    if (event.owner.username == this.userservice.getCurrentUser()!.username) {
       return 'organizer';
     } else {
       return 'participant';
