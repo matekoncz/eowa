@@ -255,7 +255,7 @@ A git\cite{Gitwebsite} verziókövető rendszert használtam a teljes fejleszté
 
 \section{A model réteg}
 
-A model osztályaim egyszerű POJO-k (Plain Old Java Object). Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányaiknak egyszerű másolására.
+A model osztályaim egyszerű POJO-k (Plain Old Java Object). Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányainak egyszerű másolására.
 
 \section{A repository réteg}
 
@@ -295,7 +295,7 @@ A controller osztályok szintén funkciók szerint különülnek el, ezért mind
 
 \subsection{Szerializálció, deszerializáció}
 
-A model osztályaim példányait nem lehet egy-az-egyben JSON objektumokká alakítani. Az egyik probléma az osztályok közötti körkörös hivatkozások fennállása, ez megoldható annyival, hogy az kapcsolat egyik, vagy akár mindkét felét ignoráljuk a szerializálás során (ez a Jackson @JsonIgnore annotációjával tehető meg). Egyes osztályok esetén fennállhat az igény arra, hogy egyes tulajdonságait csak deszerializálni lehessen. Ilyen például a felhasználó osztály jelszó mezeje, hiszen, bár titkosítva van, ezt nem célszerű a frontend felé továbbítani, ellenben a deszerializálására szükség lehet a regisztráció során. Ezt úgy oldottam meg, hogy az adott tulajdonságot @JsonProperty(access = JsonProperty.Access.WRITE\_ONLY) annotációval láttam el.
+A model osztályaim példányait nem lehet egy-az-egyben JSON objektumokká alakítani. Az egyik probléma az osztályok közötti körkörös hivatkozások fennállása. Ezt tartalmazó kapcsolatok esetén úgy oldottam meg, hogy a tartalmazott osztályban Jackson @JsonIgnore annotációval tiltottam meg a tartalmazó osztály kapcsolódó példányának szerializálását, egyenrangú kapcsolatok esetén pedig azt teljesen ignoráltam a szerializáció során, a kapcsolat résztvevőit csak külön lekérések által tettem elérhetővé. Egyes osztályok esetén fennállhat az igény arra, hogy egyes tulajdonságait csak deszerializálni lehessen. Ilyen például a felhasználó osztály jelszó mezeje, hiszen, bár titkosítva van, ezt nem célszerű a frontend felé továbbítani, ellenben a deszerializálására szükség lehet a regisztráció során. Ezt úgy oldottam meg, hogy az adott tulajdonságot @JsonProperty(access = JsonProperty.Access.WRITE\_ONLY) annotációval láttam el.
 
 \section{Kivételkezelés}
 
@@ -303,14 +303,14 @@ Külön kivételosztályokat hoztam létre az események, felhasználók, naptá
 
 \section{Tesztelés}
 
-Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A" (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégetzem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredmény sikerült-e elérni.
-
+Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A" (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégetzem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
 
 \section{Védelem}
 
 	\subsection{CORS}
 
-A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource Sharing configuráció megadására. Ebben megadható, hogy a szerver mely domainekről fogad kéréseket, és azt is, hogy azok esetében mely kérés metódusokat és header-öket engedélyezi. 
+A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource Sharing configuráció megadására. Ebben megadható, hogy a szerver mely domainekről fogad kéréseket, és azt is, hogy azok esetében mely kérés metódusokat és header-öket engedélyezi. A konfigurációmban kizárólag azt az útvonalat engedélyeztem, amelyen a frontend alkalmazásom érhető el, arról viszont az összes metódust és header-t elfogadtattam.
+
 
 	\subsection{CSRF elleni védekezés}
 
@@ -320,15 +320,19 @@ A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyi
 
 \section{Model réteg}
 
-Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket írtam, hogy megfelelően szerializálhassam és deszerializálhassam őket. Ezek nem tekinthetőek viewmodel osztályoknak, hiszen nem csupán a megjelenítés a céljuk, pédául az id tulajdonságokat is tartalmazzák. A megjelenítésüket Angular Pipe-ok használatával végzem.
+Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket írtam, hogy megfelelően szerializálhassam és deszerializálhassam őket. Ezek nem tekinthetőek viewmodel osztályoknak, hiszen nem csupán a megjelenítés a céljuk, pédául az id tulajdonságokat is tartalmazzák.
 
 \section{Service réteg}
 
-Az ApiService-ben írtam meg a fetch API-t használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze. A többi service osztályba pedig az ApiService-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
+Az ApiService-ben írtam meg a fetch API-t használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorisation header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az ApiService-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
 
 \section{Pipe-ok}
 
+Az angular Pipe-ok segítségével egyszerűen lehet a template fájlokban JS objektumokat megjeleníthető formába alakítani. Én több ilyet is létrehoztam, például egy pipe segítségével jelenítem meg a pontos dátumot a naptárfelületen. Itt a pipe transform metódusa a naptár objektumot és az óra sorszámát számát kapja meg, majd ezek segítségével adja vissza a pontos dátumot leíró sztringet, vagy az "end of the event" szöveget.
+
 \section{Navigáció az oldalon}
+
+A komponensek közötti navigáció megvalósításához azokba az Angular Router service-t injektáltam, amely az app.routes fájlban tárolt útvonalak és az azokhoz társított komponensek és guard függvények segíségével végzi el a szükséges műveleteket. Egyes esetekben query paramétereket is használtam, ezeket a komponensekbe injektált ActivatedRoute segítségével kértem le.
 
 \section{Fő komponensek}
 
@@ -352,7 +356,11 @@ Az Angular-ban a guard-ok olyan függvények, amelyek segítségével eldönthet
 
 	\subsection{Folytonos színátmenet style binding segítségével}
 
+A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
+
 	\subsection{Canvas Angularban}
+
+Az óra komponensekre kattintva megjelenik egy dialógusablak, amely információkkal szolgál az adott órához tartozó véleményekről. Itt egy egyszerű diagramot is elhelyeztem, hogy az információk könnyebben feldolgozhatóak legyenek. Ezt egy beépített Canvas segítségével alkottam meg. A komponens fájlban egy, ViewChild dekorátorral konfigurált HTMLCanvasElement típusú ElementRef segítségével tudok a template fájlban megdott canvas-re hivatkozni.
 
 \section{Aszinkron programozási megoldások}
 
