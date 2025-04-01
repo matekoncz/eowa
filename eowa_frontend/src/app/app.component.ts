@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router, RouterModule} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
@@ -14,6 +14,7 @@ import { from } from 'rxjs';
 import { Mail } from './Model/Mail';
 import { PopUpInfoComponent } from './components/popup-info/popup-info.component';
 import { EventService } from './services/event.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -22,14 +23,21 @@ import { EventService } from './services/event.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements AfterContentInit{
   title = 'eowa';
   dialog = inject(MatDialog);
   AuthStatus = AuthStatus;
 
-  constructor(private router: Router, private authservice: AuthService, private mailservice: MailService){}
+  constructor(private router: Router, private authservice: AuthService, private mailservice: MailService, private userservice: UserService){}
+  
+  ngAfterContentInit(): void {
+    if(this.userservice.getCurrentUser()){
+      this.getUnreadMails();
+    }
+  }
 
-  ngOnInit(): void {
+
+  getUnreadMails(){
     this.mailservice.getUnreadMails().subscribe((response) => {
       let status = response.status;
       if(status == 200){
