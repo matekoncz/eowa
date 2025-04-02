@@ -14,7 +14,7 @@
 %\usepackage{tikzlings}
 %\usepackage{tikzducks}
 %\usetikzlibrary{arrows}
-\usepackage[nobysame]{amsrefs}
+%\usepackage[nobysame]{amsrefs}
 %\usepackage{amsmath}
 
 \usepackage{geometry}
@@ -314,7 +314,7 @@ A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource 
 
 	\subsection{CSRF elleni védekezés}
 
-A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélül küld kérést a szerver felé. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
+A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélül küld kérést a szerver felé\cite{Infbiztwebsite}. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
 
 \chapter{A frontend fejlesztése}
 
@@ -394,7 +394,7 @@ Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/e
 
 \newpage
 
-\bibliographystyle{unsrt}
+\bibliographystyle{unsrtdin}
 \bibliography{mate_koncz} 
 
 \newpage
