@@ -331,10 +331,10 @@ public class EventService {
 
             tableContent+=tr(
                     td("Start of the event")
-                            +td(startDay.getDayStartTime().toLocalDate()+":"+getHourString(startHour.getNumber()))
+                            +td(startDay.getDayStartTime().toLocalDate()+" - "+getHourString(startHour.getNumber()))
                             )
                     +tr(td("End of the event")
-                            +td(endDay.getDayStartTime().toLocalDate().toString()+":"+getHourString(endHour.getNumber()))
+                            +td(endDay.getDayStartTime().toLocalDate().toString()+" - "+getHourString(endHour.getNumber()))
                     );
         }
 
@@ -355,7 +355,7 @@ public class EventService {
         if(number>9){
             return String.valueOf(number);
         } else {
-            return "0"+String.valueOf(number);
+            return "0"+ number+":00";
         }
     }
 
