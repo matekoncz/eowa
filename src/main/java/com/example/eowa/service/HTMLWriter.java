@@ -32,4 +32,13 @@ public class HTMLWriter {
         return "<"+elementName+">"+content+"</"+elementName+">";
     }
 
+    public static String htmlEscape(String text) {
+        return text
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll("\"", "&quot;")
+                .replaceAll("'", "&#39;");
+    }
+
 }

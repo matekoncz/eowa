@@ -303,9 +303,9 @@ public class EventService {
 
         String message = h2("An event you're participating in has been finalized");
 
-        String header = h1(event.getEventName());
+        String header = h1(htmlEscape(event.getEventName()));
 
-        String description = p(event.getDescription());
+        String description = p(htmlEscape(event.getDescription()));
 
         String tableContent = "";
 
@@ -340,7 +340,7 @@ public class EventService {
 
         for (SelectionField field : event.getSelectionFields()){
             Option option = field.getOptions().stream().filter(Option::isSelected).findFirst().get();
-            tableContent += tr(td(field.getTitle()+td(option.getValue())));
+            tableContent += tr(td( htmlEscape(field.getTitle()))+td(htmlEscape(option.getValue())));
         }
 
         String table = table(
