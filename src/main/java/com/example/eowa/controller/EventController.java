@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -47,7 +48,7 @@ public class EventController {
             @RequestBody Event event,
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws AuthenticationException, IOException {
-        authService.validateSession(jwt.getJsessionid());
+        authService.authorizeUser(jwt.getJsessionid());
         User owner = authService.getUserBySessionId(jwt.getJsessionid());
         event.setOwner(owner);
         event.generateInvitationCode();
@@ -61,8 +62,8 @@ public class EventController {
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long eventId,
             HttpServletResponse response) throws IOException, AuthenticationException {
-        authService.validateSession(jwt.getJsessionid());
-        authService.validateParticipant(jwt.getJsessionid(),eventId);
+        authService.authorizeUser(jwt.getJsessionid());
+        authService.authorizeParticipant(jwt.getJsessionid(),eventId);
         Event event = eventService.getEventById(eventId);
         response.setStatus(HttpStatus.OK.value());
         response.getWriter().print(objectMapper.writeValueAsString(event));
@@ -72,7 +73,7 @@ public class EventController {
     public void getCurrentUserEvents(
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws AuthenticationException, IOException {
-        authService.validateSession(jwt.getJsessionid());
+        authService.authorizeUser(jwt.getJsessionid());
         User currentUser = authService.getUserBySessionId(jwt.getJsessionid());
         Set<Event> events = currentUser.getEvents();
         response.getWriter().print(objectMapper.writeValueAsString(events));
@@ -83,8 +84,8 @@ public class EventController {
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             HttpServletResponse response) throws AuthenticationException {
-        authService.validateSession(jwt.getJsessionid());
-        authService.validateEventOwner(jwt.getJsessionid(), id);
+        authService.authorizeUser(jwt.getJsessionid());
+        authService.authorizeOrganizer(jwt.getJsessionid(), id);
         eventService.deleteEventById(id);
         response.setStatus(HttpStatus.OK.value());
     }
@@ -96,8 +97,8 @@ public class EventController {
             @PathVariable("id") long id,
             @RequestBody Set<User> participants,
             HttpServletResponse response) throws AuthenticationException {
-        authService.validateSession(jwt.getJsessionid());
-        authService.validateEventOwner(jwt.getJsessionid(), id);
+        authService.authorizeUser(jwt.getJsessionid());
+        authService.authorizeOrganizer(jwt.getJsessionid(), id);
         eventService.getEventById(id).addALlParticipant(participants);
         response.setStatus(HttpStatus.OK.value());
     }
@@ -110,8 +111,8 @@ public class EventController {
             @RequestParam("end") String endString,
             @RequestParam("zone") String zoneId,
             HttpServletResponse response) throws AuthenticationException, CalendarException {
-        authService.validateSession(jwt.getJsessionid());
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeUser(jwt.getJsessionid());
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         LocalDateTime startTime = LocalDateTime.parse(startString);
         LocalDateTime endTime = LocalDateTime.parse(endString);
         eventService.setEventCalendar(id,zoneId,startTime,endTime);
@@ -124,7 +125,7 @@ public class EventController {
             @PathVariable("id") long id,
             @RequestBody Set<Integer> serialNumbers,
             HttpServletResponse response) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.setUnavailableDays(id,serialNumbers);
         response.setStatus(HttpStatus.OK.value());
     }
@@ -135,7 +136,7 @@ public class EventController {
             @PathVariable("id") long id,
             @RequestBody Set<Integer> serialNumbers,
             HttpServletResponse response) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.setUnavailableHours(id,serialNumbers);
         response.setStatus(HttpStatus.OK.value());
     }
@@ -145,10 +146,11 @@ public class EventController {
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             @PathVariable("id") long id,
             @RequestParam("period") int period,
+            @RequestParam("offset") int offset,
             @RequestBody Set<Integer> hourNumbers,
             HttpServletResponse response) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
-        eventService.setUnavailableHoursPeriodically(id,hourNumbers,period);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
+        eventService.setUnavailableHoursPeriodically(id,hourNumbers,period,offset);
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -159,7 +161,7 @@ public class EventController {
             @RequestParam("opinion") Opinion.UserOpinion userOpinion,
             @RequestBody Set<Integer> hourSerials,
             HttpServletResponse response) throws UserIsNotParticipantException {
-        authService.validateParticipant(jwt.getJsessionid(),id);
+        authService.authorizeParticipant(jwt.getJsessionid(),id);
         User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.setUserOpinion(id,hourSerials,user,userOpinion);
         response.setStatus(HttpStatus.OK.value());
@@ -171,7 +173,7 @@ public class EventController {
             @PathVariable("id") long id,
             @RequestBody Set<Integer> hourSerials,
             HttpServletResponse response) throws UserIsNotParticipantException {
-        authService.validateParticipant(jwt.getJsessionid(),id);
+        authService.authorizeParticipant(jwt.getJsessionid(),id);
         User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.removeUserOpinion(id,hourSerials,user);
         response.setStatus(HttpStatus.OK.value());
@@ -195,7 +197,7 @@ public class EventController {
             HttpServletResponse response
     ) throws UserIsNotEventOwnerException, EventException {
         eventService.checkIfEventIsFinalized(id);
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.addFieldsToEvent(id,selectionFields);
         response.setStatus(HttpStatus.OK.value());
     }
@@ -208,7 +210,7 @@ public class EventController {
             HttpServletResponse response
     ) throws UserIsNotEventOwnerException, EventException {
         eventService.checkIfEventIsFinalized(id);
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.removeFieldsFromEvent(id,selectionids);
         response.setStatus(HttpStatus.OK.value());
     }
@@ -224,10 +226,10 @@ public class EventController {
         boolean owner;
 
         try{
-            authService.validateEventOwner(jwt.getJsessionid(),id);
+            authService.authorizeOrganizer(jwt.getJsessionid(),id);
             owner = true;
         } catch (UserIsNotEventOwnerException ignored){
-            authService.validateParticipant(jwt.getJsessionid(),id);
+            authService.authorizeParticipant(jwt.getJsessionid(),id);
             owner = false;
         }
 
@@ -250,10 +252,10 @@ public class EventController {
         boolean owner;
 
         try{
-            authService.validateEventOwner(jwt.getJsessionid(),id);
+            authService.authorizeOrganizer(jwt.getJsessionid(),id);
             owner = true;
         } catch (UserIsNotEventOwnerException ignored){
-            authService.validateParticipant(jwt.getJsessionid(),id);
+            authService.authorizeParticipant(jwt.getJsessionid(),id);
             owner = false;
         }
 
@@ -272,7 +274,7 @@ public class EventController {
             @PathVariable("optionid") long optionid,
             HttpServletResponse response
     ) throws UserIsNotParticipantException, EventException {
-        authService.validateParticipant(jwt.getJsessionid(),id);
+        authService.authorizeParticipant(jwt.getJsessionid(),id);
         eventService.checkIfEventIsFinalized(id);
 
         eventService.addVote(optionid,fieldid,jwt.getUser());
@@ -288,7 +290,7 @@ public class EventController {
             @PathVariable("optionid") long optionid,
             HttpServletResponse response
     ) throws UserIsNotParticipantException, EventException {
-        authService.validateParticipant(jwt.getJsessionid(),id);
+        authService.authorizeParticipant(jwt.getJsessionid(),id);
         eventService.checkIfEventIsFinalized(id);
 
         eventService.removeVote(optionid,fieldid,jwt.getUser());
@@ -304,7 +306,7 @@ public class EventController {
             @PathVariable("optionid") long optionid,
             HttpServletResponse response
     ) throws EventException, UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.checkIfEventIsFinalized(id);
 
         eventService.selectOption(optionid,fieldid);
@@ -320,7 +322,7 @@ public class EventController {
             @RequestParam("end") int end,
             HttpServletResponse response
     ) throws EventException, UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.checkIfEventIsFinalized(id);
 
         eventService.setStartTimeAndEndTime(id,start,end);
@@ -334,7 +336,7 @@ public class EventController {
             @PathVariable("id") long id,
             HttpServletResponse response
     ) throws EventException, UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.checkIfEventIsFinalized(id);
 
         eventService.resetStartHourAndEndHour(id);
@@ -348,7 +350,7 @@ public class EventController {
             @PathVariable("id") long id,
             HttpServletResponse response
     ) throws EventCannotBeFinalizedException, UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
 
         eventService.finalizeEvent(id);
 
@@ -361,7 +363,7 @@ public class EventController {
             @PathVariable("id") long id,
             HttpServletResponse response
     ) throws UserIsNotEventOwnerException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.unFinalizeEvent(id);
 
         response.setStatus(HttpStatus.OK.value());
@@ -373,11 +375,17 @@ public class EventController {
             @PathVariable("id") long id,
             @RequestParam("participants") int minParticipants,
             @RequestParam("length") int minLength,
+            @RequestParam("popularity") boolean popularityMode,
             @RequestBody() Set<Opinion.UserOpinion> allowedOpinions,
             HttpServletResponse response
     ) throws UserIsNotEventOwnerException, IOException {
-        authService.validateEventOwner(jwt.getJsessionid(),id);
-        List<TimeIntervalDetails> details = eventService.getBestTimeIntervals(id,minParticipants,minLength,allowedOpinions);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
+        List<TimeIntervalDetails> details;
+        if(popularityMode){
+            details = eventService.getMostPopularTimeIntervals(id,minParticipants,minLength,allowedOpinions);
+        } else {
+            details = eventService.getLongestTimeIntervals(id,minParticipants,minLength,allowedOpinions);
+        }
         response.getWriter().print(objectMapper.writeValueAsString(details));
 
         response.setStatus(HttpStatus.OK.value());
@@ -390,7 +398,7 @@ public class EventController {
             @RequestParam("name") String name,
             HttpServletResponse response
     ) throws UserIsNotParticipantException {
-        authService.validateParticipant(jwt.getJsessionid(),id);
+        authService.authorizeParticipant(jwt.getJsessionid(),id);
         User user = authService.getUserBySessionId(jwt.getJsessionid());
         eventService.createEventBlueprint(id,name,user);
         response.setStatus(HttpStatus.OK.value());
@@ -405,7 +413,7 @@ public class EventController {
     ) throws UserIsNotEventOwnerException, EventIsFinalizedException, BlueprintCannotBeAccessedException {
         eventService.checkIfEventIsFinalized(id);
         eventService.checkIfUserHasRightsToBlueprint(blueprintId,jwt.getUser());
-        authService.validateEventOwner(jwt.getJsessionid(),id);
+        authService.authorizeOrganizer(jwt.getJsessionid(),id);
         eventService.addFieldsFromBluePrint(id,blueprintId);
 
         response.setStatus(HttpStatus.OK.value());

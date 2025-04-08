@@ -34,7 +34,7 @@ public class UserController {
     public HttpServletResponse getCurrentUser(
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws IOException, AuthenticationException {
-        authService.validateSession(jwt.getJsessionid());
+        authService.authorizeUser(jwt.getJsessionid());
         User currentUser = sessionService.getUserBySessionId(jwt.getJsessionid());
         String userJson = objectMapper.writeValueAsString(currentUser);
         response.getWriter().print(userJson);

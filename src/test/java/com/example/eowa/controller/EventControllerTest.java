@@ -404,7 +404,7 @@ public class EventControllerTest extends EowaIntegrationTest {
                 .queryParam("invitation", eventService.getEventById(id).getInvitationCode())
                 .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
 
-        authService.validateParticipant(jwt.getJsessionid(), id);
+        authService.authorizeParticipant(jwt.getJsessionid(), id);
     }
 
     @Test

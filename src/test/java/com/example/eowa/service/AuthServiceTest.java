@@ -59,7 +59,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
 
     @Test
     public void shouldThrowExceptionIfSessionDoesNotExist(){
-        Assertions.assertThrows(InvalidSessionException.class,()-> authService.validateSession("session"));
+        Assertions.assertThrows(InvalidSessionException.class,()-> authService.authorizeUser("session"));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
         credentials.setPassword("asznalo1");
         String jsessionid = authService.login(credentials);
         Session storedSession = sessionService.getSessionById(jsessionid);
-        authService.validateSession(storedSession.getJsessionid());
+        authService.authorizeUser(storedSession.getJsessionid());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
         Session storedSession = sessionService.getSessionById(jsessionid);
         storedSession.setTimestamp(System.currentTimeMillis()-ONE_HOUR_IN_MILLIS*20);
         sessionService.updateSession(storedSession);
-        Assertions.assertThrows(InvalidSessionException.class, ()-> authService.validateSession(storedSession.getJsessionid()));
+        Assertions.assertThrows(InvalidSessionException.class, ()-> authService.authorizeUser(storedSession.getJsessionid()));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
         String jsessionid = authService.login(credentials);
         Session storedSession = sessionService.getSessionById(jsessionid);
 
-        authService.validateEventOwner(storedSession.getJsessionid(), savedEvent.getId());
+        authService.authorizeOrganizer(storedSession.getJsessionid(), savedEvent.getId());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
         Session storedSession = sessionService.getSessionById(jsessionid);
 
         Assertions.assertThrows(UserIsNotEventOwnerException.class,
-                ()-> authService.validateEventOwner(storedSession.getJsessionid(), savedEvent.getId()));
+                ()-> authService.authorizeOrganizer(storedSession.getJsessionid(), savedEvent.getId()));
 
     }
 
@@ -142,7 +142,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
         String jsessionid = authService.login(credentials);
         Session storedSession = sessionService.getSessionById(jsessionid);
 
-        authService.validateParticipant(storedSession.getJsessionid(), savedEvent.getId());
+        authService.authorizeParticipant(storedSession.getJsessionid(), savedEvent.getId());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class AuthServiceTest extends EowaIntegrationTest {
 
 
         Assertions.assertThrows(UserIsNotParticipantException.class,
-                ()-> authService.validateParticipant(storedSession.getJsessionid(), savedEvent.getId()));
+                ()-> authService.authorizeParticipant(storedSession.getJsessionid(), savedEvent.getId()));
 
     }
 }

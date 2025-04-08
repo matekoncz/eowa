@@ -1,9 +1,7 @@
 package com.example.eowa.controller;
 
 import com.example.eowa.exceptions.authenticationExceptions.AuthenticationException;
-import com.example.eowa.model.Event;
 import com.example.eowa.model.Mail;
-import com.example.eowa.model.User;
 import com.example.eowa.model.WebToken;
 import com.example.eowa.service.AuthService;
 import com.example.eowa.service.MailService;
@@ -36,7 +34,7 @@ public class MailController {
     public void getUnreadMails(
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws AuthenticationException, IOException {
-        authService.validateSession(jwt.getJsessionid());
+        authService.authorizeUser(jwt.getJsessionid());
         Set<Mail> mails = mailService.getUnreadMails(jwt.getUser());
 
         response.setStatus(HttpStatus.OK.value());
@@ -47,7 +45,7 @@ public class MailController {
     public void getEveryMail(
             @RequestHeader(HttpHeaders.AUTHORIZATION) WebToken jwt,
             HttpServletResponse response) throws AuthenticationException, IOException {
-        authService.validateSession(jwt.getJsessionid());
+        authService.authorizeUser(jwt.getJsessionid());
         Set<Mail> mails = mailService.getEveryMail(jwt.getUser());
 
         response.setStatus(HttpStatus.OK.value());

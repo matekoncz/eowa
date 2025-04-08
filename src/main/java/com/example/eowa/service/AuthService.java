@@ -44,7 +44,7 @@ public class AuthService {
         Session session = user.getSession();
         if(session != null){
             try{
-                validateSession(session.getJsessionid());
+                authorizeUser(session.getJsessionid());
                 return session.getJsessionid();
             } catch (AuthenticationException ignored){
                 sessionService.flush();
@@ -71,7 +71,7 @@ public class AuthService {
         }
     }
 
-    public void validateSession(String jsessionid) throws AuthenticationException{
+    public void authorizeUser(String jsessionid) throws AuthenticationException{
         Session session = sessionService.getSessionById(jsessionid);
         if(session == null){
             throw new InvalidSessionException();
@@ -83,7 +83,7 @@ public class AuthService {
         }
     }
 
-    public void validateParticipant(String sessionid, long eventid) throws UserIsNotParticipantException {
+    public void authorizeParticipant(String sessionid, long eventid) throws UserIsNotParticipantException {
         Event event = eventService.getEventById(eventid);
         User currentuser = sessionService.getUserBySessionId(sessionid);
 
@@ -92,7 +92,7 @@ public class AuthService {
         }
     }
 
-    public void validateEventOwner(String sessionid, long eventid) throws UserIsNotEventOwnerException {
+    public void authorizeOrganizer(String sessionid, long eventid) throws UserIsNotEventOwnerException {
         Event event = eventService.getEventById(eventid);
         User currentuser = sessionService.getUserBySessionId(sessionid);
 
