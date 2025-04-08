@@ -119,15 +119,20 @@ Programterveő Informatikus BSc hallgató    & egyetemi docens\\
 
 %masodik oldal osszefogalalo
 \begin{abstract}
-A dolgozat tartalmának rövid (max. 1 oldal) összefoglalása. A következő részekből áll: rövid irodalmi összefoglaló, a dolgozat elkészítéséhez használt módszerek, eredmények, konklúzió
 
-{\bf Kulcsszavak:} a dolgozat tartalmára specifikusan jellemző 4-6 szó, egymástól vesszővel elválasztva
+{\bf Feladat leírása:}
+A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhaználóbarátnak kell lennie, valamit az gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
+
+{\bf A feladat megvalósítása:}
+Létrehoztam egy Angular keretrendszerben megvalósított webalkalmazást, amely az általam Spring Boot keretrendszerben írt API-t használja REST végpontokon keresztül. Az eseményszervezéshez szükséges logikát a backend oldalon valósítottam meg, a frontend oldali webalkalmazásnak csak a felhasználóval folytatott interakciókban van szerepe.
+
+{\bf Elért eredmények:}
+Az alkalmazás használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
+
+{\bf Kulcsszavak:} alkalmazás, eseményszervezés, frontend, backend, Angular, Spring Boot
 \end{abstract}
 
-
-
 \newpage
-
 
 \pagebreak
 
@@ -137,32 +142,26 @@ A dolgozat tartalmának rövid (max. 1 oldal) összefoglalása. A következő r�
 %\pagebreak
 
 
-
-
-
-
-
-
 \chapter{Bevezetés}
 \pagenumbering{arabic}
 
 \section{Motiváció}
 
-Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytársaimmal gyakran jártunk össze focizni, ám ezeket az alkalmakat mindig komoly kihívás volt megszervezni. Az legtöbb alkalom azért maradt el, mert nem sikerült olyan időpontot találni, amelyre legalább 8 ember biztosan el tudott jönni. A szavazások nehezen folytak le, rendszerint a messenger-en küldött 'foci péntek délután?', 'foci szombat délelőtt?' stb. üzenetekre adott reakciók száma alapján dőlt el a focizás időpontja. Az alkalmazásom az ehhez hasonló események szervezését könnyíti meg, ahol a legnagyobb kihívás az ideális időpont megtalálása, hiszen a legfontosabb, hogy az minél több emnbernek feleljen meg.
+Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytársaimmal gyakran jártunk össze focizni, ám ezeket az alkalmakat mindig komoly kihívás volt megszervezni. Az legtöbb alkalom azért maradt el, mert nem sikerült olyan időpontot találni, amelyre legalább 8 ember biztosan el tudott jönni. A szavazások nehezen folytak le, rendszerint a messenger-en küldött 'foci péntek délután?', 'foci szombat délelőtt?' stb. üzenetekre adott reakciók száma alapján dőlt el a focizás időpontja. Az alkalmazásom az ehhez hasonló események szervezését könnyíti meg, ahol a legnagyobb kihívás az ideális időpont megtalálása, hiszen az a legfontosabb, hogy az minél több embernek feleljen meg.
 
 \chapter{Fő funkciók bemutatása}
 
 \section{A felhasználók kezelése}
 
-Az alkalmazásban a felhasználók kezelése nem a legfontosabb feladat, számos, hasonló alkalmazásban gyakori funkciókat, mint a felhasználói profil szerkesztése, vagy a profil törlése, nem valósítottam meg. A felhasználók autentikációja és autorizációja azonban fontos feladat.
+Az alkalmazásban a felhasználók kezelése nem a legfontosabb feladat, számos, hasonló alkalmazásban gyakori funkciókat, mint a felhasználói profil szerkesztése, nem valósítottam meg. A felhasználók autentikációja és autorizációja azonban fontos szerepet kap.
 
 	\subsection{Regisztráció}
 
-A felhasználó regisztrálhat egy egyedi felhasználónévvel, egyedi email-címmel, és a legalább 8 karakter hosszú jelszavának kétszer történő megadásával. Amennyiben a megadott névvel vagy email-címmel már foglalt, a rendszer értesíti erről a felhasználót.
+A felhasználó regisztrálhat egy egyedi felhasználónévvel, egyedi email-címmel, és a legalább 8 karakter hosszú jelszavának kétszer történő megadásával. Amennyiben a megadott név vagy email-cím már foglalt, a regisztráció nem valósulhat meg, és a rendszer értesíti erről a felhasználót.
 
 	\subsection{Bejelentkezés, kijelentkezés}
 
-A helyes felhasználónév és jelszó megadásával a létrejön egy session, ami 4 órán keresztül biztosít hozzáférést az alkalmazáshoz a felhasználó számára. A session lejárta után az alkalmazás automatikusan kijelentkezteti a felhasználót.
+A helyes felhasználónév és jelszó megadásával a létrejön egy session, ami 4 órán keresztül biztosít hozzáférést az alkalmazás bejelentkezéshez kötött funkcióihoz a felhasználó számára. A session lejárta után az alkalmazás automatikusan kijelentkezteti a felhasználót.
 
 	\subsection{Autorizáció}
 
@@ -176,27 +175,27 @@ Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni
 
 	\subsection{Csatlakozás}
 
-A szervező és a meghívottak számára látható az esemény meghívó-kódja. Ők ezt a kódot továbbíthatják másoknak, akik ezt a kódot használva a meghívottak közé kerülnek.
+A szervező és a résztvevők számára látható az esemény egyedi meghívó-kódja. Ők ezt a kódot tetszőleges felületen továbbíthatják másoknak, akik ezt a kódot használva a résztvevők közé kerülnek. Az eseményhez való csatlakozáshoz regisztráció szükséges.
 
 	\subsection{Extra mezők}
 
-A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új lehetséges értékeket az adott mezőhöz.
+A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához, stb szolgálhatnak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja.
 
 	\subsection{Eseménysémák használata}
 
-Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát készítsen. A séma tartalmazza az eseményhez rendelt extra mezőket azok tulajdonságaival és lehetséges értékeivel együtt, és alkalmas arra, hogy a használatával új eseményt lehessen létrehozni, amely extra mezői ugyanezekkel a tulajdonságokkal rendelkeznek.
+Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát készítsen. A séma tartalmazza az eseményhez rendelt extra mezőket azok tulajdonságaival és lehetséges értékeivel együtt, és alkalmas arra, hogy a használatával új eseményt lehessen létrehozni, amely extra mezői ugyanezekkel a tulajdonságokkal és értékeikben megegyező opciókkal rendelkeznek. Egy eseményhez több sémából is rendelhetünk extra mezőket, és ezek mellett továbbra is lehetőség van új mezők manuálisan történő hozzáadására.
 
 	\subsection{Esemény adatainak véglegesítése}
 
-Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény időpontja és az extra mezők értékei tartoznak bele).  Ezután az esemény adatai nem módosíthatóak, a meghívottak pedig értesítést kapnak az esemény véglegesítéséről. A művelet visszavonható, ekkor újra módosíthatóvá válnak az adatok, a meghívottak pedig erről is értesítést kapnak.
+Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény időpontja és az extra mezők értékei tartoznak bele).  Ezután az esemény adatai nem módosíthatóak, a résztvevők pedig értesítést kapnak az esemény véglegesítéséről. A művelet visszavonható, ekkor újra módosíthatóvá válnak az adatok, az esemény résztvevői pedig erről is értesítést kapnak.
 
 \section{Naptárak kezelése}
 
-A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segíse az esemény szervezőjét az ideális időpont kiválasztásában. (((ábra a naptárfelületről)))
+A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segíse az esemény szervezőjét az ideális időpont kiválasztásában.
 
 	\subsection{Létrehozás}
 
-Naptár hozzáadása az időintervallum (legfeljebb 60 nap) és az időzóna megadásával történik. Az intervallum kezdő időpontja nem lehet a múltban, és az intervallum kezdete és vége nem lehet ugyanaz az időpont.
+Naptár hozzáadása az időintervallum (amelynek hossza legfeljebb 60 nap lehet) és az időzóna megadásával történik. Az intervallum kezdő időpontja nem lehet a múltban, és az intervallum kezdete és vége nem lehet ugyanaz az időpont.
 
 	\subsection{Szerkesztés}
 
@@ -208,7 +207,7 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 
 	\subsection{Statisztikák megtekintése}
 
-Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. (((ide ábrák kellenek)))
+Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor.
 
 	\subsection{Időzónák kezelése}
 
@@ -224,11 +223,11 @@ A backend alkalmazásomat a Spring Boot\cite{Springwebsite} használatával kés
 
 	\subsection{Jakarta Persistence API Hibernate ORM-el}
 
-A Hibernate\cite{Hibernatewebsite} segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA)\cite{JPAwebsite} keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját natív query-ket is írtam, ahol az adatokat egyéni módon akartam kezelni.
+A Hibernate\cite{Hibernatewebsite} segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA)\cite{JPAwebsite} keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját natív query-ket is írtam, mivel néhány funkció megvalósításánal az adatokat egyéni módon akartam kezelni.
 
 	\subsection{H2 In-memory DB}
 
-A H2\cite{H2website} memórián belüli adatbázis megvalósítását az integrációs tesztjeimhez használtam. Mivel ez az adatbázis minden futtatás esetében újra inicializálódik, fejlesztés közben egyszerűbb a tesztjeimet futtatnom, hiszen nem kell minden, a leképezendő objektumok kapcsolatait érintő változás esetén a megfelelő strukturális változtatásokat véghezvinnem az adatbázisban. Emellett általánosságban egyszerűbben kezelhető, hiszen nincs szükségem adatbázisszerverre.
+A H2\cite{H2website} memórián belüli adatbázis megvalósítását az integrációs tesztjeimhez használtam. Mivel ez az adatbázis minden futtatás esetében újra inicializálódik, fejlesztés közben egyszerűbb a tesztjeimet futtatnom, hiszen így nem kell minden, a leképezendő objektumok kapcsolatait érintő változás esetén a megfelelő strukturális változtatásokat véghezvinnem az adatbázisban. Emellett általánosságban egyszerűbben kezelhető, hiszen használatához nincsen szükségem adatbázisszerverre.
 
 \section{MariaDB}
 
@@ -255,11 +254,11 @@ A git\cite{Gitwebsite} verziókövető rendszert használtam a teljes fejleszté
 
 \section{A model réteg}
 
-A model osztályaim egyszerű POJO-k (Plain Old Java Object). Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányainak egyszerű másolására.
+A model osztályaim egyszerű POJO-k (Plain Old Java Object), amelyek a Jakarta Persistence Entity interfészét valósítják meg. Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit, valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányainak egyszerű másolására.
 
 \section{A repository réteg}
 
-Minden model osztályhoz létrehoztam egy repository interfészt, amelyeket a JPARepository interfésztől származtattam. A JPARepositoryban már az alapvető CRUD műveletek meg vannak valósítva, én azonban néhány helyen kiegészítettem ezeket új műveletekkel (például az eseményekre nem csupán az ID-jük, hanem a hozzájuk rendelt meghívó kód alapján is lehet keresni az adatbázisban).
+Minden model osztályhoz létrehoztam egy repository interfészt, amelyeket a JPARepository interfésztől származtattam. A JPARepositoryban már az alapvető CRUD műveletek meg vannak valósítva, én azonban néhány helyen kiegészítettem ezeket új műveletekkel (például az eseményekre nem csupán az ID-jük, hanem a hozzájuk rendelt meghívó kód alapján is lehet keresni az adatbázisban). Ezeket natív query-k formájában adtam meg.
 
 \section{A service réteg}
 
@@ -267,21 +266,21 @@ A service komponenseket nem az általuk használt repository-k, hanem a funkció
 
 \subsection{AuthService}
 
-Az AuthService feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megdott felhasználónevet és jelszavat veti össze az adatbázisban tárolt felhasználónévvel és dekódolt jelszóval. A sikeres bejelentkezéskor az AuthService létrehoz egy Session objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az AuthService metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végpontjoz tartozó művelet végrehajtására.
+Az AuthService feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet és jelszavat veti össze az adatbázisban tárolt felhasználónévvel és a dekódolt jelszóval. A sikeres bejelentkezéskor az AuthService létrehoz egy Session objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az AuthService metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végpontjoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
 
 \subsection{EventService}
 
 Az EventService-ben történnek az események kezelésével kapcsolatos műveletek, a naptár kezelésének kivételével. Kihívások az írása során:
 
-Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Ekkor az EventService az esemény összes extra mezőjéből és azoknak a lehetséges értékeiből másolatot készít, és ezeket egyetlen kollekcióba gyűjti össze, majd JSON objektumként tárolom el az eseményséma (EventBlueprint) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így elállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem.
+Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Ekkor az EventService az esemény összes extra mezőjéből és azoknak a lehetséges értékeiből másolatot készít, és ezeket egyetlen kollekcióba gyűjti össze, majd JSON objektumként tárolja el az eseményséma (EventBlueprint) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így elállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem. Arra is ügyeltem, hogy minden felhasználó csak az általa létrehozott sémákhoz férhessen hozzá, ehhez egy insertUser tulajdonságal kellett kibővítenem az EventBlueprint model osztályt.
 
 \subsection{CalendarService}
 
 A naptárak kezelése a CalendarService-en keresztül történik. Kihívások az írása során:
 
-Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órák amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
+Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órá, amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
 
-Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához kiszámítja, hogy milyen hosszú az az ettől az órától kezdődő időszak, amely eleget tesz a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak. Egy ilyen időszak esetében az számít részvevőnek, aki az az összes órára a paraméterben megadott véleménytípus egyikét választotta.
+Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta. Az időpontokat tartalmazó lista hossza legrosszabb esetben \[\sum_{m=1}^{a*24+1} \sum_{n=1}^{m} n \], ahol \textit{a} az esményhez rendelt napok száma. Ez legfeljebb 60 lehet, ez alapján a leghosszabb lista, amit a függvény visszaadhat  \[\sum_{m=1}^{1441} \sum_{n=1}^{m} n  = 539 720 499 241\] elemet tartalmaz,  ennyi adatot nyilvánvalóan nem szeretnék a frontenden feldolgozni. Ezért a getBestTimeIntervals függvényt használja a getLongestTimeIntervals és a getMostPopularIntervals függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
 
 \subsection{MailService}
 
@@ -315,6 +314,11 @@ A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource 
 	\subsection{CSRF elleni védekezés}
 
 A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélül küld kérést a szerver felé\cite{Infbiztwebsite}. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
+
+
+	\subsection{XSS elleni védekezés}
+
+Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML formában továbbítom a frontendre, és ebben felhasználók által megadott szövegek is (az esemény neve, leírása, az extra mezők neve és értékei) szerepelnek, ez alkalmas lehet kártékony szkriptek más felhasználókhoz történő eljuttatására. Az efajta támadást DOM alapú XSS-nek, azaz Cross Site Scripting-nek nevezzük\cite{Infbiztwebsite}. Hogy ezt megelőzzem, a felhasználók által megadott szöveket csak azután használom fel arra, hogy a HTML tagek közé illesszem, hogy azokban escape-elem a speciális karaktereket.
 
 \chapter{A frontend fejlesztése}
 
@@ -368,6 +372,8 @@ Az aszinkron műveletekhez az RxJs könyvtár eszköztárát használtam. Hogy e
  
 \chapter{Továbbfejlesztési lehetőségek}
 
+Az alkalmazást a feljlesztés folyamán csak a saját eszközömöm futtattam, logikusnak tűnik következő lépésként egy alkalmas szerverszolgáltatás igénybevétele, esetleg saját szerver felállítása, amely segítségével a webalkalmazás a világhálón keresztül elérhetővé tehető más eszközök számára is.
+
 Az egyik lehetőség a továbbfejlesztésre a JWT (Jason Web Token) használata az autorizációs folyamatokra. A jelenlegi megoldásom, bár a localstorage-ben tárolt json objektum segítségével zajlik, nem nevezhető jwt-nek, mivel az autorizáció a benne tárolt session id alapján történik, amitnek hitelességét a backend oldalon kell lellenőrizni, és nem egy digitális aláírás segítségével.
 
 Az alkalmazás reszponzivitása javítható, jelen állapotban például mobilról nehezen használható. Emellett a felhasználói felület akadálymentesítésével is érdemes lehet foglalkozni.
@@ -380,17 +386,13 @@ Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írás
 
 \section{Doodle}
 
-A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak.  További hasonlóság, hogy lehetőség van az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni.
-
-\chapter{Összefoglalás az eredményekről}
+A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak.  További hasonlóság, hogy lehetőség van az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni. A legtöbb különbség abból adódik, hogy a Doodle-t elsősorban előre meghatározott időponttal rendelkező, szigorú keretek között megvalósuló meeting-ek megszervezésére készítették, míg az én alkalmazásom inkább arra hivatott, hogy egy adott baráti társaság találkozóinak rugalmas szervezését segítse.
 
 \chapter{Összefoglalás}
 
-(új oldalon kezdve)
+Az alkalmazás még nem teljes, de a legfontosabb funkciókat mind megvalósítottam. A használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
 
-A dolgozat eredményeinek összefoglalása, következtetések levonása.
-
-Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/eredményei.
+Bár léteznek már hasonló célra készült alkalmazások, úgy hiszem, hogy elsősorban a rugalmassága miatt az alkalmazásomra van igény.
 
 \newpage
 
@@ -404,9 +406,7 @@ Az összefoglalásban egyértelműen jelezve legyen a hallgató saját szerepe/e
 
 \vspace{2 cm}
 
-(nem kötelező elem), (új oldalon kezdve) 
-
-Ebben a fejezetben lehet köszönetet mondani mindazoknak, akik segítették a dolgozat elkészülését. Itt lehet megemlíteni továbbá a munkát támogató pályázatokat, ösztöndíjakat, stb.
+köszi köszi
 
 \newpage
 {\Huge \bf Nyilatkozat}
@@ -417,7 +417,7 @@ Ebben a fejezetben lehet köszönetet mondani mindazoknak, akik segítették a d
 
 {\it A szöveg kötött, kérjük ezt használni!}
 
-Alulírott, Végzős Edömér, xxxx szakos hallgató, kijelentem, hogy a szakdolgozatban ismertetettek saját munkám eredményei, és minden felhasznált, nem saját munkából származó eredmény esetén hivatkozással jelöltem annak forrását. 
+Alulírott, Koncz Máté, Programtervező Informatikus szakos hallgató, kijelentem, hogy a szakdolgozatban ismertetettek saját munkám eredményei, és minden felhasznált, nem saját munkából származó eredmény esetén hivatkozással jelöltem annak forrását. 
 
 
 \begin{flushleft}
@@ -428,7 +428,7 @@ Szeged, \today
 \begin{flushright}
  \vspace*{1cm}
  \makebox[7cm]{\rule{6cm}{.4pt}}\\
- \makebox[7cm]{\emph{Végzős Edömér}}
+ \makebox[7cm]{\emph{Koncz Máté}}
 \end{flushright}
 
 \pagebreak
@@ -439,10 +439,6 @@ Szeged, \today
  \addcontentsline{toc}{chapter}{Mellékletek}
 
 \vspace{2 cm}
-
-(nem kötelező elem, a dolgozat oldalszámaiba nem tartozik bele.), (új oldalon kezdve)
-
-Ebben a fejezetben lehet elhelyezni a nagyobb táblázatokat, ábrákat, adathalmazokat.
 
 
 \end{document}
