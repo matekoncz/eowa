@@ -7,15 +7,18 @@ import { MatListModule } from '@angular/material/list';
 import { EventShortinfoComponent } from '../event-shortinfo/event-shortinfo.component';
 import { UserService } from '../../services/user.service';
 import { MatDividerModule } from '@angular/material/divider';
+import { ProcessIndicatorComponent } from "../process-indicator/process-indicator.component";
 
 @Component({
   selector: 'app-my-events',
   standalone: true,
-  imports: [MatListModule, EventShortinfoComponent, MatDividerModule],
+  imports: [MatListModule, EventShortinfoComponent, MatDividerModule, ProcessIndicatorComponent],
   templateUrl: './my-events.component.html',
   styleUrl: './my-events.component.css',
 })
 export class MyEventsComponent implements OnInit {
+
+  loading = true;
   
   events: EowaEvent[] = [];
 
@@ -28,6 +31,7 @@ export class MyEventsComponent implements OnInit {
   ngOnInit(): void {
     this.eventservice.listMyEvents().subscribe((response) => {
       from(response.json()).subscribe((events: EowaEvent[]) => {
+        this.loading = false;
         this.events = events;
       });
     });

@@ -1,9 +1,13 @@
-<div class="centered">
-    <h1>My events</h1>
-</div>
-<mat-list>
-    @for(event of events; track event){
-    <app-event-shortinfo [event]="event" [role]="getRole(event)"></app-event-shortinfo>
-    <mat-divider></mat-divider>
-    }
-</mat-list>
+@if(loading){
+    <app-process-indicator></app-process-indicator>
+} @else {
+    <div class="centered">
+        <h1>My events</h1>
+    </div>
+    <mat-list>
+        @for(event of events; track event){
+        <app-event-shortinfo [event]="event" [role]="getRole(event)"></app-event-shortinfo>
+        <mat-divider></mat-divider>
+        }
+    </mat-list>
+}

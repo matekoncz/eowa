@@ -35,6 +35,7 @@ import { StartAndEndHourPipePipe } from '../../../pipes/start-and-end-hour-pipe.
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetBestTimeIntervalsDialogComponent } from '../get-best-time-intervals-dialog/get-best-time-intervals-dialog.component';
 import { TimeIntervalDetails } from '../../../Model/TimeIntervalDetails';
+import { ProcessIndicatorComponent } from '../../process-indicator/process-indicator.component';
 
 @Component({
   selector: 'app-view-calendar',
@@ -52,7 +53,8 @@ import { TimeIntervalDetails } from '../../../Model/TimeIntervalDetails';
     MatSelectModule,
     CommonModule,
     StartAndEndHourPipePipe,
-  ],
+    ProcessIndicatorComponent
+],
   templateUrl: './view-calendar.component.html',
   styleUrl: './view-calendar.component.css',
 })
@@ -91,6 +93,10 @@ export class ViewCalendarComponent implements OnInit {
     opinion: new FormControl('GOOD'),
   });
 
+  firstDayOfWeek = 0;
+
+  loading = true;
+
   OpinionMode = OpinionMode;
 
   EditMode = EditMode;
@@ -106,15 +112,16 @@ export class ViewCalendarComponent implements OnInit {
     this.eventId = this.activatedRoute.snapshot.queryParams['id'];
     this.eventservice.getEvent(this.eventId!).subscribe((response) => {
       from(response.json()).subscribe((event: EowaEvent) => {
+        this.loading = false;
         this.event = event;
         this.calendar = event.calendar;
         let firstDay = this.calendar!.days![0];
         let firstDate = this.convertTimeStampToDate(
           firstDay.dayStartTime as unknown as number
         );
-        let firstDayOfWeek = firstDate.getDay();
-        console.log('First day is the', firstDayOfWeek, 'th/nd/rd');
-        this.fillWeeks(firstDayOfWeek - 1, this.calendar!.days!);
+        this.firstDayOfWeek = firstDate.getDay();
+        console.log('First day is the', this.firstDayOfWeek, 'th/nd/rd');
+        this.fillWeeks(this.firstDayOfWeek - 1, this.calendar!.days!);
       });
     });
   }
@@ -288,11 +295,14 @@ export class ViewCalendarComponent implements OnInit {
     let dialogRef = this.dialog.open(PeriodicalHourDisablerComponentComponent);
 
     dialogRef.afterClosed().subscribe((result: PeriodicalHourDisablingDO) => {
+      console.log("result", result);
+      console.log("this.firstDayOfWeek", this.firstDayOfWeek);
       this.eventservice
         .setUnavailableHoursPeriodically(
           this.eventId!,
           result.period,
-          result.hourNumbers
+          (result.day-this.firstDayOfWeek+1) % 7,
+          result.hourNumbers,
         )
         .subscribe((response) => {
           if (response.ok) {

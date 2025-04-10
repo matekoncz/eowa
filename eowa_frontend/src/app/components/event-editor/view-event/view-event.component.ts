@@ -22,6 +22,7 @@ import {
 import { EventBlueprint } from '../../../Model/EventBlueprint';
 import { MatSelectModule } from '@angular/material/select';
 import { UserService } from '../../../services/user.service';
+import { ProcessIndicatorComponent } from "../../process-indicator/process-indicator.component";
 
 @Component({
   selector: 'app-view-event',
@@ -36,7 +37,8 @@ import { UserService } from '../../../services/user.service';
     MatCheckboxModule,
     EventFieldComponent,
     MatSelectModule,
-  ],
+    ProcessIndicatorComponent
+],
   templateUrl: './view-event.component.html',
   styleUrl: './view-event.component.css',
 })
@@ -61,6 +63,8 @@ export class ViewEventComponent implements OnInit {
 
   values: string[] = [];
 
+  loading: boolean = true;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private eventservice: EventService,
@@ -73,6 +77,7 @@ export class ViewEventComponent implements OnInit {
     this.eventId = this.activatedRoute.snapshot.queryParams['id'];
     this.eventservice.getEvent(this.eventId!).subscribe((response) => {
       from(response.json()).subscribe((event: EowaEvent) => {
+        this.loading = false;
         this.event = event;
       });
     });
