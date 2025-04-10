@@ -6,6 +6,7 @@ import com.example.eowa.exceptions.eventExceptions.BlueprintCannotBeAccessedExce
 import com.example.eowa.exceptions.eventExceptions.EventCannotBeFinalizedException;
 import com.example.eowa.exceptions.eventExceptions.EventIsFinalizedException;
 import com.example.eowa.model.*;
+import com.example.eowa.model.Calendar;
 import com.example.eowa.repository.EventBluePrintRepository;
 import com.example.eowa.repository.EventRepository;
 import com.example.eowa.repository.OptionRepository;
@@ -16,10 +17,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.example.eowa.service.HTMLWriter.*;
@@ -95,20 +93,12 @@ public class EventService {
         calendarService.setUnavailableHours(calendar, serialNumbers);
     }
 
-    private void setUnavailableHoursDaily(long id, Set<Integer> hourNumbers){
-        setUnavailableHoursPeriodically(id,hourNumbers, CalendarService.Period.DAILY);
-    }
-
-    private void setUnavailableHoursWeekly(long id, Set<Integer> hourNumbers){
-        setUnavailableHoursPeriodically(id,hourNumbers, CalendarService.Period.WEEKLY);
-    }
-
-    public void setUnavailableHoursPeriodically(long id, Set<Integer> hourNumbers, int period){
+    public void setUnavailableHoursPeriodically(long id, Set<Integer> hourNumbers, int period, int dayOffset){
         Calendar calendar = getEventById(id).getCalendar();
         if(calendar == null){
             return;
         }
-        calendarService.setUnavailableHoursPeriodically(calendar,hourNumbers,period);
+        calendarService.setUnavailableHoursPeriodically(calendar,hourNumbers,period, dayOffset);
     }
 
     public void setUserOpinion(long id, Set<Integer> hourSerials, User user, Opinion.UserOpinion userOpinion){
@@ -378,9 +368,22 @@ public class EventService {
         }
     }
 
-    public List<TimeIntervalDetails> getBestTimeIntervals(long eventId, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
-        Calendar calendar = getEventById(eventId).getCalendar();
+    private List<TimeIntervalDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
         return calendarService.getBestTimeIntervals(calendar,minParticipants,minLength,allowedOpinions);
+    }
+
+    public List<TimeIntervalDetails> getLongestTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions){
+        Calendar calendar = getEventById(eventId).getCalendar();
+        List<TimeIntervalDetails> bestTimeIntervals = getBestTimeIntervals(calendar, minparticipants, minlength, allowedOpinions);
+        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getLength));
+        return bestTimeIntervals.subList(0,10);
+    }
+
+    public List<TimeIntervalDetails> getMostPopularTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions){
+        Calendar calendar = getEventById(eventId).getCalendar();
+        List<TimeIntervalDetails> bestTimeIntervals = getBestTimeIntervals(calendar, minparticipants, minlength, allowedOpinions);
+        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getParticipantNumber));
+        return bestTimeIntervals.subList(0,10);
     }
 
     public void checkIfUserHasRightsToBlueprint(long blueprintId, User user) throws BlueprintCannotBeAccessedException {

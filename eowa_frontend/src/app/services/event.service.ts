@@ -67,11 +67,12 @@ export class EventService {
   setUnavailableHoursPeriodically(
     id: number,
     period: number,
+    offset: number,
     serialNumbers: number[]
   ) {
     return this.apiservice.put(
       Controller.EVENT,
-      '/' + id + '/set-unavailable-hours-periodically?period=' + period,
+      '/' + id + '/set-unavailable-hours-periodically?period=' + period + '&offset=' + offset,
       serialNumbers
     );
   }

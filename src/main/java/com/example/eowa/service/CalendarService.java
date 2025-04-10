@@ -129,9 +129,9 @@ public class CalendarService {
 
     //TODO: clean up this mess
 
-    public void setUnavailableHoursPeriodically(Calendar calendar, Set<Integer> hourNumbers, int period) {
+    public void setUnavailableHoursPeriodically(Calendar calendar, Set<Integer> hourNumbers, int period, int dayOffset) {
         calendar.getDays().forEach(day -> {
-            if (day.getSerialNumber() % (float) period == 0) {
+            if (day.getSerialNumber() % (float) period == dayOffset) {
                 day.getHours().forEach(hour -> {
                     if (hourNumbers.contains(hour.getNumber())) {
                         hour.setEnabled(false);

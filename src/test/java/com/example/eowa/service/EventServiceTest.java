@@ -126,7 +126,7 @@ public class EventServiceTest extends EowaIntegrationTest {
 
         eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(2));
 
-        eventService.setUnavailableHoursPeriodically(savedEvent.getId(),Set.of(0,1,2,3,21,22,23), CalendarService.Period.DAILY);
+        eventService.setUnavailableHoursPeriodically(savedEvent.getId(),Set.of(0,1,2,3,21,22,23),1,0);
 
         Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
         Day firstDay = savedCalendar.getDays().getFirst();
@@ -151,7 +151,7 @@ public class EventServiceTest extends EowaIntegrationTest {
 
         eventService.setEventCalendar(savedEvent.getId(),"CET", LocalDateTime.now(),LocalDateTime.now().plusDays(8));
 
-        eventService.setUnavailableHoursPeriodically(savedEvent.getId(),Set.of(0,1,2,3,21,22,23), CalendarService.Period.WEEKLY);
+        eventService.setUnavailableHoursPeriodically(savedEvent.getId(),Set.of(0,1,2,3,21,22,23),7 ,0);
 
         Calendar savedCalendar = eventService.getEventById(savedEvent.getId()).getCalendar();
         Day firstDay = savedCalendar.getDays().getFirst();
