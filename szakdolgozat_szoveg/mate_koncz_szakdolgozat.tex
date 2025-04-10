@@ -290,7 +290,7 @@ A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az esem
 
 \section{Controller réteg}
 
-A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensérere, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal , a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
+A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensérere, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal, a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
 
 \subsection{Szerializálció, deszerializáció}
 
@@ -353,6 +353,10 @@ A naptárfelület több standalone komponensből tevődik össze. A ViewCalendar
 Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek.
 
 \section{UX, UI}
+
+	\subsection{Progress indicator}
+
+Létrehoztam egy saját progress indicator komponenst, amely segítségével jelzem a felhasználó felé, ha a kért útvonalhoz tartozó komponens még nem tölthető fel adatokkal, mivel azoknak az API-tól való lekérése éppen most zajlik. Ezzel helyettesítem az adott komponens tartalmát annak inicializálásától kezdve az API-tól érkező válaszig (akkor is, ha az hibát jelez). Ezt természetesen nem alkalmazom azokban az esetekben, amikor a komponens megjelenítendő adai rendelkezésre állnak, és az API-val történő kommunikácó befejeztét nem kell megvárnia a felhasználónak, hogy más műveletek végrehajtson.
 
 	\subsection{Guard-ok}
 
