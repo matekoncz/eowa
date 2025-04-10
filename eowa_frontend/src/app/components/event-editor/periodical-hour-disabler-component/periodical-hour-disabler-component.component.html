@@ -28,6 +28,23 @@
       <mat-error>Please select a pattern</mat-error>
       }
     </mat-form-field>
+    @if(periodForm.controls["period"].value == 7) {
+    <mat-form-field id="day">
+      <mat-label>Select the day of the week</mat-label>
+      <mat-select formControlName="day">
+        <mat-option [value]="0">Monday</mat-option>
+        <mat-option [value]="1">Tuesday</mat-option>
+        <mat-option [value]="2">Wednesday</mat-option>
+        <mat-option [value]="3">Thursday</mat-option>
+        <mat-option [value]="4">Friday</mat-option>
+        <mat-option [value]="5">Saturday</mat-option>
+        <mat-option [value]="6">Sunday</mat-option>
+      </mat-select>
+      @if (periodForm.controls["day"].invalid) {
+      <mat-error>Please select a day of the week</mat-error>
+      }
+    </mat-form-field>
+    }
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

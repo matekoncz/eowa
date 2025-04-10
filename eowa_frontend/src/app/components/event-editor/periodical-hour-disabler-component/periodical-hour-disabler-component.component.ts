@@ -50,6 +50,8 @@ export class PeriodicalHourDisablerComponentComponent {
       Validators.required,
       Validators.pattern('^1|7$'),
     ]),
+
+    day: new FormControl(0, Validators.pattern('^[0-6]$')),
   });
 
   hours: number[] = this.getNumbers();
@@ -64,9 +66,14 @@ export class PeriodicalHourDisablerComponentComponent {
 
   onOkClick(): void {
     if (this.periodForm.valid) {
+      let offset = 0;
+      if(this.periodForm.controls['period'].value == 7) {
+        offset = this.periodForm.controls['day'].value;
+      }
       this.dialogRef.close({
         hourNumbers: this.periodForm.controls['hours'].value,
         period: this.periodForm.controls['period'].value,
+        day: offset,
       });
     }
   }
@@ -79,4 +86,5 @@ export class PeriodicalHourDisablerComponentComponent {
 export interface PeriodicalHourDisablingDO {
   period: number;
   hourNumbers: number[];
+  day: number;
 }
