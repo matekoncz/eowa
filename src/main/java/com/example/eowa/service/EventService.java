@@ -375,15 +375,15 @@ public class EventService {
     public List<TimeIntervalDetails> getLongestTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions){
         Calendar calendar = getEventById(eventId).getCalendar();
         List<TimeIntervalDetails> bestTimeIntervals = getBestTimeIntervals(calendar, minparticipants, minlength, allowedOpinions);
-        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getLength));
+        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed().thenComparing(Comparator.comparingInt(TimeIntervalDetails::getParticipantNumber).reversed()));
         return bestTimeIntervals.subList(0,10);
     }
 
     public List<TimeIntervalDetails> getMostPopularTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions){
         Calendar calendar = getEventById(eventId).getCalendar();
         List<TimeIntervalDetails> bestTimeIntervals = getBestTimeIntervals(calendar, minparticipants, minlength, allowedOpinions);
-        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getParticipantNumber));
-        return bestTimeIntervals.subList(0,10);
+        bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getParticipantNumber).reversed().thenComparing(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed()));
+        return bestTimeIntervals.subList(0, Math.min(bestTimeIntervals.size(), 10));
     }
 
     public void checkIfUserHasRightsToBlueprint(long blueprintId, User user) throws BlueprintCannotBeAccessedException {

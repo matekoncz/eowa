@@ -180,11 +180,12 @@ export class EventService {
     id: number,
     participants: number,
     length: number,
-    allowedOptionions: UserOpinion[]
+    allowedOptionions: UserOpinion[],
+    popularityMode: boolean
   ) {
     return this.apiservice.put(
       Controller.EVENT,
-      '/' + id + '/get-best-time-intervals?participants=' + participants + '&length=' + length,
+      '/' + id + '/get-best-time-intervals?participants=' + participants + '&length=' + length + '&popularity=' + popularityMode,
       allowedOptionions
     );
   }

@@ -242,6 +242,9 @@ public class CalendarService {
     }
 
     private Set<User> getPositiveParticipants(Hour hour, Set<Opinion.UserOpinion> allowedOpinions) {
+        if(!hour.isEnabled()){
+            return Set.of();
+        }
         return hour.getOpinions().stream().filter(o->allowedOpinions.contains(o.getUserOpinion())).map(Opinion::getUser).collect(Collectors.toSet());
     }
 
