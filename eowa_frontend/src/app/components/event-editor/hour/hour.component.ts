@@ -22,6 +22,7 @@ import {
   OpinionMode,
 } from '../view-calendar/view-calendar.component';
 import { Subject } from 'rxjs';
+import { TimeIntervalDetails } from '../../../Model/TimeIntervalDetails';
 
 @Component({
   selector: 'app-hour',
@@ -40,6 +41,8 @@ export class HourComponent implements OnInit {
   @Input() date?: Date;
 
   @Input() wholeDayChanged?: Subject<void>;
+
+  @Input() $showTimeInterval?: Subject<TimeIntervalDetails>;
 
   @Input() opinionMode = OpinionMode.DEFAULT;
 
@@ -64,6 +67,15 @@ export class HourComponent implements OnInit {
       this.addOpinion(this.opinionMode.valueOf());
       this.calculateBackgroundColor();
     });
+
+    this.$showTimeInterval?.subscribe((details) => {
+      let firstSerial = details.hourSerial;
+      let lastSerial = firstSerial + details.length;
+      let hourserial = this.hour!.numberInTotal;
+
+      this.selected = (hourserial >= firstSerial) && (hourserial < lastSerial)
+    })
+
     this.calculateBackgroundColor();
   }
 

@@ -11,6 +11,7 @@ import {
   OpinionMode,
 } from '../view-calendar/view-calendar.component';
 import { Subject } from 'rxjs';
+import { TimeIntervalDetails } from '../../../Model/TimeIntervalDetails';
 
 @Component({
   selector: 'app-day',
@@ -25,6 +26,8 @@ export class DayComponent {
   @Input() editMode: EditMode = EditMode.DEFAULT;
 
   @Input() participantNumber = 0;
+  
+  @Input() $showTimeInterval?: Subject<TimeIntervalDetails>;
 
   @Input() opinionMode = OpinionMode.DEFAULT;
 

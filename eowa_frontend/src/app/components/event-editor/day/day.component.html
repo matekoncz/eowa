@@ -32,6 +32,7 @@
                     [date]="day.dayStartTime"
                     [opinionMode]="opinionMode"
                     [wholeDayChanged]="wholeDayChanged"
+                    [$showTimeInterval]="$showTimeInterval"
                     (hourSelected)="selectHour($event)"
                     (opinionSet)="opinionSet($event)"
                     (hourChanged)="hourChanged(hour)">

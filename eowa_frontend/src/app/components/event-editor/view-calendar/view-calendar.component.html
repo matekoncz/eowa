@@ -30,18 +30,18 @@
             <mat-card-header>
                 <mat-card-title>Best Time intervals</mat-card-title>
             </mat-card-header>
-            <div class="flexRow">
-                <button mat-raised-button (click)="sortAndFilterIntervalsByLength()">get best options by length</button>
-                <button mat-raised-button (click)="sortAndFilterIntervalsByParticipants()">get best options by
-                    participants</button>
-            </div>
             <div class="flexCol">
-                @for(option of filteredIntervals; track option){
+                @if(bestIntervals.length == 0){
+                <div class="flexRow">No such time intervals found</div>
+                } @else {
+                @for(interval of bestIntervals; track interval){
                 <div class="flexRow">
-                    {{option.hourSerial | startAndEndHourPipe : this.event!.calendar!}} - {{option.hourSerial +
-                    option.length | startAndEndHourPipe : this.event!.calendar! }} participants:
-                    {{option.participantNumber}} length: {{option.length}} hours</div>
+                    <button mat-icon-button (click)="showTimeInterval(interval)"><mat-icon>pageview</mat-icon></button>
+                    {{interval.hourSerial | startAndEndHourPipe : this.event!.calendar!}} - {{interval.hourSerial +
+                    interval.length | startAndEndHourPipe : this.event!.calendar! }} participants:
+                    {{interval.participantNumber}} length: {{interval.length}} hours </div>
                 }
+            }
             </div>
             <button mat-raised-button (click)="exitSHowBestMode()">Exit</button>
         </mat-card>
@@ -111,6 +111,7 @@
             [editMode]="editMode"
             [participantNumber]="event!.participants!.length"
             [opinionMode]="opinionMode"
+            [$showTimeInterval]="$showTimeIntervals"
             (dayChanged)="dayChanged($event)"
             (opinionsSet)="opinionsChanged($event)"
             (dayHoursChanged)="hourChanged($event)"

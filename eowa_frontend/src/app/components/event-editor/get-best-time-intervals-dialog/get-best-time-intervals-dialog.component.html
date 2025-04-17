@@ -23,6 +23,14 @@
                         <mat-option [value]="UserOpinion.BAD">BAD</mat-option>
                     </mat-select>
                 </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Order by</mat-label>
+                    <mat-select formControlName="popularityMode">
+                        <mat-option [value]="true"> Popularity </mat-option>
+                        <mat-option [value]="false"> Length </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </form>
     </div>

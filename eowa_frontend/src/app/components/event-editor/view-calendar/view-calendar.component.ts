@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Calendar } from '../../../Model/Calendar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { firstValueFrom, from } from 'rxjs';
+import { firstValueFrom, from, Subject } from 'rxjs';
 import { EowaEvent } from '../../../Model/EowaEvent';
 import { EventService } from '../../../services/event.service';
 import { Day } from '../../../Model/Day';
@@ -36,6 +36,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetBestTimeIntervalsDialogComponent } from '../get-best-time-intervals-dialog/get-best-time-intervals-dialog.component';
 import { TimeIntervalDetails } from '../../../Model/TimeIntervalDetails';
 import { ProcessIndicatorComponent } from '../../process-indicator/process-indicator.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-view-calendar',
@@ -53,12 +54,14 @@ import { ProcessIndicatorComponent } from '../../process-indicator/process-indic
     MatSelectModule,
     CommonModule,
     StartAndEndHourPipePipe,
-    ProcessIndicatorComponent
+    ProcessIndicatorComponent,
+    MatIconModule
 ],
   templateUrl: './view-calendar.component.html',
   styleUrl: './view-calendar.component.css',
 })
 export class ViewCalendarComponent implements OnInit {
+
   eventId?: number;
 
   event?: EowaEvent;
@@ -81,8 +84,6 @@ export class ViewCalendarComponent implements OnInit {
 
   bestIntervals: TimeIntervalDetails[] = [];
 
-  filteredIntervals: TimeIntervalDetails[] = [];
-
   changedOpinions: Set<Opinion> = new Set();
 
   dialog = inject(MatDialog);
@@ -100,6 +101,8 @@ export class ViewCalendarComponent implements OnInit {
   OpinionMode = OpinionMode;
 
   EditMode = EditMode;
+
+  $showTimeIntervals = new Subject<TimeIntervalDetails>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -282,6 +285,10 @@ export class ViewCalendarComponent implements OnInit {
     }
   }
 
+  showTimeInterval(timeInterval: TimeIntervalDetails) {
+    this.$showTimeIntervals.next(timeInterval);
+  }
+
   isUserEventOwner() {
     if (this.event?.owner == null) {
       return false;
@@ -378,7 +385,8 @@ export class ViewCalendarComponent implements OnInit {
         this.getBestTimeIntervals(
           result.participants,
           result.length,
-          result.allowedOpinions
+          result.allowedOpinions,
+          result.popularityMode
         );
       }
     });
@@ -387,14 +395,16 @@ export class ViewCalendarComponent implements OnInit {
   getBestTimeIntervals(
     participants: number,
     length: number,
-    allowedOpinions: UserOpinion[]
+    allowedOpinions: UserOpinion[],
+    popularityMode: boolean
   ) {
     this.eventservice
       .getBestTimeIntervals(
         this.eventId!,
         participants,
         length,
-        allowedOpinions
+        allowedOpinions,
+        popularityMode
       )
       .subscribe((response) => {
         let status = response.status;
@@ -403,7 +413,6 @@ export class ViewCalendarComponent implements OnInit {
             (intervals: TimeIntervalDetails[]) => {
               console.log(intervals);
               this.bestIntervals = intervals;
-              this.filteredIntervals = [];
               this.editMode = EditMode.SHOW_BEST;
             }
           );
@@ -411,33 +420,14 @@ export class ViewCalendarComponent implements OnInit {
       });
   }
 
-  sortAndFilterIntervalsByParticipants() {
-    console.log(this.bestIntervals);
-    let fn = (o1: TimeIntervalDetails, o2: TimeIntervalDetails) => {
-      return o2.participantNumber - o1.participantNumber;
-    };
-    this.sortAndFiltertIntervalsBy(fn);
-  }
-
-  sortAndFilterIntervalsByLength() {
-    console.log(this.bestIntervals);
-    let fn = (o1: TimeIntervalDetails, o2: TimeIntervalDetails) => {
-      return o2.length - o1.length;
-    };
-    this.sortAndFiltertIntervalsBy(fn);
-  }
-
-  sortAndFiltertIntervalsBy(
-    fn: (a: TimeIntervalDetails, b: TimeIntervalDetails) => number
-  ) {
-    this.filteredIntervals = this.bestIntervals.sort(fn);
-    if (this.filteredIntervals.length > 5) {
-      this.filteredIntervals = this.filteredIntervals.slice(0, 5);
-    }
-  }
-
   exitSHowBestMode() {
     this.editMode = EditMode.DEFAULT;
+    let noInterval : TimeIntervalDetails = {
+      hourSerial: 0,
+      length: 0,
+      participantNumber: 0
+    }
+    this.$showTimeIntervals.next(noInterval);
   }
 
   showBestIntervals() {}

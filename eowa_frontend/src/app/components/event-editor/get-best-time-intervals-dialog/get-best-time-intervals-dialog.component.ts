@@ -41,17 +41,18 @@ export class GetBestTimeIntervalsDialogComponent {
   event: EowaEvent = inject<EowaEvent>(MAT_DIALOG_DATA);
 
   intervalsForm: FormGroup = new FormGroup({
-    participants: new FormControl(0, [
+    participants: new FormControl(1, [
       Validators.required,
-      Validators.min(0),
+      Validators.min(1),
       Validators.max(this.event.participants.length),
     ]),
-    length: new FormControl(0, [
+    length: new FormControl(1, [
       Validators.required,
-      Validators.min(0),
+      Validators.min(1),
       Validators.max(24 * 14),
     ]),
     allowedOpinions: new FormControl([], [Validators.required]),
+    popularityMode: new FormControl(true, [Validators.required]),
   });
 
   UserOpinion = UserOpinion;
@@ -68,6 +69,7 @@ export class GetBestTimeIntervalsDialogComponent {
       participants: this.intervalsForm.get('participants')?.value,
       length: this.intervalsForm.get('length')?.value,
       allowedOpinions: this.intervalsForm.get('allowedOpinions')?.value,
+      popularityMode: this.intervalsForm.get('popularityMode')?.value,
     });
   }
 }
