@@ -5,6 +5,7 @@
 \usepackage[magyar]{babel}
 \usepackage{amsthm, amssymb,amsmath,hyperref}
 \usepackage{enumerate, graphicx, xcolor}
+\usepackage{caption,setspace}
 
 \usepackage{chngcntr}
 \counterwithout{figure}{chapter}
@@ -147,13 +148,13 @@ Az alkalmazás használatával eseményeket lehet létrehozni, lehetőség van a
 
 \section{Motiváció}
 
-Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytársaimmal gyakran jártunk össze focizni, ám ezeket az alkalmakat mindig komoly kihívás volt megszervezni. Az legtöbb alkalom azért maradt el, mert nem sikerült olyan időpontot találni, amelyre legalább 8 ember biztosan el tudott jönni. A szavazások nehezen folytak le, rendszerint a messenger-en küldött 'foci péntek délután?', 'foci szombat délelőtt?' stb. üzenetekre adott reakciók száma alapján dőlt el a focizás időpontja. Az alkalmazásom az ehhez hasonló események szervezését könnyíti meg, ahol a legnagyobb kihívás az ideális időpont megtalálása, hiszen az a legfontosabb, hogy az minél több embernek feleljen meg.
+Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytársaimmal gyakran jártunk össze focizni, ám ezeket az alkalmakat mindig komoly kihívás volt megszervezni. Az legtöbb alkalom azért maradt el, mert nem sikerült olyan időpontot találni, amelyre legalább 8 ember biztosan el tudott jönni. A szavazások nehezen folytak le, rendszerint a messenger-en küldött 'foci péntek délután?', 'foci szombat délelőtt?' stb. üzenetekre adott reakciók száma alapján dőlt el a focizás időpontja. Az alkalmazásom az ehhez hasonló események szervezését könnyíti meg, ahol a legnagyobb kihívás az ideális időpont megtalálása, hiszen az a legfontosabb, hogy az minél több embernek feleljen meg. A focizáshoz az időponton kívül kívül a helyszínt is el kellett dönteni, valamint arra is választ kellett kapni, hogy ki hozza a labdát, ezért az alkalmazásban amit létre terveztem hozni, fontos szerepet kapott az is, hogy az események kiegészíthetetőek legyenek az ehhez hasonló kérdések eldöntésére alkalmas extra mezőkkel. Mivel a focit igyekeztünk minden héten megszervezni, az is felmerült bennem, hogy az alkalmazásban az eseméyneket egyszerűen lehessen sokszorosítani.
 
 \chapter{Fő funkciók bemutatása}
 
 \section{A felhasználók kezelése}
 
-Az alkalmazásban a felhasználók kezelése nem a legfontosabb feladat, számos, hasonló alkalmazásban gyakori funkciókat, mint a felhasználói profil szerkesztése, nem valósítottam meg. A felhasználók autentikációja és autorizációja azonban fontos szerepet kap.
+A felhasználók autentikációja és autorizációja fontos szerepet kap az alkalmazásban. Azonban a hangsúly az események kezelésén volt, ezért számos, hasonló alkalmazásban gyakori funkciókat, mint a felhasználói profil szerkesztése, időhiány miatt nem valósítottam meg. Ezeket természetesen később még pótolhatom, erről bővebben a Továbbfejlesztési lehetőségek fejezetben írok.
 
 	\subsection{Regisztráció}
 
@@ -175,13 +176,31 @@ Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni
 
 	\subsection{Csatlakozás}
 
+\begin{center}
+\includegraphics[width=150mm]{join_event}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{A csatlakozási űrlap az elkészült alkalmazásban}
+\end{center}
+
 A szervező és a résztvevők számára látható az esemény egyedi meghívó-kódja. Ők ezt a kódot tetszőleges felületen továbbíthatják másoknak, akik ezt a kódot használva a résztvevők közé kerülnek. Az eseményhez való csatlakozáshoz regisztráció szükséges.
 
 	\subsection{Extra mezők}
 
-A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához, stb szolgálhatnak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja.
+\begin{center}
+\includegraphics[width=150mm]{extra_field_food}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Egy extra mező az elkészült alkalmazásban}
+\end{center}
+
+A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához szolgálhatnak. Ennél a pédánál maradva, az esemény szervezője ez eseben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger"). 
 
 	\subsection{Eseménysémák használata}
+
+\begin{center}
+\includegraphics[width=150mm]{notification}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Értesítés esemény lezárásáról az elkészült alkalmazásban}
+\end{center}
 
 Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát készítsen. A séma tartalmazza az eseményhez rendelt extra mezőket azok tulajdonságaival és lehetséges értékeivel együtt, és alkalmas arra, hogy a használatával új eseményt lehessen létrehozni, amely extra mezői ugyanezekkel a tulajdonságokkal és értékeikben megegyező opciókkal rendelkeznek. Egy eseményhez több sémából is rendelhetünk extra mezőket, és ezek mellett továbbra is lehetőség van új mezők manuálisan történő hozzáadására.
 
@@ -191,7 +210,7 @@ Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény
 
 \section{Naptárak kezelése}
 
-A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segíse az esemény szervezőjét az ideális időpont kiválasztásában.
+A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segítse az esemény szervezőjét az ideális időpont kiválasztásában.
 
 	\subsection{Létrehozás}
 
@@ -243,7 +262,7 @@ A frontenden nagy számban használtam az Angular Material\cite{Materialwebsite}
 
 	\subsection{RxJs}
 
-Az RxJs\cite{Rxjswebsite} könyvtár aszinkron műveletek kezelését segítő függvényeket és típusokat tartalmaz. A frontendemen könyvtárban található Observable típust használtam az aszinkron API lekérdezések megvalósításához, valamint a Subject típust használtam azokban az esetekben, amikor gyerek komponensben kellett szülő komponensben bekövetkező eseményre reagálni.
+Az RxJs\cite{Rxjswebsite} könyvtár aszinkron műveletek kezelését segítő függvényeket és típusokat tartalmaz. A frontendemen az RxJs könyvtárban található Observable típust használtam az aszinkron API lekérdezések megvalósításához, valamint a Subject típust használtam azokban az esetekben, amikor gyerek komponensben kellett szülő komponensben bekövetkező eseményre reagálni.
 
 \section{git}
 
@@ -266,31 +285,31 @@ A service komponenseket nem az általuk használt repository-k, hanem a funkció
 
 \subsection{AuthService}
 
-Az AuthService feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet és jelszavat veti össze az adatbázisban tárolt felhasználónévvel és a dekódolt jelszóval. A sikeres bejelentkezéskor az AuthService létrehoz egy Session objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az AuthService metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végpontjoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
+Az AuthService feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet veti össze az adatbázisban tárolt felhasználónévvel és megadott jelszavat az adatbázisban tárolt titkosított jelszóval a Spring Security BCryptPasswordEncoder osztály matches metódusának használatával. A sikeres bejelentkezéskor az AuthService létrehoz egy Session objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az AuthService metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végponthoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
 
 \subsection{EventService}
 
-Az EventService-ben történnek az események kezelésével kapcsolatos műveletek, a naptár kezelésének kivételével. Kihívások az írása során:
+Az EventService-ben történnek az események kezelésével kapcsolatos műveletek, a naptár kezelésének kivételével. 
 
-Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Ekkor az EventService az esemény összes extra mezőjéből és azoknak a lehetséges értékeiből másolatot készít, és ezeket egyetlen kollekcióba gyűjti össze, majd JSON objektumként tárolja el az eseményséma (EventBlueprint) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így elállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem. Arra is ügyeltem, hogy minden felhasználó csak az általa létrehozott sémákhoz férhessen hozzá, ehhez egy insertUser tulajdonságal kellett kibővítenem az EventBlueprint model osztályt.
+Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Az EventService ekkor az esemény összes extra mezőjét tartalmazó kollekciót JSON objektumként tárolja el az eseményséma (EventBlueprint) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így előállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem. Arra is ügyeltem, hogy minden felhasználó csak az általa létrehozott sémákhoz férhessen hozzá, ehhez egy insertUser tulajdonságal kellett kibővítenem az EventBlueprint model osztályt.
 
 \subsection{CalendarService}
 
-A naptárak kezelése a CalendarService-en keresztül történik. Kihívások az írása során:
+A naptárak kezelése a CalendarService-en keresztül történik.
 
-Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órá, amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
+Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órák, amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
 
-Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta. Az időpontokat tartalmazó lista hossza legrosszabb esetben \[\sum_{m=1}^{a*24+1} \sum_{n=1}^{m} n \], ahol \textit{a} az esményhez rendelt napok száma. Ez legfeljebb 60 lehet, ez alapján a leghosszabb lista, amit a függvény visszaadhat  \[\sum_{m=1}^{1441} \sum_{n=1}^{m} n  = 539 720 499 241\] elemet tartalmaz,  ennyi adatot nyilvánvalóan nem szeretnék a frontenden feldolgozni. Ezért a getBestTimeIntervals függvényt használja a getLongestTimeIntervals és a getMostPopularIntervals függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
+Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta. Az időpontokat tartalmazó lista hossza legrosszabb esetben **nagyon sok - még átírom a fúggvényt, addig inkább ne legyen képlet** elemet adhat vissza, ennyit nem szeretnék a frontenden feldolgozni. Ezért a getBestTimeIntervals függvényt használja a getLongestTimeIntervals és a getMostPopularIntervals függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
 
 \subsection{MailService}
 
-A felhasználóknak küldött rendszeren belüli üzenetek kezelését végzi. Kihívások az írása során:
+A felhasználóknak küldött rendszeren belüli üzenetek kezelését végzi.
 
 A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az eseményt lezáró művelet esetleges visszavonásáról. Az események lezárásaról tájékoztató üzenet tartalmazza az eseményhez tartozó mező-érték párokat (ebbe az esemény kezdete és vége is bele tartozik, amennyiben naptárt is rendelt a szervező az eseményhez). Ezeket egyszerű szövegként nehéz értelmezni, ezért ezt formázott szövgként táblázatos formában terveztem megjeleníteni. Mivel a frontend oldalon nem terveztem módosításokat végrehajtani a backendről érkező levéleken, ezért a formázott üzenetet a backenden készítettem el, HTML formátumban. Mivel nem találtam az igényeimnek megfelelő Java könyvtárat, ezért készítettem egy HTMLWriter osztályt amelyben HTML elemeket előállító statikus metódusokat írtam. A formázott levelek frontend oldalon történő kezeléséről lejjebb értekezem.
 
 \section{Controller réteg}
 
-A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensérere, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal, a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
+A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensére, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal, a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
 
 \subsection{Szerializálció, deszerializáció}
 
@@ -346,15 +365,36 @@ Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és fo
 
 	\subsection{Naptárfelület}
 
+\begin{center}
+\includegraphics[width=150mm]{calendar_editor}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{A naptárfelület szervezői kontrol panelje}
+\end{center}
+
 A naptárfelület több standalone komponensből tevődik össze. A ViewCalendarComponent-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az EventService-t csak a ViewCalendarComponent-ben injektáltam, a DayComponent-ben és az HourComponent-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak.
 
 \section{Űrlapok reaktív módon történő kezelése}
+
+\begin{center}
+\begin{tabular}{cc}
+\includegraphics[width=70mm]{join_event}
+\includegraphics[width=70mm]{extra_field_form}
+\end{tabular}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Példa egyszerű és összetett űrlapra}
+\end{center}
 
 Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek.
 
 \section{UX, UI}
 
 	\subsection{Progress indicator}
+
+\begin{center}
+\includegraphics[width=75mm]{progress_indicator}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{A progress indicator komponens}
+\end{center}
 
 Létrehoztam egy saját progress indicator komponenst, amely segítségével jelzem a felhasználó felé, ha a kért útvonalhoz tartozó komponens még nem tölthető fel adatokkal, mivel azoknak az API-tól való lekérése éppen most zajlik. Ezzel helyettesítem az adott komponens tartalmát annak inicializálásától kezdve az API-tól érkező válaszig (akkor is, ha az hibát jelez). Ezt természetesen nem alkalmazom azokban az esetekben, amikor a komponens megjelenítendő adai rendelkezésre állnak, és az API-val történő kommunikácó befejeztét nem kell megvárnia a felhasználónak, hogy más műveletek végrehajtson.
 
@@ -363,6 +403,12 @@ Létrehoztam egy saját progress indicator komponenst, amely segítségével jel
 Az Angular-ban a guard-ok olyan függvények, amelyek segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a UserService-t injektáltam, hogy annak getCurrentUser metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
 
 	\subsection{Folytonos színátmenet style binding segítségével}
+
+\begin{center}
+\includegraphics[width=160mm]{week_view}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Az időpontok népszerűségének megjelenítése színek segítségével}
+\end{center}
 
 A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
 
@@ -396,7 +442,7 @@ A Doodle-ban több, az enyémhez hasonló megoldás is van, például az esemén
 
 Az alkalmazás még nem teljes, de a legfontosabb funkciókat mind megvalósítottam. A használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
 
-Bár léteznek már hasonló célra készült alkalmazások, úgy hiszem, hogy elsősorban a rugalmassága miatt az alkalmazásomra van igény.
+Bár léteznek már hasonló célra készült alkalmazások, úgy hiszem, hogy elsősorban a rugalmassága miatt az alkalmazásom egy létező igényt elégít ki.
 
 \newpage
 
