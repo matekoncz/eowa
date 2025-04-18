@@ -9,7 +9,7 @@
         <button mat-icon-button (click)="changeEditMode()"><mat-icon>cancel</mat-icon></button>
         }
         @else{
-        <button mat-icon-button (click)="changeEditMode()"><mat-icon>add</mat-icon></button>
+        <button mat-icon-button (click)="changeEditMode()"><mat-icon>edit</mat-icon></button>
         }
         }
         @if(isUserOwner && !isEventFinalized){
@@ -31,10 +31,10 @@
         </p>
         @if(field?.selectedByPoll && !isEventFinalized){
         @if(alreadyVoted(option)){
-        <button mat-icon-button (click)="removeVote(option)"><mat-icon>remove</mat-icon></button>
+        <button mat-icon-button (click)="removeVote(option)" matTooltip="remove vote"><mat-icon>remove</mat-icon></button>
         }
         @else{
-        <button mat-icon-button (click)="vote(option)"><mat-icon>add</mat-icon> </button>
+        <button mat-icon-button (click)="vote(option)" matTooltip="vote"><mat-icon>add</mat-icon> </button>
         }
         }
         @if(isUserOwner && !option.selected && !isEventFinalized){

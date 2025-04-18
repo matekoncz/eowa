@@ -6,11 +6,12 @@ import { UserService } from '../../../services/user.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-event-field',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, FormsModule, MatInputModule],
+  imports: [MatButtonModule, MatIconModule, FormsModule, MatInputModule,MatTooltipModule],
   templateUrl: './event-field.component.html',
   styleUrl: './event-field.component.css',
 })
