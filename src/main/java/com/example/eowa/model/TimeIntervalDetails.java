@@ -1,5 +1,7 @@
 package com.example.eowa.model;
 
+import java.util.Set;
+
 public class TimeIntervalDetails {
     private long hourSerial;
 
@@ -7,13 +9,16 @@ public class TimeIntervalDetails {
 
     private int participantNumber;
 
+    private Set<User> participants;
+
     public TimeIntervalDetails() {
     }
 
-    public TimeIntervalDetails(long hourSerial, int length, int participantNumber) {
+    public TimeIntervalDetails(long hourSerial, int length, int participantNumber, Set<User> participants) {
         this.hourSerial = hourSerial;
         this.length = length;
         this.participantNumber = participantNumber;
+        this.participants = participants;
     }
 
     public long getHourSerial() {
@@ -38,5 +43,13 @@ public class TimeIntervalDetails {
 
     public void setParticipantNumber(int participantNumber) {
         this.participantNumber = participantNumber;
+    }
+
+    public Set<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<User> participants) {
+        this.participants = participants;
     }
 }

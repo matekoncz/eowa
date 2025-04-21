@@ -38,3 +38,10 @@ mat-card {
 #saveButton {
   align-items: center;
 }
+
+.verticalCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

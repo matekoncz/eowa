@@ -218,15 +218,28 @@ public class CalendarService {
                     break;
                 }
                 if(sharedParticipants.size()<participantNumber){
-                    momentDetails.add(new TimeIntervalDetails(hour.getNumberInTotal(),nextNumber-hour.getNumberInTotal(),participantNumber));
+                    TimeIntervalDetails timeInterval = new TimeIntervalDetails(hour.getNumberInTotal(), nextNumber - hour.getNumberInTotal(), participantNumber, sharedParticipants);
+                    if(!isTimeIntervalIncludedInAnotherOne(timeInterval,momentDetails)){
+                        momentDetails.add(timeInterval);
+                    }
                 }
                 nextNumber++;
                 nextHour=getHourByNumber(everyHour,nextNumber);
             }
-            momentDetails.add(new TimeIntervalDetails(hour.getNumberInTotal(),nextNumber-hour.getNumberInTotal(),participantNumber));
+            TimeIntervalDetails timeInterval = new TimeIntervalDetails(hour.getNumberInTotal(), nextNumber - hour.getNumberInTotal(), participantNumber, sharedParticipants);
+            if(!isTimeIntervalIncludedInAnotherOne(timeInterval,momentDetails)){
+                momentDetails.add(timeInterval);
+            }
         });
 
         return momentDetails.stream().filter(detail->detail.getLength()>=minLength).collect(Collectors.toList());
+    }
+
+    private boolean isTimeIntervalIncludedInAnotherOne(TimeIntervalDetails timeInterval, List<TimeIntervalDetails> otherIntervals){
+        return otherIntervals.stream().anyMatch(details ->
+                details.getParticipants().equals(timeInterval.getParticipants())
+                        && (details.getHourSerial() <= timeInterval.getHourSerial())
+                        && (details.getHourSerial()+details.getLength()>=timeInterval.getHourSerial()+timeInterval.getLength()));
     }
 
     private void updateSharedParticipants(Set<User> sharedParticipants, Set<User> positiveParticipants) {

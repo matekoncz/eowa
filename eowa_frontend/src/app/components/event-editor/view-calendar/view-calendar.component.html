@@ -36,10 +36,13 @@
                 } @else {
                 @for(interval of bestIntervals; track interval){
                 <div class="flexRow">
-                    <button mat-icon-button (click)="showTimeInterval(interval)"><mat-icon>pageview</mat-icon></button>
+                    <button mat-raised-button (click)="showTimeInterval(interval)"><mat-icon>pageview</mat-icon> display</button>
+                    <div class="verticalCenter">
                     {{interval.hourSerial | startAndEndHourPipe : this.event!.calendar!}} - {{interval.hourSerial +
-                    interval.length | startAndEndHourPipe : this.event!.calendar! }} participants:
-                    {{interval.participantNumber}} length: {{interval.length}} hours </div>
+                    interval.length | startAndEndHourPipe : this.event!.calendar! }} |   participants:
+                    {{interval.participantNumber}} length: {{interval.length}} hours
+                    </div>
+                </div>
                 }
             }
             </div>
