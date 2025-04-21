@@ -196,15 +196,15 @@ A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező le
 
 	\subsection{Eseménysémák használata}
 
+Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát készítsen. A séma tartalmazza az eseményhez rendelt extra mezőket azok tulajdonságaival és lehetséges értékeivel együtt, és alkalmas arra, hogy a használatával új eseményt lehessen létrehozni, amely extra mezői ugyanezekkel a tulajdonságokkal és értékeikben megegyező opciókkal rendelkeznek. Egy eseményhez több sémából is rendelhetünk extra mezőket, és ezek mellett továbbra is lehetőség van új mezők manuálisan történő hozzáadására.
+
+	\subsection{Esemény adatainak véglegesítése}
+
 \begin{center}
 \includegraphics[width=150mm]{notification}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Értesítés esemény lezárásáról az elkészült alkalmazásban}
 \end{center}
-
-Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát készítsen. A séma tartalmazza az eseményhez rendelt extra mezőket azok tulajdonságaival és lehetséges értékeivel együtt, és alkalmas arra, hogy a használatával új eseményt lehessen létrehozni, amely extra mezői ugyanezekkel a tulajdonságokkal és értékeikben megegyező opciókkal rendelkeznek. Egy eseményhez több sémából is rendelhetünk extra mezőket, és ezek mellett továbbra is lehetőség van új mezők manuálisan történő hozzáadására.
-
-	\subsection{Esemény adatainak véglegesítése}
 
 Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény időpontja és az extra mezők értékei tartoznak bele).  Ezután az esemény adatai nem módosíthatóak, a résztvevők pedig értesítést kapnak az esemény véglegesítéséről. A művelet visszavonható, ekkor újra módosíthatóvá válnak az adatok, az esemény résztvevői pedig erről is értesítést kapnak.
 
@@ -226,7 +226,19 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 
 	\subsection{Statisztikák megtekintése}
 
+\begin{center}
+\includegraphics[width=150mm]{best_time_intervals}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Statisztikák lekérése az elkészült alkalmazásban}
+\end{center}
+
 Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor.
+
+\begin{center}
+\includegraphics[width=150mm]{get_best_dialog}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Statisztikák megtekintése az elkészült alkalmazásban}
+\end{center}
 
 	\subsection{Időzónák kezelése}
 
@@ -299,7 +311,11 @@ A naptárak kezelése a CalendarService-en keresztül történik.
 
 Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órák, amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
 
-Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta. Az időpontokat tartalmazó lista hossza legrosszabb esetben **nagyon sok - még átírom a fúggvényt, addig inkább ne legyen képlet** elemet adhat vissza, ennyit nem szeretnék a frontenden feldolgozni. Ezért a getBestTimeIntervals függvényt használja a getLongestTimeIntervals és a getMostPopularIntervals függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
+Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta.
+
+Az algoritmus a következőképpen működik: az eseményhez tartozó összes óra objektumon végigiterál, és egy listába összegyűjti az egyes óráktól kezdődő összes olyan időpontot, amely a megadott feltételeknek megfelel. A függvényben, az adott órától kezdődő időpontokat keresi, egy halmazban tárolom azokat a felhasználókat, akik számára visszajelzésük alapján megfelel az óra. Ezután végigiterálok az ezt követő órákon, és frissítem a halmazt oly módon, hogy az csak azokat a felhasználókat tartalmazza, akiknek az éppen vizsgált óra is megfelelő. Amennyiben a halmaz szűkült és már legalább annyi órát vizsgáltunk, mint amennyi a paraméterben megadott minimális hossz, létrehozok egy időpont objektumot a kezdő óra, a hossz, valamint a felhasználói halmaz megadásával, és azt felveszem a visszaadandó időpontok listájába. Ha a halmaz mérete a paraméterben megadott minimális résztvevői szám alá csökken, kilépek a ciklusból, és a következő órára kezdem el keresni a z időpontokat.
+
+Az időpontokat tartalmazó lista hossza legrosszabb esetben \[ \sum_{n=1}^{a*24+1} {n} \] elemet adhat vissza, ahol \textit{a} az esemény naptárjához rendelt napok száma, ez legfeljebb 60 lehet, ez alapján a visszaadott lista maximális mérete \[ \sum_{n=1}^{1441} {n} = 1 038 961 \], ennyit nem szeretnék a frontenden feldolgozni. Ezért a getBestTimeIntervals függvényt használja a getLongestTimeIntervals és a getMostPopularIntervals függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
 
 \subsection{MailService}
 
