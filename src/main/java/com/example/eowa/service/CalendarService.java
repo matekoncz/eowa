@@ -111,10 +111,6 @@ public class CalendarService {
         return calendarRepository.findById(id).orElse(null);
     }
 
-    private Hour getHourById(long id){
-        return hourRepository.findById(id).orElse(null);
-    }
-
     public void setUnavailableDays(Calendar calendar, Set<Integer> seralNumbers) {
         calendar.getDays().forEach(d -> d.setEnabled(!seralNumbers.contains(d.getSerialNumber())));
     }
@@ -263,10 +259,5 @@ public class CalendarService {
 
     private static Hour getHourByNumber(List<Hour> everyHour, long nextNumber) {
         return everyHour.stream().filter(h -> h.getNumberInTotal() == nextNumber).findFirst().orElse(null);
-    }
-
-    public static class Period {
-        public static final int DAILY = 1;
-        public static final int WEEKLY = 7;
     }
 }

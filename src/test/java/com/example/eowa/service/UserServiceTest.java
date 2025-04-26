@@ -48,4 +48,14 @@ public class UserServiceTest extends EowaIntegrationTest {
 
         Assertions.assertThrows(EmailAddressNotUniqueException.class,()-> userService.saveUser(newuser));
     }
+
+    @Test
+    public void shouldDeleteUserByUsername() throws UserException {
+        User user = new User("felh", "asznalo1", "a@b.com");
+        userService.saveUser(user);
+
+        userService.deleteUserByUsername("felh");
+
+        Assertions.assertThrows(UserDoesNotExistException.class, () -> userService.getUserByUsername("felh"));
+    }
 }

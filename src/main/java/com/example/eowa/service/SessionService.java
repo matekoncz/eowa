@@ -26,10 +26,6 @@ public class SessionService {
         return sessionRepository.findById(jsessionid).orElse(null);
     }
 
-    public void deleteSessionById(String jsessionid){
-        sessionRepository.deleteById(jsessionid);
-    }
-
     public User getUserBySessionId(String jsessionid) {
         Session session = getSessionById(jsessionid);
         return session.getUser();

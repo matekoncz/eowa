@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.eowa.service.HTMLWriter.*;
+import static com.example.eowa.HTMLWriter.*;
 
 @Service
 @Transactional
@@ -49,8 +49,8 @@ public class EventService {
 
     public Event saveEvent(Event event) {
         event.addParticipant(event.getOwner());
-        if(event.getSelectionFields() != null){
-            Set<SelectionField> savedFields = new HashSet<>(event.getSelectionFields().stream().map((field)->{
+        if (event.getSelectionFields() != null) {
+            Set<SelectionField> savedFields = new HashSet<>(event.getSelectionFields().stream().map((field) -> {
                 field.setOptions(new HashSet<>(field.getOptions().stream().map((option -> optionRepository.save(option))).toList()));
                 return selectionFieldRepository.save(field);
             }).toList());
@@ -79,7 +79,7 @@ public class EventService {
 
     public void setUnavailableDays(long id, Set<Integer> serialNumbers) {
         Calendar calendar = getEventById(id).getCalendar();
-        if(calendar == null){
+        if (calendar == null) {
             return;
         }
         calendarService.setUnavailableDays(calendar, serialNumbers);
@@ -87,34 +87,34 @@ public class EventService {
 
     public void setUnavailableHours(long id, Set<Integer> serialNumbers) {
         Calendar calendar = getEventById(id).getCalendar();
-        if(calendar == null){
+        if (calendar == null) {
             return;
         }
         calendarService.setUnavailableHours(calendar, serialNumbers);
     }
 
-    public void setUnavailableHoursPeriodically(long id, Set<Integer> hourNumbers, int period, int dayOffset){
+    public void setUnavailableHoursPeriodically(long id, Set<Integer> hourNumbers, int period, int dayOffset) {
         Calendar calendar = getEventById(id).getCalendar();
-        if(calendar == null){
+        if (calendar == null) {
             return;
         }
-        calendarService.setUnavailableHoursPeriodically(calendar,hourNumbers,period, dayOffset);
+        calendarService.setUnavailableHoursPeriodically(calendar, hourNumbers, period, dayOffset);
     }
 
-    public void setUserOpinion(long id, Set<Integer> hourSerials, User user, Opinion.UserOpinion userOpinion){
+    public void setUserOpinion(long id, Set<Integer> hourSerials, User user, Opinion.UserOpinion userOpinion) {
         Calendar calendar = getEventById(id).getCalendar();
-        if(calendar == null){
+        if (calendar == null) {
             return;
         }
-        calendarService.setUserOpinion(calendar,user,hourSerials,userOpinion);
+        calendarService.setUserOpinion(calendar, user, hourSerials, userOpinion);
     }
 
-    public void removeUserOpinion(long id, Set<Integer> hourSerials, User user){
+    public void removeUserOpinion(long id, Set<Integer> hourSerials, User user) {
         Calendar calendar = getEventById(id).getCalendar();
-        if(calendar == null){
+        if (calendar == null) {
             return;
         }
-        calendarService.removeUserOpinion(calendar,user,hourSerials);
+        calendarService.removeUserOpinion(calendar, user, hourSerials);
     }
 
     public Event getEventById(Long id) {
@@ -139,40 +139,40 @@ public class EventService {
 
     public Event joinEventWithInvitationCode(User user, String invitationCode) throws InvalidInvitationCodeException {
         Event event = eventRepository.findEventByInvitationCode(invitationCode);
-        if(event == null){
+        if (event == null) {
             throw new InvalidInvitationCodeException();
         }
-        if(!event.getParticipants().contains(user)){
+        if (!event.getParticipants().contains(user)) {
             event.addParticipant(user);
         }
         return event;
     }
 
-    public void addFieldsToEvent(long id,Set<SelectionField> selectionFields){
+    public void addFieldsToEvent(long id, Set<SelectionField> selectionFields) {
         Event event = getEventById(id);
-        event.addSelectionFields(selectionFields.stream().map((field)-> {
+        event.addSelectionFields(selectionFields.stream().map((field) -> {
             field.setOptions(field.getOptions().stream().map(optionRepository::save).collect(Collectors.toSet()));
             return selectionFieldRepository.save(field);
         }).collect(Collectors.toSet()));
     }
 
-    public void removeFieldsFromEvent(long id, Set<Long> selectionFieldIds){
-            Event event = getEventById(id);
+    public void removeFieldsFromEvent(long id, Set<Long> selectionFieldIds) {
+        Event event = getEventById(id);
         Set<SelectionField> selectionFields = selectionFieldIds
                 .stream()
                 .map(this::getSelectionFieldById)
                 .collect(Collectors.toSet());
         event.removeSelectionFields(selectionFields);
         eventRepository.save(event);
-        selectionFields.forEach(field->{
+        selectionFields.forEach(field -> {
             field.getOptions().forEach(option -> optionRepository.deleteById(option.getId()));
             selectionFieldRepository.deleteById(field.getId());
         });
     }
 
-    public void addFieldOptions(long selectionId, Set<Option> options, boolean owner){
+    public void addFieldOptions(long selectionId, Set<Option> options, boolean owner) {
         SelectionField selectionField = getSelectionFieldById(selectionId);
-        if(owner || selectionField.isOpenForModification()){
+        if (owner || selectionField.isOpenForModification()) {
             options.forEach(option -> {
                 optionRepository.save(option);
             });
@@ -180,47 +180,47 @@ public class EventService {
         }
     }
 
-    public void removeFieldOptions(long selectionId, Set<Long> optionids, boolean owner){
+    public void removeFieldOptions(long selectionId, Set<Long> optionids, boolean owner) {
         SelectionField selectionField = getSelectionFieldById(selectionId);
-        if(owner || selectionField.isOpenForModification()){
+        if (owner || selectionField.isOpenForModification()) {
             Set<Option> options = optionids.stream().map(this::getOptionById).collect(Collectors.toSet());
             selectionField.removeOptions(options);
         }
     }
 
-    public void addVote(long optionid,long fieldid, User user){
+    public void addVote(long optionid, long fieldid, User user) {
         Option option = getOptionById(optionid);
         SelectionField field = getSelectionFieldById(fieldid);
-        if(field.isSelectedByPoll()){
+        if (field.isSelectedByPoll()) {
             option.addVoter(user);
             selectMostVoted(fieldid);
         }
     }
 
-    public void removeVote(long optionid, long fieldid, User user){
+    public void removeVote(long optionid, long fieldid, User user) {
         Option option = getOptionById(optionid);
         SelectionField field = getSelectionFieldById(fieldid);
-        if(field.isSelectedByPoll()){
+        if (field.isSelectedByPoll()) {
             option.removeVoter(user);
             selectMostVoted(fieldid);
         }
     }
 
-    public void selectOption(long optionid, long fieldid){
+    public void selectOption(long optionid, long fieldid) {
         Set<Option> options = getSelectionFieldById(fieldid).getOptions();
         options.forEach(option -> option.setSelected(false));
         Option selected = getOptionById(optionid);
         selected.setSelected(true);
     }
 
-    public void selectMostVoted(long fieldid){
+    public void selectMostVoted(long fieldid) {
         Set<Option> options = getSelectionFieldById(fieldid).getOptions();
         options.forEach(option -> option.setSelected(false));
         Option winner = options.stream().max(Comparator.comparingInt(o -> o.getVoters().size())).get();
         winner.setSelected(true);
     }
 
-    public EventBlueprint createEventBlueprint(long id, String name,User user) {
+    public EventBlueprint createEventBlueprint(long id, String name, User user) {
         Event event = getEventById(id);
         EventBlueprint blueprint = new EventBlueprint();
         blueprint.setName(name);
@@ -233,33 +233,33 @@ public class EventService {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try{
+        try {
             blueprint.setContent(objectMapper.writeValueAsString(fields));
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             blueprint.setContent("");
         }
         return eventBluePrintRepository.save(blueprint);
     }
 
-    public Event addFieldsFromBluePrint(long eventId, long bluePrintId){
+    public Event addFieldsFromBluePrint(long eventId, long bluePrintId) {
         Event event = getEventById(eventId);
         EventBlueprint blueprint = getEventBlueprintById(bluePrintId);
         ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            Set<SelectionField> fields = Set.of(objectMapper.readValue(blueprint.getContent(),SelectionField[].class));
-            addFieldsToEvent(eventId,fields);
-        } catch (JsonProcessingException e){
+        try {
+            Set<SelectionField> fields = Set.of(objectMapper.readValue(blueprint.getContent(), SelectionField[].class));
+            addFieldsToEvent(eventId, fields);
+        } catch (JsonProcessingException e) {
             return event;
         }
         return event;
     }
 
-    public void setStartTimeAndEndTime(long eventid, int startHour, int endHour){
+    public void setStartTimeAndEndTime(long eventid, int startHour, int endHour) {
         Calendar calendar = getEventById(eventid).getCalendar();
-        calendarService.setTimeInterval(calendar,startHour,endHour);
+        calendarService.setTimeInterval(calendar, startHour, endHour);
     }
 
-    public void resetStartHourAndEndHour(long eventid){
+    public void resetStartHourAndEndHour(long eventid) {
         Calendar calendar = getEventById(eventid).getCalendar();
         calendarService.resetTimeInterval(calendar);
     }
@@ -273,19 +273,20 @@ public class EventService {
         String content = getMailContentForEvent(event);
 
         event.getParticipants().forEach(
-                participant -> mailService.sendMail(event.getOwner(),participant,title,content)
+                participant -> mailService.sendMail(event.getOwner(), participant, title, content)
         );
     }
 
     public void checkIfEventCanBeFinalized(Event event) throws EventCannotBeFinalizedException {
         Calendar calendar = event.getCalendar();
-        if(calendar != null && (calendar.getStarthour() == -1 || calendar.getEndhour() == -1)){
+        if (calendar != null && (calendar.getStarthour() == -1 || calendar.getEndhour() == -1)) {
             throw new EventCannotBeFinalizedException();
         }
         Set<SelectionField> selectionFields = event.getSelectionFields();
-        if(selectionFields.stream().anyMatch(selectionField -> selectionField.getOptions().stream().noneMatch(Option::isSelected))){
+        if (selectionFields.stream().anyMatch(selectionField -> selectionField.getOptions().stream().noneMatch(Option::isSelected))) {
             throw new EventCannotBeFinalizedException();
-        };
+        }
+        ;
     }
 
     private String getMailContentForEvent(Event event) {
@@ -299,87 +300,87 @@ public class EventService {
 
         String tableContent = "";
 
-        if(event.getCalendar() != null){
+        if (event.getCalendar() != null) {
             int start = event.getCalendar().getStarthour();
             int end = event.getCalendar().getEndhour();
 
             List<Day> days = event.getCalendar().getDays();
 
             Day startDay = days.stream()
-                    .filter(d-> d.getHours().stream().anyMatch(h->h.getNumberInTotal() == start))
+                    .filter(d -> d.getHours().stream().anyMatch(h -> h.getNumberInTotal() == start))
                     .findFirst().get();
 
             Hour startHour = startDay.getHours().stream()
-                    .filter(h->h.getNumberInTotal() == start).findFirst().get();
+                    .filter(h -> h.getNumberInTotal() == start).findFirst().get();
 
             Day endDay = days.stream()
-                    .filter(d-> d.getHours().stream().anyMatch(h->h.getNumberInTotal() == end))
+                    .filter(d -> d.getHours().stream().anyMatch(h -> h.getNumberInTotal() == end))
                     .findFirst().get();
 
             Hour endHour = endDay.getHours().stream()
-                    .filter(h->h.getNumberInTotal() == end).findFirst().get();
+                    .filter(h -> h.getNumberInTotal() == end).findFirst().get();
 
-            tableContent+=tr(
+            tableContent += tr(
                     td("Start of the event")
-                            +td(startDay.getDayStartTime().toLocalDate()+" - "+getHourString(startHour.getNumber()))
-                            )
-                    +tr(td("End of the event")
-                            +td(endDay.getDayStartTime().toLocalDate().toString()+" - "+getHourString(endHour.getNumber()))
-                    );
+                            + td(startDay.getDayStartTime().toLocalDate() + " - " + getHourString(startHour.getNumber()))
+            )
+                    + tr(td("End of the event")
+                    + td(endDay.getDayStartTime().toLocalDate().toString() + " - " + getHourString(endHour.getNumber()))
+            );
         }
 
-        for (SelectionField field : event.getSelectionFields()){
+        for (SelectionField field : event.getSelectionFields()) {
             Option option = field.getOptions().stream().filter(Option::isSelected).findFirst().get();
-            tableContent += tr(td( htmlEscape(field.getTitle()))+td(htmlEscape(option.getValue())));
+            tableContent += tr(td(htmlEscape(field.getTitle())) + td(htmlEscape(option.getValue())));
         }
 
         String table = table(
-                tr(th("Field")+th("Value"))
-                +tableContent
+                tr(th("Field") + th("Value"))
+                        + tableContent
         );
 
-        return message+header+description+table;
+        return message + header + description + table;
     }
 
-    private String getHourString(int number){
-        if(number>9){
+    private String getHourString(int number) {
+        if (number > 9) {
             return String.valueOf(number);
         } else {
-            return "0"+ number+":00";
+            return "0" + number + ":00";
         }
     }
 
-    public void unFinalizeEvent(long eventid){
+    public void unFinalizeEvent(long eventid) {
         Event event = getEventById(eventid);
         event.setFinalized(false);
 
         String title = "An event you are participating in has been unfinalized";
-        String content = h1(event.getEventName()+" was un-finalized by "+event.getOwner().getUsername())
-                        + p("This happened at "+LocalDateTime.now()+". The event fields can now be modified again until the next finalisation.");
+        String content = h1(event.getEventName() + " was un-finalized by " + event.getOwner().getUsername())
+                + p("This happened at " + LocalDateTime.now() + ". The event fields can now be modified again until the next finalisation.");
         event.getParticipants().forEach(
-                participant -> mailService.sendMail(event.getOwner(),participant,title,content)
+                participant -> mailService.sendMail(event.getOwner(), participant, title, content)
         );
     }
 
     public void checkIfEventIsFinalized(long eventid) throws EventIsFinalizedException {
         Event event = getEventById(eventid);
-        if(event.isFinalized()){
+        if (event.isFinalized()) {
             throw new EventIsFinalizedException();
         }
     }
 
-    private List<TimeIntervalDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
-        return calendarService.getBestTimeIntervals(calendar,minParticipants,minLength,allowedOpinions);
+    private List<TimeIntervalDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions) {
+        return calendarService.getBestTimeIntervals(calendar, minParticipants, minLength, allowedOpinions);
     }
 
-    public List<TimeIntervalDetails> getLongestTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions){
+    public List<TimeIntervalDetails> getLongestTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions) {
         Calendar calendar = getEventById(eventId).getCalendar();
         List<TimeIntervalDetails> bestTimeIntervals = getBestTimeIntervals(calendar, minparticipants, minlength, allowedOpinions);
         bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed().thenComparing(Comparator.comparingInt(TimeIntervalDetails::getParticipantNumber).reversed()));
-        return bestTimeIntervals.subList(0,10);
+        return bestTimeIntervals.subList(0, Math.min(bestTimeIntervals.size(), 10));
     }
 
-    public List<TimeIntervalDetails> getMostPopularTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions){
+    public List<TimeIntervalDetails> getMostPopularTimeIntervals(long eventId, int minparticipants, int minlength, Set<Opinion.UserOpinion> allowedOpinions) {
         Calendar calendar = getEventById(eventId).getCalendar();
         List<TimeIntervalDetails> bestTimeIntervals = getBestTimeIntervals(calendar, minparticipants, minlength, allowedOpinions);
         bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getParticipantNumber).reversed().thenComparing(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed()));
@@ -388,16 +389,12 @@ public class EventService {
 
     public void checkIfUserHasRightsToBlueprint(long blueprintId, User user) throws BlueprintCannotBeAccessedException {
         EventBlueprint blueprint = getEventBlueprintById(blueprintId);
-        if(!blueprint.getInsertUser().equals(user)){
+        if (!blueprint.getInsertUser().equals(user)) {
             throw new BlueprintCannotBeAccessedException();
         }
     }
 
-    public Set<EventBlueprint> getBlueprintsForUser(User user){
+    public Set<EventBlueprint> getBlueprintsForUser(User user) {
         return eventBluePrintRepository.getBlueprintsForUser(user.getUsername());
-    }
-
-    public Event updateEvent(Event event) {
-        return eventRepository.save(event);
     }
 }

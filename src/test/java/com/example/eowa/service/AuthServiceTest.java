@@ -166,4 +166,20 @@ public class AuthServiceTest extends EowaIntegrationTest {
                 ()-> authService.authorizeParticipant(storedSession.getJsessionid(), savedEvent.getId()));
 
     }
+
+    @Test
+    public void shouldCreateNewSessionIfLoggingInWhileHavingAnExpiredSession() throws Exception{
+        User user = userService.saveUser(new User("felh", "asznalo1", "email@gmail.com"));
+        Credentials credentials = new Credentials();
+        credentials.setUsername("felh");
+        credentials.setPassword("asznalo1");
+        String jsessionid = authService.login(credentials);
+        Session storedSession = sessionService.getSessionById(jsessionid);
+        storedSession.setTimestamp(System.currentTimeMillis()-ONE_HOUR_IN_MILLIS*20);
+        sessionService.updateSession(storedSession);
+
+        String sessionid = authService.login(credentials);
+
+        Assertions.assertEquals(sessionService.getSessionById(sessionid).getUser(),user);
+    }
 }

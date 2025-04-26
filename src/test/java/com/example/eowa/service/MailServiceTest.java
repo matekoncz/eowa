@@ -62,6 +62,18 @@ public class MailServiceTest extends EowaIntegrationTest {
         Assertions.assertEquals(mails.size(),2);
     }
 
+    @Test
+    public void shouldDeleteMailById() throws Exception{
+        User sender = createAndLoginFirstUser();
+        User reciever = createAndLoginSecondUser();
+
+        Mail savedMail = mailService.sendMail(sender,reciever,"elso","tartalom");
+
+        mailService.deleteMailById(savedMail.getId());
+
+        Assertions.assertNull(mailService.getMailById(savedMail.getId()));
+    }
+
     private User createAndLoginFirstUser() throws Exception {
         User user = new User("felhasznalo1","jelszo123","email1@gmail.com");
         return createAndLoginUser(user);

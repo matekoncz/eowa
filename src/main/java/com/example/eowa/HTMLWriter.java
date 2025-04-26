@@ -1,4 +1,4 @@
-package com.example.eowa.service;
+package com.example.eowa;
 
 public class HTMLWriter {
 

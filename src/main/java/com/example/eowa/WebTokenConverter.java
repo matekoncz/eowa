@@ -1,4 +1,4 @@
-package com.example.eowa.service;
+package com.example.eowa;
 
 import com.example.eowa.model.WebToken;
 import com.fasterxml.jackson.core.JsonProcessingException;

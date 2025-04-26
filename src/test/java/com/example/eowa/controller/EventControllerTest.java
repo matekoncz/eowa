@@ -293,6 +293,7 @@ public class EventControllerTest extends EowaIntegrationTest {
                 .accept("application/json")
                 .content(hourSerials)
                 .queryParam("period", "7")
+                .queryParam("offset", "0")
                 .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
 
         List<Day> updatedDays = eventService.getEventById(id).getCalendar().getDays();
@@ -539,12 +540,14 @@ public class EventControllerTest extends EowaIntegrationTest {
 
         eventService.addFieldsToEvent(id,fieldset);
 
+        long fieldId = eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getId();
+
         Assertions.assertEquals(eventService.getEventById(id).getSelectionFields().stream().findFirst().get().getTitle(),"mezo");
 
         mockMvc.perform(delete("/events/"+id+"/remove-fields")
                 .contentType("application/json")
                 .accept("application/json")
-                .content(objectMapper.writeValueAsString(Set.of(1)))
+                .content(objectMapper.writeValueAsString(Set.of(fieldId)))
                 .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(jwt)));
 
         Assertions.assertEquals(eventService.getEventById(id).getSelectionFields().size(),0);
@@ -827,7 +830,7 @@ public class EventControllerTest extends EowaIntegrationTest {
         eventService.setUserOpinion(id,Set.of(0,1,2,3,4,5),savedOwner, Opinion.UserOpinion.TOLERABLE);
         eventService.setUserOpinion(id,Set.of(3,4,5,6,7,8),savedParticipant, Opinion.UserOpinion.GOOD);
 
-        String responseJson = mockMvc.perform(get("/events/" + id + "/get-best-time-intervals?participants=2&length=3")
+        String responseJson = mockMvc.perform(put("/events/" + id + "/get-best-time-intervals?participants=2&length=3&popularity=true")
                         .contentType("application/json")
                         .accept("application/json")
                         .content(objectMapper.writeValueAsString(Set.of(Opinion.UserOpinion.GOOD, Opinion.UserOpinion.TOLERABLE)))
@@ -836,10 +839,49 @@ public class EventControllerTest extends EowaIntegrationTest {
 
         List<TimeIntervalDetails> momentDetails = new ArrayList<>(List.of(objectMapper.readValue(responseJson, TimeIntervalDetails[].class)));
 
-        momentDetails.sort(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed());
 
         Assertions.assertEquals(momentDetails.getFirst().getParticipantNumber(),2);
         Assertions.assertEquals(momentDetails.getFirst().getLength(),3);
+
+    }
+
+    @Test
+    public void shouldGetLongestTimeIntervals() throws Exception{
+        User owner = new User("felh", "asznalo1", "email@gmail.com");
+        User savedOwner = userService.saveUser(owner);
+        Credentials ownerCredentials = new Credentials();
+        ownerCredentials.setPassword("asznalo1");
+        ownerCredentials.setUsername("felh");
+
+        WebToken ownerJwt = loginUserAndGetWebToken(ownerCredentials,owner);
+
+        User participant = new User("felh2", "asznalo1", "email2@gmail.com");
+        User savedParticipant = userService.saveUser(participant);
+        Credentials participantCredentials = new Credentials();
+        participantCredentials.setPassword("asznalo1");
+        participantCredentials.setUsername("felh2");
+
+        WebToken participantJwt = loginUserAndGetWebToken(participantCredentials,participant);
+
+        Event event = new Event(savedOwner, "buli", new HashSet<>(), "");
+        long id = eventService.saveEvent(event).getId();
+
+        eventService.setEventCalendar(id, "CET", LocalDateTime.now(), LocalDateTime.now().plusDays(3));
+
+        eventService.setUserOpinion(id,Set.of(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),savedOwner, Opinion.UserOpinion.TOLERABLE);
+        eventService.setUserOpinion(id,Set.of(0,1,2,4,5,6,7,9,10,11,12,13),savedParticipant, Opinion.UserOpinion.GOOD);
+
+        String responseJson = mockMvc.perform(put("/events/" + id + "/get-best-time-intervals?participants=2&length=3&popularity=false")
+                        .contentType("application/json")
+                        .accept("application/json")
+                        .content(objectMapper.writeValueAsString(Set.of(Opinion.UserOpinion.GOOD, Opinion.UserOpinion.TOLERABLE)))
+                        .header(HttpHeaders.AUTHORIZATION, objectMapper.writeValueAsString(ownerJwt)))
+                .andReturn().getResponse().getContentAsString();
+
+        List<TimeIntervalDetails> momentDetails = new ArrayList<>(List.of(objectMapper.readValue(responseJson, TimeIntervalDetails[].class)));
+
+        Assertions.assertEquals(momentDetails.getFirst().getParticipantNumber(),2);
+        Assertions.assertEquals(momentDetails.getFirst().getLength(),5);
 
     }
 

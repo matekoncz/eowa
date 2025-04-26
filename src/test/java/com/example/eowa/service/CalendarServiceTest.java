@@ -84,7 +84,7 @@ public class CalendarServiceTest extends EowaIntegrationTest {
 
         bestTimeIntervals.sort(Comparator.comparingInt(TimeIntervalDetails::getLength).reversed());
 
-        Assertions.assertEquals(bestTimeIntervals.size(),4);
+        Assertions.assertEquals(bestTimeIntervals.size(),1);
         Assertions.assertEquals(bestTimeIntervals.getFirst().getLength(),6);
     }
 }
