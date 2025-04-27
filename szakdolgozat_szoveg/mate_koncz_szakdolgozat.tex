@@ -205,12 +205,6 @@ Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát k
 
 	\subsection{Esemény adatainak véglegesítése}
 
-\begin{center}
-\includegraphics[width=150mm]{notification}
-\captionsetup{width=0.8\linewidth}
-\captionof{figure}{Értesítés esemény lezárásáról az elkészült alkalmazásban}
-\end{center}
-
 Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény időpontja és az extra mezők értékei tartoznak bele).  Ezután az esemény adatai nem módosíthatóak, a résztvevők pedig értesítést kapnak az esemény véglegesítéséről. A művelet visszavonható, ekkor újra módosíthatóvá válnak az adatok, az esemény résztvevői pedig erről is értesítést kapnak.
 
 \section{Naptárak kezelése}
@@ -238,7 +232,7 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 	\subsection{Statisztikák megtekintése}
 
 \begin{center}
-\includegraphics[width=150mm]{best_time_intervals}
+\includegraphics[width=150mm]{get_best_dialog}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Statisztikák lekérése az elkészült alkalmazásban}
 \end{center}
@@ -246,7 +240,7 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor.
 
 \begin{center}
-\includegraphics[width=150mm]{get_best_dialog}
+\includegraphics[width=150mm]{best_time_intervals}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Statisztikák megtekintése az elkészült alkalmazásban}
 \end{center}
@@ -396,7 +390,13 @@ A komponensek közötti navigáció megvalósításához azokba az Angular Route
 
 	\subsection{Dialógusablak}
 
-Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban.
+\begin{center}
+\includegraphics[width=150mm]{notification}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{Értesítés esemény lezárásáról a dialógusablak komponens használatával}
+\end{center}
+
+Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban. Az ábrán egy ilyen módon előállított üzenet látható.
 
 	\subsection{Naptárfelület}
 
