@@ -7,10 +7,14 @@
 \usepackage{enumerate, graphicx, xcolor}
 \usepackage{caption,setspace}
 
+\usepackage{pdfpages}
+
 \usepackage{chngcntr}
 \counterwithout{figure}{chapter}
 \counterwithout{figure}{section}
 \counterwithout{figure}{subsection}
+
+\counterwithin{figure}{chapter}
 %\usepackage{pgf,tikz,float}
 %\usepackage{tikzlings}
 %\usepackage{tikzducks}
@@ -182,6 +186,7 @@ Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni
 \captionof{figure}{A csatlakozási űrlap az elkészült alkalmazásban}
 \end{center}
 
+
 A szervező és a résztvevők számára látható az esemény egyedi meghívó-kódja. Ők ezt a kódot tetszőleges felületen továbbíthatják másoknak, akik ezt a kódot használva a résztvevők közé kerülnek. Az eseményhez való csatlakozáshoz regisztráció szükséges.
 
 	\subsection{Extra mezők}
@@ -209,6 +214,12 @@ Egy esemény résztvevője jogosult arra, hogy az eseményből eseménysémát k
 Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény időpontja és az extra mezők értékei tartoznak bele).  Ezután az esemény adatai nem módosíthatóak, a résztvevők pedig értesítést kapnak az esemény véglegesítéséről. A művelet visszavonható, ekkor újra módosíthatóvá válnak az adatok, az esemény résztvevői pedig erről is értesítést kapnak.
 
 \section{Naptárak kezelése}
+
+\begin{center}
+\includegraphics[width=150mm]{calendar_editor}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{A naptárfelület szervezői kontrol panelje az elkészült alkalmazásban}
+\end{center}
 
 A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segítse az esemény szervezőjét az ideális időpont kiválasztásában.
 
@@ -283,6 +294,14 @@ A git\cite{Gitwebsite} verziókövető rendszert használtam a teljes fejleszté
 
 \chapter{Az API fejlesztése}
 
+\begin{center}
+\includegraphics[width=150mm]{layers_backend}
+\captionsetup{width=0.8\linewidth}
+\captionof{figure}{A backend felépítése}
+\end{center}
+
+Az ábrán az API felépítése látható. A Spring és Spring Boot projektekben gyakran használt Controller-Service-Repository architektúrát alkalmaztam, amelyben a Controller réteg feladata a bemenetek és kimenetek (a programom esetén HTTP kérések és válaszok) kezelése, a Service réteg a business logika megvalósításáért felel, a Repository réteg pedig az adatbázissal történő interakciókat végzi. Az ábrán nem tüntettem fel a Model réteget, ennek oka, hogy mivel minden Repository osztályhoz pontosan egy Model osztály tartozik, megjelenítése nem hordoz sok információt.
+
 \section{A model réteg}
 
 A model osztályaim egyszerű POJO-k (Plain Old Java Object), amelyek a Jakarta Persistence Entity interfészét valósítják meg. Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit, valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányainak egyszerű másolására.
@@ -337,18 +356,18 @@ Külön kivételosztályokat hoztam létre az események, felhasználók, naptá
 
 \section{Tesztelés}
 
-Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A" (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégetzem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
+Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A tesztlefedettség méréséhez a JaCoCo\cite{Jacocowebsite} Maven plugin-ját használtam, a coverage report a mellékletek között található. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A"\cite{3Awebsite} (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégeztem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
 
 \section{Védelem}
 
 	\subsection{CORS}
 
-A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource Sharing configuráció megadására. Ebben megadható, hogy a szerver mely domainekről fogad kéréseket, és azt is, hogy azok esetében mely kérés metódusokat és header-öket engedélyezi. A konfigurációmban kizárólag azt az útvonalat engedélyeztem, amelyen a frontend alkalmazásom érhető el, arról viszont az összes metódust és header-t elfogadtattam.
+A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource Sharing\cite{Corswebsite} configuráció megadására. Ebben megadható, hogy a szerver mely domainekről fogad kéréseket, és azt is, hogy azok esetében mely kérés metódusokat és header-öket engedélyezi. A konfigurációmban kizárólag azt az útvonalat engedélyeztem, amelyen a frontend alkalmazásom érhető el, arról viszont az összes metódust és header-t elfogadtattam.
 
 
 	\subsection{CSRF elleni védekezés}
 
-A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélül küld kérést a szerver felé\cite{Infbiztwebsite}. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
+A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélkül küld kérést a szerver felé\cite{Infbiztwebsite}. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
 
 
 	\subsection{XSS elleni védekezés}
@@ -359,32 +378,32 @@ Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML form�
 
 \section{Model réteg}
 
-Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket írtam, hogy megfelelően szerializálhassam és deszerializálhassam őket. Ezek nem tekinthetőek viewmodel osztályoknak, hiszen nem csupán a megjelenítés a céljuk, pédául az id tulajdonságokat is tartalmazzák.
+Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket írtam, hogy megfelelően szerializálhassam és deszerializálhassam őket. Ezek nem tekinthetőek viewmodel\cite{Viewmodelwebsite} osztályoknak, hiszen nem csupán a megjelenítés a céljuk, pédául az id tulajdonságokat is tartalmazzák.
 
 \section{Service réteg}
 
-Az ApiService-ben írtam meg a fetch API-t használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorisation header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az ApiService-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
+Az ApiService-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorisation header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az ApiService-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
 
 \section{Pipe-ok}
 
-Az angular Pipe-ok segítségével egyszerűen lehet a template fájlokban JS objektumokat megjeleníthető formába alakítani. Én több ilyet is létrehoztam, például egy pipe segítségével jelenítem meg a pontos dátumot a naptárfelületen. Itt a pipe transform metódusa a naptár objektumot és az óra sorszámát számát kapja meg, majd ezek segítségével adja vissza a pontos dátumot leíró sztringet, vagy az "end of the event" szöveget.
+Az angular Pipe-ok\cite{Pipewebsite} segítségével egyszerűen lehet a template fájlokban JS objektumokat megjeleníthető formába alakítani. Én több ilyet is létrehoztam, például egy pipe segítségével jelenítem meg a pontos dátumot a naptárfelületen. Itt a pipe transform metódusa a naptár objektumot és az óra sorszámát számát kapja meg, majd ezek segítségével adja vissza a pontos dátumot leíró sztringet, vagy az "end of the event" szöveget.
 
 \section{Navigáció az oldalon}
 
-A komponensek közötti navigáció megvalósításához azokba az Angular Router service-t injektáltam, amely az app.routes fájlban tárolt útvonalak és az azokhoz társított komponensek és guard függvények segíségével végzi el a szükséges műveleteket. Egyes esetekben query paramétereket is használtam, ezeket a komponensekbe injektált ActivatedRoute segítségével kértem le.
+A komponensek közötti navigáció megvalósításához azokba az Angular Router service-t\cite{Routerwebsite} injektáltam, amely az app.routes fájlban tárolt útvonalak és az azokhoz társított komponensek és guard függvények segíségével végzi el a szükséges műveleteket. Egyes esetekben query paramétereket is használtam, ezeket a komponensekbe injektált ActivatedRoute segítségével kértem le. Erre példa ViewEvent komponens, amely esetén a megjelenítendő esemény id tulajdonságát query paraméter formájában továbbítom a komponenshez tartozó útvonalra navigáláskor.
 
 \section{Fő komponensek}
 
 	\subsection{Dialógusablak}
 
-Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázot szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban.
+Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban.
 
 	\subsection{Naptárfelület}
 
 \begin{center}
-\includegraphics[width=150mm]{calendar_editor}
+\includegraphics[width=150mm]{view_calendar_structure}
 \captionsetup{width=0.8\linewidth}
-\captionof{figure}{A naptárfelület szervezői kontrol panelje}
+\captionof{figure}{A naptárfelület felépítése}
 \end{center}
 
 A naptárfelület több standalone komponensből tevődik össze. A ViewCalendarComponent-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az EventService-t csak a ViewCalendarComponent-ben injektáltam, a DayComponent-ben és az HourComponent-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak.
@@ -400,7 +419,7 @@ A naptárfelület több standalone komponensből tevődik össze. A ViewCalendar
 \captionof{figure}{Példa egyszerű és összetett űrlapra}
 \end{center}
 
-Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek.
+Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule\cite{ReactiveFormswebsite} segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek. Erre példa a függvény, amelyet annak ellenőrzésére használtam a SignUp komponensben, hogy a felhasználó által a regusztráció során megadott két jelszó megegyezik-e.
 
 \section{UX, UI}
 
@@ -416,7 +435,7 @@ Létrehoztam egy saját progress indicator komponenst, amely segítségével jel
 
 	\subsection{Guard-ok}
 
-Az Angular-ban a guard-ok olyan függvények, amelyek segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a UserService-t injektáltam, hogy annak getCurrentUser metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
+Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateFn\cite{Guardwebsite} interfészt implementálják, és segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a UserService-t injektáltam, hogy annak getCurrentUser metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
 
 	\subsection{Folytonos színátmenet style binding segítségével}
 
@@ -426,11 +445,11 @@ Az Angular-ban a guard-ok olyan függvények, amelyek segítségével eldönthet
 \captionof{figure}{Az időpontok népszerűségének megjelenítése színek segítségével}
 \end{center}
 
-A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
+A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelúő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
 
 	\subsection{Canvas Angularban}
 
-Az óra komponensekre kattintva megjelenik egy dialógusablak, amely információkkal szolgál az adott órához tartozó véleményekről. Itt egy egyszerű diagramot is elhelyeztem, hogy az információk könnyebben feldolgozhatóak legyenek. Ezt egy beépített Canvas segítségével alkottam meg. A komponens fájlban egy, ViewChild dekorátorral konfigurált HTMLCanvasElement típusú ElementRef segítségével tudok a template fájlban megdott canvas-re hivatkozni.
+Az óra komponensekre kattintva megjelenik egy dialógusablak, amely információkkal szolgál az adott órához tartozó véleményekről. Itt egy egyszerű diagramot is elhelyeztem, hogy az információk könnyebben feldolgozhatóak legyenek. Ezt egy beépített Canvas segítségével alkottam meg. A komponens fájlban egy ViewChild dekorátorral konfigurált HTMLCanvasElement típusú ElementRef segítségével tudok a template fájlban megadott canvas-re hivatkozni.
 
 \section{Aszinkron programozási megoldások}
 
@@ -438,9 +457,9 @@ Az aszinkron műveletekhez az RxJs könyvtár eszköztárát használtam. Hogy e
  
 \chapter{Továbbfejlesztési lehetőségek}
 
-Az alkalmazást a feljlesztés folyamán csak a saját eszközömöm futtattam, logikusnak tűnik következő lépésként egy alkalmas szerverszolgáltatás igénybevétele, esetleg saját szerver felállítása, amely segítségével a webalkalmazás a világhálón keresztül elérhetővé tehető más eszközök számára is.
+Az alkalmazást a fejlesztés folyamán csak a saját eszközömöm futtattam, logikusnak tűnik következő lépésként egy alkalmas szerverszolgáltatás igénybevétele, esetleg saját szerver felállítása, amely segítségével a webalkalmazás a világhálón keresztül elérhetővé tehető más eszközök számára is.
 
-Az egyik lehetőség a továbbfejlesztésre a JWT (Jason Web Token) használata az autorizációs folyamatokra. A jelenlegi megoldásom, bár a localstorage-ben tárolt json objektum segítségével zajlik, nem nevezhető jwt-nek, mivel az autorizáció a benne tárolt session id alapján történik, amitnek hitelességét a backend oldalon kell lellenőrizni, és nem egy digitális aláírás segítségével.
+Az egyik lehetőség a továbbfejlesztésre a JWT\cite{JWTwebsite} (Jason Web Token) használata az autorizációs folyamatokra. A jelenlegi megoldásom, bár a localstorage-ben tárolt json objektum segítségével zajlik, nem nevezhető jwt-nek, mivel az autorizáció a benne tárolt session id alapján történik, aminek hitelességét a backend oldalon kell lellenőrizni, és nem egy digitális aláírás segítségével.
 
 Az alkalmazás reszponzivitása javítható, jelen állapotban például mobilról nehezen használható. Emellett a felhasználói felület akadálymentesítésével is érdemes lehet foglalkozni.
 
@@ -448,7 +467,7 @@ Az értesítések nagyobb valószínűséggel juthatnak el a felhasználókhoz, 
 
 \chapter{Hasonló alkalmazások}
 
-Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írása közben többen felhívták rá a figyelmemet, hogy hasonló célra készült alkalmazások már léteznek, ezért ezeknek utánanéztem, hogy összehasonlíthassam őket a saját megoldásommal. A legtöbbet a Doodle alkalmazást említették, emellett a ClickUp, valamint a WhenAvailable merült még fel. Az alábbiakban az alkalmazásomat a Doodle ingyenes változatával vetem össze.
+Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írása közben többen felhívták rá a figyelmemet, hogy hasonló célra készült alkalmazások már léteznek, ezért ezeknek utánanéztem, hogy összehasonlíthassam őket a saját megoldásommal. A legtöbbet a Doodle alkalmazást említették, emellett a ClickUp, valamint a WhenAvailable merült még fel. Az alábbiakban az alkalmazásomat a Doodle\cite{DoodleWebsite} ingyenes változatával vetem össze.
 
 \section{Doodle}
 
@@ -456,7 +475,7 @@ A Doodle-ban több, az enyémhez hasonló megoldás is van, például az esemén
 
 \chapter{Összefoglalás}
 
-Az alkalmazás még nem teljes, de a legfontosabb funkciókat mind megvalósítottam. A használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
+Az alkalmazás legfontosabb funkciókat mind megvalósítottam. A használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek. Ám az alkalmazás még nem teljes, számos felhasználói élményt javító funkcióval kibővíthető.
 
 Bár léteznek már hasonló célra készült alkalmazások, úgy hiszem, hogy elsősorban a rugalmassága miatt az alkalmazásom egy létező igényt elégít ki.
 
@@ -502,7 +521,14 @@ Szeged, \today
 \newpage
 {\Huge \bf Mellékletek}
 
+\begin{center}
+\includepdf[pages=-, width=170mm]{jacoco.pdf}
+
+\includepdf[pages=-, width=170mm]{jacoco_service.pdf}
+\end{center}
+
  \addcontentsline{toc}{chapter}{Mellékletek}
+
 
 \vspace{2 cm}
 
