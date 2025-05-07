@@ -12,6 +12,8 @@ In the folder of the API (eowa) run the following commands:
 
  - mvn package
  - java -jar target/eowa-0.0.1-SNAPSHOT.jar
+
+Java 21 is required.
  
 ### step 3: the web app
 
