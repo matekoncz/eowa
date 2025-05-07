@@ -1,6 +1,5 @@
 import {
   Component,
-  EventEmitter,
   inject,
   Input,
   Output,
@@ -46,11 +45,11 @@ export class HourComponent implements OnInit {
 
   @Input() opinionMode = OpinionMode.DEFAULT;
 
-  @Output() hourChanged = new EventEmitter<Hour>();
+  @Output() hourChanged = new Subject<Hour>();
 
-  @Output() opinionSet = new EventEmitter<Opinion>();
+  @Output() opinionSet = new Subject<Opinion>();
 
-  @Output() hourSelected = new EventEmitter<Hour>();
+  @Output() hourSelected = new Subject<Hour>();
 
   selected = false;
 
@@ -111,13 +110,13 @@ export class HourComponent implements OnInit {
     switch (this.editMode) {
       case EditMode.EDIT:
         this.hour!.enabled = !this.hour!.enabled;
-        this.hourChanged.emit(this.hour!);
+        this.hourChanged.next(this.hour!);
         break;
       case EditMode.OPINION:
         this.addOpinion(this.opinionMode.valueOf());
         break;
       case EditMode.START_AND_END:
-        this.hourSelected.emit(this.hour!);
+        this.hourSelected.next(this.hour!);
         this.selected = true;
         break;
       case EditMode.DEFAULT:
@@ -174,7 +173,7 @@ export class HourComponent implements OnInit {
       number: this.hour?.numberInTotal,
       user: this.userservice.getCurrentUser()!,
     };
-    this.opinionSet.emit(opinion);
+    this.opinionSet.next(opinion);
     this.setUserOpinion(opinion);
   }
 

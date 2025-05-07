@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Day } from '../../../Model/Day';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,13 +31,13 @@ export class DayComponent {
 
   @Input() opinionMode = OpinionMode.DEFAULT;
 
-  @Output() dayChanged = new EventEmitter<Day>();
+  @Output() dayChanged = new Subject<Day>();
 
-  @Output() dayHoursChanged = new EventEmitter<Hour>();
+  @Output() dayHoursChanged = new Subject<Hour>();
 
-  @Output() opinionsSet = new EventEmitter<Opinion[]>();
+  @Output() opinionsSet = new Subject<Opinion[]>();
 
-  @Output() hourSelected = new EventEmitter<Hour>();
+  @Output() hourSelected = new Subject<Hour>();
 
   wholeDayChanged: Subject<void> = new Subject();
 
@@ -47,20 +47,20 @@ export class DayComponent {
 
   disableDay() {
     this.day!.enabled = false;
-    this.dayChanged.emit(this.day);
+    this.dayChanged.next(this.day!);
   }
 
   enableDay() {
     this.day!.enabled = true;
-    this.dayChanged.emit(this.day);
+    this.dayChanged.next(this.day!);
   }
 
   hourChanged(hour: Hour) {
-    this.dayHoursChanged.emit(hour);
+    this.dayHoursChanged.next(hour);
   }
 
   opinionSet(opinion: Opinion) {
-    this.opinionsSet.emit([opinion]);
+    this.opinionsSet.next([opinion]);
   }
 
   addOpinion() {
@@ -68,6 +68,6 @@ export class DayComponent {
   }
 
   selectHour(hour: Hour) {
-    this.hourSelected.emit(hour);
+    this.hourSelected.next(hour);
   }
 }
