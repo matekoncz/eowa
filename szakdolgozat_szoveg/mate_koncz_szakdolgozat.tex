@@ -126,23 +126,26 @@ Programterveő Informatikus BSc hallgató    & egyetemi adjunktus\\
 
 \newpage
 
-{\Huge \bf Feladatkiírás:}
+{\Huge \bf Feladatkiírás}
+%\setlength{\parskip}{\baselineskip}%
 
-
-A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhaználóbarátnak kell lennie, valamit az gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
+A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhasználóbarátnak kell lennie, valamit az gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
 
 \newpage
 
 {\Huge \bf Tartalmi összefoglaló:}
 
 
-{\bf Téma megnevezése:}
+{\bf Téma megnevezése}
 Eseményszervezést segítő webalkalmazás készítése, amely egy adott társaság összeszervezése mellett alkalmas eseménysémák létrehozására és azok konfigurálására is.
 
-{\bf Megoldási mód:}
+{\bf Megoldási mód}
 Létrehoztam egy Angular keretrendszerben megvalósított webalkalmazást, amely az általam Spring Boot keretrendszerben írt API-t használja REST végpontokon keresztül. Az eseményszervezéshez szükséges logikát a backend oldalon valósítottam meg, a frontend oldali webalkalmazásnak csak a felhasználóval folytatott interakciókban van szerepe.
 
-{\bf Elért eredmények:}
+{\bf Alkalmazott eszközök, módszerek}
+A fejlesztés során az InteliJ IDEA és a Visual Studio Code fejlesztőkörnyezeteket használtam. A backend felépítését a Controller-Service-Repository architektúra alapján terveztem meg, a frontend a Single Page Application tervezési minta alapján készült el.
+
+{\bf Elért eredmények}
 Az alkalmazás használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
 
 {\bf Kulcsszavak:} alkalmazás, eseményszervezés, frontend, backend, Angular, Spring Boot
@@ -195,6 +198,7 @@ Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni
 \includegraphics[width=150mm]{join_event}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{A csatlakozási űrlap az elkészült alkalmazásban}
+\label{join_event}
 \end{center}
 
 
@@ -206,9 +210,10 @@ A szervező és a résztvevők számára látható az esemény egyedi meghívó-
 \includegraphics[width=150mm]{extra_field_food}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Egy extra mező az elkészült alkalmazásban}
+\label{extra_field_food}
 \end{center}
 
-A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához szolgálhatnak. Ennél a pédánál maradva, az esemény szervezője ez eseben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger").  A 2.2-es ábrán ennek a mezőnek a megvalósítása látható. Az opciókhoz a '+' és '-' jelekre kattintva lehet szavatot rendelni illetve azt visszavonni, és a fejlécen található ceruza ikonra kattintva lehet további opciókat megadni.
+A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához szolgálhatnak. Ennél a pédánál maradva, az esemény szervezője ez eseben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger").  A \ref{extra_field_food}-es ábrán ennek a mezőnek a megvalósítása látható. Az opciókhoz a '+' és '-' jelekre kattintva lehet szavatot rendelni illetve azt visszavonni, és a fejlécen található ceruza ikonra kattintva lehet további opciókat megadni.
 
 	\subsection{Eseménysémák használata}
 
@@ -224,9 +229,10 @@ Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény
 \includegraphics[width=150mm]{calendar_editor}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{A naptárfelület szervezői kontrol panelje az elkészült alkalmazásban}
+\label{calendar_editor}
 \end{center}
 
-A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segítse az esemény szervezőjét az ideális időpont kiválasztásában. A 2.3-as ábrán a naptárfelület szervezői nézete látható, emellett egy résztvevői nézet is létezik, amelyről kevesebb funkció érhető el.
+A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segítse az esemény szervezőjét az ideális időpont kiválasztásában. A \ref{calendar_editor}-as ábrán a naptárfelület szervezői nézete látható, emellett egy résztvevői nézet is létezik, amelyről kevesebb funkció érhető el.
 
 	\subsection{Létrehozás}
 
@@ -246,14 +252,16 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 \includegraphics[width=150mm]{get_best_dialog}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Statisztikák lekérése az elkészült alkalmazásban}
+\label{get_best_dialog}
 \end{center}
 
-Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor, valamint az is megadható, hogy az időpontok hossza, vagy népszerűsége alapján legyen rendezve az eredmény. Az két ábra kapcsolódik egymáshoz: a 2.5-ös ábrán látható lista a 2.4-es ábrán látható paraméterekkel indított időpont-keresés eredménye.
+Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor, valamint az is megadható, hogy az időpontok hossza, vagy népszerűsége alapján legyen rendezve az eredmény. Az két ábra kapcsolódik egymáshoz: a \ref{best_time_intervals}-ös ábrán látható lista a \ref{get_best_dialog}-es ábrán látható paraméterekkel indított időpont-keresés eredménye.
 
 \begin{center}
 \includegraphics[width=150mm]{best_time_intervals}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Statisztikák megtekintése az elkészült alkalmazásban}
+\label{best_time_intervals}
 \end{center}
 
 	\subsection{Időzónák kezelése}
@@ -302,10 +310,11 @@ A git\cite{Gitwebsite} verziókövető rendszert használtam a teljes fejleszté
 \begin{center}
 \includegraphics[width=150mm]{layers_backend}
 \captionsetup{width=0.8\linewidth}
+\label{layers_backend}
 \captionof{figure}{A backend felépítése}
 \end{center}
 
-A 4.1-es ábrán az API felépítése látható. A Spring és Spring Boot projektekben gyakran használt Controller-Service-Repository architektúrát alkalmaztam, amelyben a Controller réteg feladata a bemenetek és kimenetek (a programom esetén HTTP kérések és válaszok) kezelése, a Service réteg a business logika megvalósításáért felel, a Repository réteg pedig az adatbázissal történő interakciókat végzi. Az ábrán nem tüntettem fel a Model réteget, ennek oka, hogy mivel minden Repository osztályhoz pontosan egy Model osztály tartozik, megjelenítése nem hordoz sok információt.
+A \ref{layers_backend}.1-es ábrán az API felépítése látható. A Háromrétegű architektúra\cite{3layerwebsite} egy változatát, a Spring és Spring Boot projektekben gyakran használt Controller-Service-Repository architektúrát alkalmaztam, amelyben a Controller réteg feladata a bemenetek és kimenetek (a programom esetén HTTP kérések és válaszok) kezelése, a Service réteg a business logika megvalósításáért felel, a Repository réteg pedig az adatbázissal történő interakciókat végzi. Az ábrán nem tüntettem fel a Model réteget, ennek oka, hogy mivel minden Repository osztályhoz pontosan egy Model osztály tartozik, megjelenítése nem hordoz sok információt.
 
 \section{A model réteg}
 
@@ -317,7 +326,7 @@ Minden model osztályhoz létrehoztam egy repository interfészt, amelyeket a JP
 
 \section{A service réteg}
 
-A service komponenseket nem az általuk használt repository-k, hanem a funkcióik szerint különítettem el, így egy service több repository-val is rendelkezhet. A service-ek között tartalmazó kapcsolat is előfordul, pédául a naptárakkal kapcsolatos műveleteket végző \textit{CalendarService} metódusai kizárólag az eseményeket kezelő \textit{EventService}-ből hívódnak meg. A service osztályokat @Transactional annotációval láttam el, így az összes service metóduson keresztül történő művelet tranzakcióban folyik.
+A service komponenseket nem az általuk használt repository-k, hanem a funkcióik szerint különítettem el, így egy service több repository-val is rendelkezhet. A service-ek között tartalmazó kapcsolat is előfordul, pédául a naptárakkal kapcsolatos műveleteket végző \textit{CalendarService} metódusai kizárólag az eseményeket kezelő \textit{EventService}-ből hívódnak meg. A service osztályokat \textit{@Transactional} annotációval láttam el, így az összes service metóduson keresztül történő művelet tranzakcióban folyik.
 
 \subsection{AuthService}
 
@@ -369,7 +378,7 @@ Külön kivételosztályokat hoztam létre az események, felhasználók, naptá
 
 \section{Tesztelés}
 
-Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt \textit{EowaIntegrationTest} osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A tesztlefedettség méréséhez a JaCoCo\cite{Jacocowebsite} Maven plugin-ját használtam, a coverage report a mellékletek között található. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A"\cite{3Awebsite} (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégeztem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
+Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt \textit{EowaIntegrationTest} osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A tesztlefedettség méréséhez a JaCoCo\cite{Jacocowebsite} Maven plugin-ját használtam, a teljes coverage report (a \ref{jacoco}-es számú melléklet)  és service réteg coverage report-ja (a \ref{jacocoservice}-es számú melléklet) a mellékletek között található. Ezeken látszik, hogy a service rétegben az utasítások lefedettsége 96\%, a metódusok lefedettsége pedig 100\%. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A"\cite{3Awebsite} (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégeztem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
 
 \section{Védelem}
 
@@ -413,9 +422,10 @@ A komponensek közötti navigáció megvalósításához azokba az Angular Route
 \includegraphics[width=150mm]{notification}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Értesítés esemény lezárásáról a dialógusablak komponens használatával}
+\label{notification}
 \end{center}
 
-Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban. Az 5.1-es ábrán egy ilyen módon előállított üzenet látható.
+Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban. Az \ref{notification}-es ábrán egy ilyen módon előállított üzenet látható.
 
 	\subsection{Naptárfelület}
 
@@ -423,9 +433,10 @@ Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és fo
 \includegraphics[width=150mm]{view_calendar_structure}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{A naptárfelület felépítése}
+\label{view_calendar_structure}
 \end{center}
 
-A naptárfelület több standalone komponensből tevődik össze, ezt foglalja össze az 5.2-es ábra. A \textit{ViewCalendarComponent}-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az \textit{HourComponentben} és a\textit{ DayComponentben} keletkező változtatásokat az azokat magában foglaló ViewCalendarComponentben összesítem és azokat egy megerősítő felhasználói interakció után egyetlen HTTP üzenetben küldöm el az API-nak, az \textit{EventService}-t csak a \textit{ViewCalendarComponent}-ben injektáltam. A \textit{ViewCalendarComponentben} keletkező események az összes gyerek komponensre hatással vannak, a gyerek komponensekben keletkező eseményeket pedig a \textit{ViewCalendarComponent} összesíti a fent említett módon, ezért a \textit{DayComponent}-ben és az \textit{HourComponent}-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak. A \textit{ViewCalendarComponentben} keletkező eseményre példa a szerkesztői nézetre váltás, erről a nap és óra komponenseknek is értesülniük kell, mivel szerkesztői nézetben megváltozik a viselkedésük.
+A naptárfelület több standalone komponensből tevődik össze, ezt foglalja össze az \ref{view_calendar_structure}-es ábra. A \textit{ViewCalendarComponent}-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az \textit{HourComponentben} és a\textit{ DayComponentben} keletkező változtatásokat az azokat magában foglaló ViewCalendarComponentben összesítem és azokat egy megerősítő felhasználói interakció után egyetlen HTTP üzenetben küldöm el az API-nak, az \textit{EventService}-t csak a \textit{ViewCalendarComponent}-ben injektáltam. A \textit{ViewCalendarComponentben} keletkező események az összes gyerek komponensre hatással vannak, a gyerek komponensekben keletkező eseményeket pedig a \textit{ViewCalendarComponent} összesíti a fent említett módon, ezért a \textit{DayComponent}-ben és az \textit{HourComponent}-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak. A \textit{ViewCalendarComponentben} keletkező eseményre példa a szerkesztői nézetre váltás, erről a nap és óra komponenseknek is értesülniük kell, mivel szerkesztői nézetben megváltozik a viselkedésük.
 
 \section{Űrlapok reaktív módon történő kezelése}
 
@@ -462,9 +473,10 @@ Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateF
 \includegraphics[width=160mm]{week_view}
 \captionsetup{width=0.8\linewidth}
 \captionof{figure}{Az időpontok népszerűségének megjelenítése színek segítségével}
+\label{week_view}
 \end{center}
 
-A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az 5.5-ös ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
+A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az \ref{week_view}-ös ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
 
 	\subsection{Canvas Angularban}
 
@@ -538,19 +550,24 @@ Szeged, \today
 \pagebreak
 
 \newpage
-{\Huge \bf Mellékletek}
+\section*{Mellékletek}
 
-\begin{center}
-\includepdf[pages=-, width=170mm]{jacoco.pdf}
-
+\subsection{Jacoco report}
 \label{jacoco}
+\begin{center}
+\includegraphics[width=170mm]{jacoco.pdf}
 
-\newpage
-
-\includepdf[pages=-, width=170mm]{jacoco_service.pdf}
-
-\label{jacoco_service}
 \end{center}
+
+\subsection{Jacoco report a service rétegről}
+\label{jacocoservice}
+\begin{center}
+\includegraphics[width=170mm]{jacoco_service.pdf}
+
+\end{center}
+
+
+
 
  \addcontentsline{toc}{chapter}{Mellékletek}
 
