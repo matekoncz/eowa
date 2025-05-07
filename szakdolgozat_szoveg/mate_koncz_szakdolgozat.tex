@@ -112,7 +112,7 @@ Configurable event organizing web application
 \begin{tabular}{c@{\hspace{2cm}}c}
 \emph{Készítette:}     &\emph{Témavezető:}\\
 \bf{Koncz Máté}  &\bf{Dr. Pengő Edit}\\
-Programterveő Informatikus BSc hallgató    & egyetemi docens\\
+Programterveő Informatikus BSc hallgató    & egyetemi adjunktus\\
 &
 \end{tabular}
 }
@@ -123,19 +123,30 @@ Programterveő Informatikus BSc hallgató    & egyetemi docens\\
 \end{center}
 
 %masodik oldal osszefogalalo
-\begin{abstract}
 
-{\bf Feladat leírása:}
+\newpage
+
+{\Huge \bf Feladatkiírás:}
+
+
 A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhaználóbarátnak kell lennie, valamit az gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
 
-{\bf A feladat megvalósítása:}
+\newpage
+
+{\Huge \bf Tartalmi összefoglaló:}
+
+
+{\bf Téma megnevezése:}
+Eseményszervezést segítő webalkalmazás készítése, amely egy adott társaság összeszervezése mellett alkalmas eseménysémák létrehozására és azok konfigurálására is.
+
+{\bf Megoldási mód:}
 Létrehoztam egy Angular keretrendszerben megvalósított webalkalmazást, amely az általam Spring Boot keretrendszerben írt API-t használja REST végpontokon keresztül. Az eseményszervezéshez szükséges logikát a backend oldalon valósítottam meg, a frontend oldali webalkalmazásnak csak a felhasználóval folytatott interakciókban van szerepe.
 
 {\bf Elért eredmények:}
 Az alkalmazás használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
 
 {\bf Kulcsszavak:} alkalmazás, eseményszervezés, frontend, backend, Angular, Spring Boot
-\end{abstract}
+
 
 \newpage
 
@@ -197,7 +208,7 @@ A szervező és a résztvevők számára látható az esemény egyedi meghívó-
 \captionof{figure}{Egy extra mező az elkészült alkalmazásban}
 \end{center}
 
-A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához szolgálhatnak. Ennél a pédánál maradva, az esemény szervezője ez eseben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger").  Az ábrán ennek a mezőnek a megvalósítása látható. Az opciókhoz a '+' és '-' jelekre kattintva lehet szavatot rendelni illetve azt visszavonni, és a fejlécen található ceruza ikonra kattintva lehet további opciókat megadni.
+A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához szolgálhatnak. Ennél a pédánál maradva, az esemény szervezője ez eseben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger").  A 2.2-es ábrán ennek a mezőnek a megvalósítása látható. Az opciókhoz a '+' és '-' jelekre kattintva lehet szavatot rendelni illetve azt visszavonni, és a fejlécen található ceruza ikonra kattintva lehet további opciókat megadni.
 
 	\subsection{Eseménysémák használata}
 
@@ -215,7 +226,7 @@ Egy esemény szervezője véglegesítheti egy esemény adatait (ebbe az esemény
 \captionof{figure}{A naptárfelület szervezői kontrol panelje az elkészült alkalmazásban}
 \end{center}
 
-A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segítse az esemény szervezőjét az ideális időpont kiválasztásában. Az ábrán a naptárfelület szervezői nézete látható, emellett egy résztvevői nézet is létezik, amelyről kevesebb funkció érhető el.
+A naptárfelület és a hozzá tartozó funkciók az alkalmazás legfontosabb részét alkotják, hiszen ennek a feladata, hogy segítse az esemény szervezőjét az ideális időpont kiválasztásában. A 2.3-as ábrán a naptárfelület szervezői nézete látható, emellett egy résztvevői nézet is létezik, amelyről kevesebb funkció érhető el.
 
 	\subsection{Létrehozás}
 
@@ -237,7 +248,7 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 \captionof{figure}{Statisztikák lekérése az elkészült alkalmazásban}
 \end{center}
 
-Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor, valamint az is megadható, hogy az időpontok hossza, vagy népszerűsége alapján legyen rendezve az eredmény. Az két ábra kapcsolódik egymáshoz: a második ábrán látható lista az első ábrán látható paraméterekkel indított időpont-keresés eredménye.
+Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor, valamint az is megadható, hogy az időpontok hossza, vagy népszerűsége alapján legyen rendezve az eredmény. Az két ábra kapcsolódik egymáshoz: a 2.5-ös ábrán látható lista a 2.4-es ábrán látható paraméterekkel indított időpont-keresés eredménye.
 
 \begin{center}
 \includegraphics[width=150mm]{best_time_intervals}
@@ -279,7 +290,7 @@ A frontenden nagy számban használtam az Angular Material\cite{Materialwebsite}
 
 	\subsection{RxJs}
 
-Az RxJs\cite{Rxjswebsite} könyvtár aszinkron műveletek kezelését segítő függvényeket és típusokat tartalmaz. A frontendemen az RxJs könyvtárban található Observable típust használtam az aszinkron API lekérdezések megvalósításához, valamint a Subject típust használtam azokban az esetekben, amikor gyerek komponensben kellett szülő komponensben bekövetkező eseményre reagálni.
+Az RxJs\cite{Rxjswebsite} könyvtár aszinkron műveletek kezelését segítő függvényeket és típusokat tartalmaz. A frontendemen az RxJs könyvtárban található Observable típust használtam az aszinkron API lekérdezések megvalósításához, valamint a Subject típust használtam az események megosztását végző Input és Output direktívákban.
 
 \section{git}
 
@@ -294,7 +305,7 @@ A git\cite{Gitwebsite} verziókövető rendszert használtam a teljes fejleszté
 \captionof{figure}{A backend felépítése}
 \end{center}
 
-Az ábrán az API felépítése látható. A Spring és Spring Boot projektekben gyakran használt Controller-Service-Repository architektúrát alkalmaztam, amelyben a Controller réteg feladata a bemenetek és kimenetek (a programom esetén HTTP kérések és válaszok) kezelése, a Service réteg a business logika megvalósításáért felel, a Repository réteg pedig az adatbázissal történő interakciókat végzi. Az ábrán nem tüntettem fel a Model réteget, ennek oka, hogy mivel minden Repository osztályhoz pontosan egy Model osztály tartozik, megjelenítése nem hordoz sok információt.
+A 4.1-es ábrán az API felépítése látható. A Spring és Spring Boot projektekben gyakran használt Controller-Service-Repository architektúrát alkalmaztam, amelyben a Controller réteg feladata a bemenetek és kimenetek (a programom esetén HTTP kérések és válaszok) kezelése, a Service réteg a business logika megvalósításáért felel, a Repository réteg pedig az adatbázissal történő interakciókat végzi. Az ábrán nem tüntettem fel a Model réteget, ennek oka, hogy mivel minden Repository osztályhoz pontosan egy Model osztály tartozik, megjelenítése nem hordoz sok információt.
 
 \section{A model réteg}
 
@@ -306,51 +317,59 @@ Minden model osztályhoz létrehoztam egy repository interfészt, amelyeket a JP
 
 \section{A service réteg}
 
-A service komponenseket nem az általuk használt repository-k, hanem a funkcióik szerint különítettem el, így egy service több repository-val is rendelkezhet. A service-ek között tartalmazó kapcsolat is előfordul, pédául a naptárakkal kapcsolatos műveleteket végző CalendarService metódusai kizárólag az eseményeket kezelő EventService-ből hívódnak meg. A service osztályokat @Transactional annotációval láttam el, így az összes service metóduson keresztül történő művelet tranzakcióban folyik.
+A service komponenseket nem az általuk használt repository-k, hanem a funkcióik szerint különítettem el, így egy service több repository-val is rendelkezhet. A service-ek között tartalmazó kapcsolat is előfordul, pédául a naptárakkal kapcsolatos műveleteket végző \textit{CalendarService} metódusai kizárólag az eseményeket kezelő \textit{EventService}-ből hívódnak meg. A service osztályokat @Transactional annotációval láttam el, így az összes service metóduson keresztül történő művelet tranzakcióban folyik.
 
 \subsection{AuthService}
 
-Az AuthService feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet veti össze az adatbázisban tárolt felhasználónévvel és megadott jelszavat az adatbázisban tárolt titkosított jelszóval a Spring Security BCryptPasswordEncoder osztály matches metódusának használatával. A sikeres bejelentkezéskor az AuthService létrehoz egy Session objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az AuthService metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végponthoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
+Az \textit{AuthService} feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet veti össze az adatbázisban tárolt felhasználónévvel és megadott jelszavat az adatbázisban tárolt titkosított jelszóval a Spring Security BCryptPasswordEncoder osztály matches metódusának használatával. A sikeres bejelentkezéskor az \textit{AuthService} létrehoz egy \textit{Session} objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az \textit{AuthService} metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végponthoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
 
 \subsection{EventService}
 
-Az EventService-ben történnek az események kezelésével kapcsolatos műveletek, a naptár kezelésének kivételével. 
+Az \textit{EventService}-ben történnek az események kezelésével kapcsolatos műveletek, a naptár kezelésének kivételével. 
 
-Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Az EventService ekkor az esemény összes extra mezőjét tartalmazó kollekciót JSON objektumként tárolja el az eseményséma (EventBlueprint) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így előállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem. Arra is ügyeltem, hogy minden felhasználó csak az általa létrehozott sémákhoz férhessen hozzá, ehhez egy insertUser tulajdonságal kellett kibővítenem az EventBlueprint model osztályt.
+Az események résztvevőinek jogosultsága van abból eseménysémát készíteni. Az \textit{EventService} ekkor az esemény összes extra mezőjét tartalmazó kollekciót JSON objektumként tárolja el az eseményséma (\textit{EventBlueprint}) adatbázistáblában egy generált ID-vel és egy felhasználó által megadott kulcsszóval együtt. A séma felhasználható új események létrehozásakor, ekkor a JSON objektumot deszerializálom, az így előállt extra mezőket a lehetséges értékeivel elmentem az adatbázisba, majd azokat az új eseményhez rendelem. Arra is ügyeltem, hogy minden felhasználó csak az általa létrehozott sémákhoz férhessen hozzá, ehhez egy insertUser tulajdonságal kellett kibővítenem az \textit{EventBlueprint} model osztályt.
 
 \subsection{CalendarService}
 
-A naptárak kezelése a CalendarService-en keresztül történik.
+A naptárak kezelése a \textit{CalendarService}-en keresztül történik.
 
 Az óraátállítások fennállásának ténye nehézségeket okozott, hiszen nem akartam lehetővé tenni, hogy a naptár felületen nem létező órák elérhetőek legyenek (ilyenek azok az órák amelyeket a tavaszi óraátállítás során kimaradnak), és azt sem, hogy kimaradjanak olyan órák, amelyek a megszokott 24 órán kívül vannak (ezek az őszi óraátállítás során betoldott órák). Mivel az óraátállítások időzónánként eltérnek, a naptárak létrehozásakor paraméterben elvárom az időzóna megadását is. Ezután az időzóna segítségével Java ZonedDateTime objektumokat készítek a naptár kezdő és záró időpontjából, és a ZonedDateTime metódusainak segítségével generálom le a közöttük levő órákat. Ily módon a két időpont közötti összes óra benne lesz a naptárban, és egyetlen kimaradó órát sem fog tartalmazni.
 
-Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a getBestTimeIntervals függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta.
+Az legjobb időpontok megtalálása az egyik legfontosabb funkciója az alkalmazásnak. Ez a \textit{getBestTimeIntervals} függvényen keresztül történik, amely négy paramétert vár: a naptárat, a résztvevők minimális számát, az időpontok minimális hosszát, és az elfogadott felhasználói véleménytípusok listáját. A függvény minden órához az ettől az órától kezdődő, a paraméterekben megadott minimális hossznak és minimális résztvevőszámnak megfelelő időpontokat rendeli. Egy ilyen időszak esetében az számít részvevőnek, aki az időszak összes órájára a paraméterben megadott véleménytípusok egyikét választotta.
 
-Az algoritmus a következőképpen működik: az eseményhez tartozó összes óra objektumon végigiterál, és egy listába összegyűjti az egyes óráktól kezdődő összes olyan időpontot, amely a megadott feltételeknek megfelel. A függvényben, az adott órától kezdődő időpontokat keresi, egy halmazban tárolom azokat a felhasználókat, akik számára visszajelzésük alapján megfelel az óra. Ezután végigiterálok az ezt követő órákon, és frissítem a halmazt oly módon, hogy az csak azokat a felhasználókat tartalmazza, akiknek az éppen vizsgált óra is megfelelő. Amennyiben a halmaz szűkült és már legalább annyi órát vizsgáltunk, mint amennyi a paraméterben megadott minimális hossz, létrehozok egy időpont objektumot a kezdő óra, a hossz, valamint a felhasználói halmaz megadásával, és azt felveszem a visszaadandó időpontok listájába. Ha a halmaz mérete a paraméterben megadott minimális résztvevői szám alá csökken, kilépek a ciklusból, és a következő órára kezdem el keresni a z időpontokat.
+Az algoritmus a következőképpen működik: az eseményhez tartozó összes óra objektumon végigiterál, és egy listába összegyűjti az egyes óráktól kezdődő összes olyan időpontot, amely a megadott feltételeknek megfelel. A függvényben, az adott órától kezdődő időpontokat keresi, egy halmazban tárolom azokat a felhasználókat, akik számára visszajelzésük alapján megfelel az óra. Ezután végigiterálok az ezt követő órákon, és frissítem a halmazt oly módon, hogy az csak azokat a felhasználókat tartalmazza, akiknek az éppen vizsgált óra is megfelelő. Amennyiben a halmaz szűkült és már legalább annyi órát vizsgáltunk, mint amennyi a paraméterben megadott minimális hossz, létrehozok egy időpont objektumot a kezdő óra, a hossz, valamint a felhasználói halmaz megadásával, és azt felveszem a visszaadandó időpontok listájába. Ha a halmaz mérete a paraméterben megadott minimális résztvevői szám alá csökken, kilépek a ciklusból, és a következő órára kezdem el keresni az időpontokat.
 
-Az időpontokat tartalmazó lista hossza legrosszabb esetben \[ \sum_{n=1}^{a*24+1} {n} \] elemet adhat vissza, ahol \textit{a} az esemény naptárjához rendelt napok száma, ez legfeljebb 60 lehet, ez alapján a visszaadott lista maximális mérete \[ \sum_{n=1}^{1441} {n} = 1 038 961 \], ennyit nem szeretnék a frontenden feldolgozni. Ezért a getBestTimeIntervals függvényt használja a getLongestTimeIntervals és a getMostPopularIntervals függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
+Az időpontokat tartalmazó lista hossza legrosszabb esetben
+\begin{equation} \label{eq:eq1}
+\sum_{n=1}^{a*24+1} {n}
+\end{equation}
+elemet adhat vissza, ahol \textit{a} az esemény naptárjához rendelt napok száma, ez legfeljebb 60 lehet, ez alapján a visszaadott lista maximális mérete
+\begin{equation} \label{eq:eq2}
+ \sum_{n=1}^{1441} {n} = 1 038 961
+\end{equation}
+, ennyit nem szeretnék a frontenden feldolgozni. Ezért a \textit{getBestTimeIntervals} függvényt használja a \textit{getLongestTimeIntervals} és a \textit{getMostPopularIntervals} függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el.
 
 \subsection{MailService}
 
 A felhasználóknak küldött rendszeren belüli üzenetek kezelését végzi.
 
-A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az eseményt lezáró művelet esetleges visszavonásáról. Az események lezárásaról tájékoztató üzenet tartalmazza az eseményhez tartozó mező-érték párokat (ebbe az esemény kezdete és vége is bele tartozik, amennyiben naptárt is rendelt a szervező az eseményhez). Ezeket egyszerű szövegként nehéz értelmezni, ezért ezt formázott szövgként táblázatos formában terveztem megjeleníteni. Mivel a frontend oldalon nem terveztem módosításokat végrehajtani a backendről érkező levéleken, ezért a formázott üzenetet a backenden készítettem el, HTML formátumban. Mivel nem találtam az igényeimnek megfelelő Java könyvtárat, ezért készítettem egy HTMLWriter osztályt amelyben HTML elemeket előállító statikus metódusokat írtam. A formázott levelek frontend oldalon történő kezeléséről lejjebb értekezem.
+A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az eseményt lezáró művelet esetleges visszavonásáról. Az események lezárásaról tájékoztató üzenet tartalmazza az eseményhez tartozó mező-érték párokat (ebbe az esemény kezdete és vége is bele tartozik, amennyiben naptárt is rendelt a szervező az eseményhez). Ezeket egyszerű szövegként nehéz értelmezni, ezért ezt formázott szövgként táblázatos formában terveztem megjeleníteni. Mivel a frontend oldalon nem terveztem módosításokat végrehajtani a backendről érkező levéleken, ezért a formázott üzenetet a backenden készítettem el, HTML formátumban. Mivel nem találtam az igényeimnek megfelelő Java könyvtárat, ezért elkészítettem a \textit{HTMLWriter} osztályt amelyben HTML elemeket előállító statikus metódusokat írtam. A formázott levelek frontend oldalon történő kezeléséről lejjebb értekezem.
 
 \section{Controller réteg}
 
-A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensére, valamint az AuthService-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal, a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
+A controller osztályok szintén funkciók szerint különülnek el, ezért mindegyik tartalmaz hivatkozást a releváns service komponensére, valamint az \textit{AuthService}-re, amely a védett végpontok esetében végzi el a felhasználók autorizációját. Minden controller osztályhoz egy útvonal, a REST végpontokat megvalósító metódusaihoz pedig egy-egy alútvonal tartozik.
 
 \subsection{Szerializálció, deszerializáció}
 
-A model osztályaim példányait nem lehet egy-az-egyben JSON objektumokká alakítani. Az egyik probléma az osztályok közötti körkörös hivatkozások fennállása. Ezt tartalmazó kapcsolatok esetén úgy oldottam meg, hogy a tartalmazott osztályban Jackson @JsonIgnore annotációval tiltottam meg a tartalmazó osztály kapcsolódó példányának szerializálását, egyenrangú kapcsolatok esetén pedig azt teljesen ignoráltam a szerializáció során, a kapcsolat résztvevőit csak külön lekérések által tettem elérhetővé. Egyes osztályok esetén fennállhat az igény arra, hogy egyes tulajdonságait csak deszerializálni lehessen. Ilyen például a felhasználó osztály jelszó mezeje, hiszen, bár titkosítva van, ezt nem célszerű a frontend felé továbbítani, ellenben a deszerializálására szükség lehet a regisztráció során. Ezt úgy oldottam meg, hogy az adott tulajdonságot @JsonProperty(access = JsonProperty.Access.WRITE\_ONLY) annotációval láttam el.
+A model osztályaim példányait nem lehet egy-az-egyben JSON objektumokká alakítani. Az egyik probléma az osztályok közötti körkörös hivatkozások fennállása. Ezt tartalmazó kapcsolatok esetén úgy oldottam meg, hogy a tartalmazott osztályban Jackson \textit{@JsonIgnore} annotációval tiltottam meg a tartalmazó osztály kapcsolódó példányának szerializálását, egyenrangú kapcsolatok esetén pedig azt teljesen ignoráltam a szerializáció során, a kapcsolat résztvevőit csak külön lekérések által tettem elérhetővé. Egyes osztályok esetén fennállhat az igény arra, hogy egyes tulajdonságait csak deszerializálni lehessen. Ilyen például a felhasználó osztály jelszó mezeje, hiszen, bár titkosítva van, ezt nem célszerű a frontend felé továbbítani, ellenben a deszerializálására szükség lehet a regisztráció során. Ezt úgy oldottam meg, hogy az adott tulajdonságot \textit{@JsonProperty(access = JsonProperty.Access.WRITE\_ONLY)} annotációval láttam el.
 
 \section{Kivételkezelés}
 
-Külön kivételosztályokat hoztam létre az események, felhasználók, naptárak kezelése, illetve felhasználók autorizációja során keletkező kivételeknek. A speciálisabb kivételosztályokat ezekből az ősosztályokból öröklődtettem. A controllerek működése során keletkező, el nem kapott kivételek részére létrehoztam egy ControllerAdvice interfészt implementáló globális kivételkezelő osztályt. Ebben megadtam, hogy a keletkezett kivétel függvényében a visszaküldendő válasz milyen üzenetettel és státuszkóddal rendelkezzen.
+Külön kivételosztályokat hoztam létre az események, felhasználók, naptárak kezelése, illetve felhasználók autorizációja során keletkező kivételeknek. A speciálisabb kivételosztályokat ezekből az ősosztályokból öröklődtettem. A controllerek működése során keletkező, el nem kapott kivételek részére létrehoztam egy \textit{ControllerAdvice} interfészt implementáló globális kivételkezelő osztályt. Ebben megadtam, hogy a keletkezett kivétel függvényében a visszaküldendő válasz milyen üzenetettel és státuszkóddal rendelkezzen.
 
 \section{Tesztelés}
 
-Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt EowaIntegrationTest osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A tesztlefedettség méréséhez a JaCoCo\cite{Jacocowebsite} Maven plugin-ját használtam, a coverage report a mellékletek között található. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A"\cite{3Awebsite} (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégeztem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
+Minden service és controller komponenshez saját tesztosztályt hoztam létre, amelyeket az absztrakt \textit{EowaIntegrationTest} osztályomból származtattam.  A tesztekhez egy properties fájlt is létrehoztam, ebben megadtam, hogy a tesztek ne a MariaDB adatbázisomat, hanem egy memórián belüli H2 adatbázist használjanak. A service-ekhez tartozó tesztek írása során törekedtem a teljes tesztlefedettségre, a controller-ekhez tartozó tesztek esetében csak annyi tesztet írtam, amennyiből megállapítható, hogy a szerializálás, a deszerializálás, és a kivételek kezelése megfelelő módon történik. A tesztlefedettség méréséhez a JaCoCo\cite{Jacocowebsite} Maven plugin-ját használtam, a coverage report a mellékletek között található. A controllereket MockMvc használatával teszteltem. A teszteseteket az "3 A"\cite{3Awebsite} (Arrange, Act, Assert) szabály szerint készítettem el, azaz először elkészítettem a tesztesethez szükséges objektumokat, ezután elvégeztem a vizsgálandó műveletet, majd ellenőrzöm, hogy az elvárt eredményt sikerült-e elérni.
 
 \section{Védelem}
 
@@ -376,7 +395,7 @@ Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket
 
 \section{Service réteg}
 
-Az ApiService-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorisation header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az ApiService-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
+Az \textit{ApiService}-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorisation header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az \textit{ApiService}-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
 
 \section{Pipe-ok}
 
@@ -396,7 +415,7 @@ A komponensek közötti navigáció megvalósításához azokba az Angular Route
 \captionof{figure}{Értesítés esemény lezárásáról a dialógusablak komponens használatával}
 \end{center}
 
-Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban. Az ábrán egy ilyen módon előállított üzenet látható.
+Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és formázatlan üzenetek megjelenítésére is. A formázott szöveg megjelenítését az események lezárultát tudtul adó üzenetek esetén használom, hiszen ezek táblázatokat is tartalmaznak.  A HTML formában megadott üzeneteket egyirányú kötéssel a dialógus komponens InnerHTML tulajdonságához rendeltem, és a stílust is a frontend oldalról adtam meg, hogy azt ne kelljen redundáns módon az adatbázisban tárolni minden üzenet rekordban. Az 5.1-es ábrán egy ilyen módon előállított üzenet látható.
 
 	\subsection{Naptárfelület}
 
@@ -406,7 +425,7 @@ Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és fo
 \captionof{figure}{A naptárfelület felépítése}
 \end{center}
 
-A naptárfelület több standalone komponensből tevődik össze. A ViewCalendarComponent-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az EventService-t csak a ViewCalendarComponent-ben injektáltam, a DayComponent-ben és az HourComponent-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak.
+A naptárfelület több standalone komponensből tevődik össze, ezt foglalja össze az 5.2-es ábra. A \textit{ViewCalendarComponent}-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az \textit{HourComponentben} és a\textit{ DayComponentben} keletkező változtatásokat az azokat magában foglaló ViewCalendarComponentben összesítem és azokat egy megerősítő felhasználói interakció után egyetlen HTTP üzenetben küldöm el az API-nak, az \textit{EventService}-t csak a \textit{ViewCalendarComponent}-ben injektáltam. A \textit{ViewCalendarComponentben} keletkező események az összes gyerek komponensre hatással vannak, a gyerek komponensekben keletkező eseményeket pedig a \textit{ViewCalendarComponent} összesíti a fent említett módon, ezért a \textit{DayComponent}-ben és az \textit{HourComponent}-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak. A \textit{ViewCalendarComponentben} keletkező eseményre példa a szerkesztői nézetre váltás, erről a nap és óra komponenseknek is értesülniük kell, mivel szerkesztői nézetben megváltozik a viselkedésük.
 
 \section{Űrlapok reaktív módon történő kezelése}
 
@@ -419,7 +438,7 @@ A naptárfelület több standalone komponensből tevődik össze. A ViewCalendar
 \captionof{figure}{Példa egyszerű és összetett űrlapra}
 \end{center}
 
-Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule\cite{ReactiveFormswebsite} segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek. Erre példa a függvény, amelyet annak ellenőrzésére használtam a SignUp komponensben, hogy a felhasználó által a regusztráció során megadott két jelszó megegyezik-e.
+Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule\cite{ReactiveFormswebsite} segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek. Erre példa a függvény, amelyet annak ellenőrzésére használtam a  \textit{SignUp} komponensben, hogy a felhasználó által a regusztráció során megadott két jelszó megegyezik-e.
 
 \section{UX, UI}
 
@@ -435,7 +454,7 @@ Létrehoztam egy saját progress indicator komponenst, amely segítségével jel
 
 	\subsection{Guard-ok}
 
-Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateFn\cite{Guardwebsite} interfészt implementálják, és segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a UserService-t injektáltam, hogy annak getCurrentUser metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
+Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateFn\cite{Guardwebsite} interfészt implementálják, és segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a  \textit{UserService}-t injektáltam, hogy annak  \textit{getCurrentUser} metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
 
 	\subsection{Folytonos színátmenet style binding segítségével}
 
@@ -445,7 +464,7 @@ Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateF
 \captionof{figure}{Az időpontok népszerűségének megjelenítése színek segítségével}
 \end{center}
 
-A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelúő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
+A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az 5.5-ös ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
 
 	\subsection{Canvas Angularban}
 
@@ -453,7 +472,7 @@ Az óra komponensekre kattintva megjelenik egy dialógusablak, amely informáci�
 
 \section{Aszinkron programozási megoldások}
 
-Az aszinkron műveletekhez az RxJs könyvtár eszköztárát használtam. Hogy ez mindenhol egységes legyen, a Promise-okat visszaadó függvények eredményeit RxJs Observable objektumokká alakítottam, ilyen az összes, HTTP kérést tartalmazó service függvényem, hiszen ezek a fetch API-t használják. Az RxJs Subject típusát is használtam arra az esetre, amikor szülő komponensben keletkező eseményre a gyerek komponensnek kell reagálnia.
+Az aszinkron műveletekhez az RxJs könyvtár eszköztárát használtam. Hogy ez mindenhol egységes legyen, a Promise-okat visszaadó függvények eredményeit RxJs Observable objektumokká alakítottam, ilyen az összes, HTTP kérést tartalmazó service függvényem, hiszen ezek a fetch API-t használják. Az RxJs Subject típusát az események megosztását végző Input és Output direktívákban alkalmaztam.
  
 \chapter{Továbbfejlesztési lehetőségek}
 
@@ -524,7 +543,13 @@ Szeged, \today
 \begin{center}
 \includepdf[pages=-, width=170mm]{jacoco.pdf}
 
+\label{jacoco}
+
+\newpage
+
 \includepdf[pages=-, width=170mm]{jacoco_service.pdf}
+
+\label{jacoco_service}
 \end{center}
 
  \addcontentsline{toc}{chapter}{Mellékletek}
