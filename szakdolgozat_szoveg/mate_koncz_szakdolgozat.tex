@@ -127,28 +127,55 @@ Programterveő Informatikus BSc hallgató    & egyetemi adjunktus\\
 \newpage
 
 {\Huge \bf Feladatkiírás}
+
+\bigskip
 %\setlength{\parskip}{\baselineskip}%
 
-A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhasználóbarátnak kell lennie, valamit az gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
+A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhasználóbarátnak kell lennie, valamit gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
 
 \newpage
 
 {\Huge \bf Tartalmi összefoglaló:}
 
+\bigskip
 
 {\bf Téma megnevezése}
+
+\medskip
+
 Eseményszervezést segítő webalkalmazás készítése, amely egy adott társaság összeszervezése mellett alkalmas eseménysémák létrehozására és azok konfigurálására is.
 
+\bigskip
+
 {\bf Megoldási mód}
+
+\medskip
+
 Létrehoztam egy Angular keretrendszerben megvalósított webalkalmazást, amely az általam Spring Boot keretrendszerben írt API-t használja REST végpontokon keresztül. Az eseményszervezéshez szükséges logikát a backend oldalon valósítottam meg, a frontend oldali webalkalmazásnak csak a felhasználóval folytatott interakciókban van szerepe.
 
+\bigskip
+
 {\bf Alkalmazott eszközök, módszerek}
-A fejlesztés során az InteliJ IDEA és a Visual Studio Code fejlesztőkörnyezeteket használtam. A backend felépítését a Controller-Service-Repository architektúra alapján terveztem meg, a frontend a Single Page Application tervezési minta alapján készült el.
+
+\medskip
+
+A fejlesztés során az InteliJ IDEA és a Visual Studio Code fejlesztőkörnyezeteket használtam. A backend felépítését a Controller-Service-Repository architektúrális tervezési minta alapján alkottam meg.	
+
+\bigskip
 
 {\bf Elért eredmények}
+
+\medskip
+
 Az alkalmazás használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek.
 
-{\bf Kulcsszavak:} alkalmazás, eseményszervezés, frontend, backend, Angular, Spring Boot
+\bigskip
+
+{\bf Kulcsszavak}
+
+\medskip
+
+alkalmazás, eseményszervezés, frontend, backend, Angular, Spring Boot
 
 
 \newpage
@@ -166,7 +193,7 @@ Az alkalmazás használatával eseményeket lehet létrehozni, lehetőség van a
 
 \section{Motiváció}
 
-Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytársaimmal gyakran jártunk össze focizni, ám ezeket az alkalmakat mindig komoly kihívás volt megszervezni. Az legtöbb alkalom azért maradt el, mert nem sikerült olyan időpontot találni, amelyre legalább 8 ember biztosan el tudott jönni. A szavazások nehezen folytak le, rendszerint a messenger-en küldött 'foci péntek délután?', 'foci szombat délelőtt?' stb. üzenetekre adott reakciók száma alapján dőlt el a focizás időpontja. Az alkalmazásom az ehhez hasonló események szervezését könnyíti meg, ahol a legnagyobb kihívás az ideális időpont megtalálása, hiszen az a legfontosabb, hogy az minél több embernek feleljen meg. A focizáshoz az időponton kívül kívül a helyszínt is el kellett dönteni, valamint arra is választ kellett kapni, hogy ki hozza a labdát, ezért az alkalmazásban amit létre terveztem hozni, fontos szerepet kapott az is, hogy az események kiegészíthetetőek legyenek az ehhez hasonló kérdések eldöntésére alkalmas extra mezőkkel. Mivel a focit igyekeztünk minden héten megszervezni, az is felmerült bennem, hogy az alkalmazásban az eseméyneket egyszerűen lehessen sokszorosítani.
+Az alkalmazás ötlete még gimnazista koromban született meg. Az osztálytársaimmal gyakran jártunk össze focizni, ám ezeket az alkalmakat mindig komoly kihívás volt megszervezni. Az legtöbb alkalom azért maradt el, mert nem sikerült olyan időpontot találni, amelyre legalább 8 ember biztosan el tudott jönni. A szavazások nehezen folytak le, rendszerint a messenger-en küldött 'foci péntek délután?', 'foci szombat délelőtt?' stb. üzenetekre adott reakciók száma alapján dőlt el a focizás időpontja. Az alkalmazásom az ehhez hasonló események szervezését könnyíti meg, ahol a legnagyobb kihívás az ideális időpont megtalálása, hiszen az a legfontosabb, hogy az minél több embernek feleljen meg. A focizáshoz az időponton kívül a helyszínt is el kellett dönteni, valamint arra is választ kellett kapni, hogy ki hozza a labdát, ezért az alkalmazásban amit létre terveztem hozni, fontos szerepet kapott az is, hogy az események kiegészíthetőek legyenek az ehhez hasonló kérdések eldöntésére alkalmas extra mezőkkel. Mivel a focit igyekeztünk minden héten megszervezni, az is felmerült bennem, hogy az alkalmazásban az eseményeket egyszerűen lehessen sokszorosítani.
 
 \chapter{Fő funkciók bemutatása}
 
@@ -180,7 +207,7 @@ A felhasználó regisztrálhat egy egyedi felhasználónévvel, egyedi email-cí
 
 	\subsection{Bejelentkezés, kijelentkezés}
 
-A helyes felhasználónév és jelszó megadásával a létrejön egy session, ami 4 órán keresztül biztosít hozzáférést az alkalmazás bejelentkezéshez kötött funkcióihoz a felhasználó számára. A session lejárta után az alkalmazás automatikusan kijelentkezteti a felhasználót.
+A helyes felhasználónév és jelszó megadásával létrejön egy session, ami 4 órán keresztül biztosít hozzáférést az alkalmazás bejelentkezéshez kötött funkcióihoz a felhasználó számára. A session lejárta után az alkalmazás automatikusan kijelentkezteti a felhasználót.
 
 	\subsection{Autorizáció}
 
@@ -213,7 +240,7 @@ A szervező és a résztvevők számára látható az esemény egyedi meghívó-
 \label{extra_field_food}
 \end{center}
 
-A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, az eseményre rendelendő étel kiválasztásához szolgálhatnak. Ennél a pédánál maradva, az esemény szervezője ez eseben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger").  A \ref{extra_field_food}-es ábrán ennek a mezőnek a megvalósítása látható. Az opciókhoz a '+' és '-' jelekre kattintva lehet szavatot rendelni illetve azt visszavonni, és a fejlécen található ceruza ikonra kattintva lehet további opciókat megadni.
+A szervező extra mezőket adhat az eseményhez. Ezekhez egy cím és a mező lehetséges értékei (továbbiakban opció) tartoznak. A mező aktuális értékét beállíthatja a szervező, vagy szavazásra is bocsájthatja azt. Emellett a szervező azt is beállíthatja, hogy a meghívottak vehetnek-e fel új opciókat az adott mezőhöz. Amennyiben a mező szavazás által dől el, minden felhasználó tetszőleges számú opcióra adhat le legfeljebb egy darab szavazatot, és azokat vissza is vonhatja. Ilyen mezők például az esemény helyszínének megadására, vagy az eseményre rendelendő étel kiválasztására szolgálhatnak. Ennél a példánál maradva, az esemény szervezője ez esetben felvehetne egy "Milyen jellegű ételt rendeljünk?" című extra mezőt, amin beállítja, hogy szavazáson dőljön el, valamint azt, hogy a résztvevők opciókat adhassanak hozzá (pl. "pizza", "hamburger").  A \ref{extra_field_food}-es ábrán ennek a mezőnek a megvalósítása látható. Az opciókhoz a '+' és '-' jelekre kattintva lehet szavazatot rendelni illetve azt visszavonni, és a fejlécen található ceruza ikonra kattintva lehet további opciókat megadni.
 
 	\subsection{Eseménysémák használata}
 
@@ -255,7 +282,7 @@ Az események résztvevői (ebbe az esemény szervezője is beletartozik) minden
 \label{get_best_dialog}
 \end{center}
 
-Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor, valamint az is megadható, hogy az időpontok hossza, vagy népszerűsége alapján legyen rendezve az eredmény. Az két ábra kapcsolódik egymáshoz: a \ref{best_time_intervals}-ös ábrán látható lista a \ref{get_best_dialog}-es ábrán látható paraméterekkel indított időpont-keresés eredménye.
+Az események résztvevői minden időpont esetében megtekinthetik, hogy azokhoz mely felhasználók milyen véleményt rögzítettek. Az esemény szervezője átfogóbb statisztikákat is lekérhet. Egy elvárt minimális hossz és minimális résztvevőszám megadása után megtekintheti a feltételeknek megfelelő leghosszabb, illetve legnépszerűbb időpontokat. A szervező módosíthatja ezeket a lekérdezéseket, hogy azok az 'elfogadható' címkével ellátott résztvevői véleményeket is figyelembe vegyék a népszerűség kiszámolásakor, valamint az is megadható, hogy az időpontok hossza, vagy népszerűsége alapján legyen rendezve az eredmény. A két ábra kapcsolódik egymáshoz: a \ref{best_time_intervals}-ös ábrán látható lista a \ref{get_best_dialog}-es ábrán látható paraméterekkel indított időpont-keresés eredménye.
 
 \begin{center}
 \includegraphics[width=150mm]{best_time_intervals}
@@ -274,7 +301,7 @@ Az időzóna megadása azért fontos, mert a  kiválasztható időpontok egész 
 
 A Spring Framework egy Java üzleti alkalmazások fejlesztését segítő keretrendszer. Legfontosabb funkciói közé tartozik a függőség befecskendezés és a Model-View-Controller modell (MVC) támogatása.
 
-A backend alkalmazásomat a Spring Boot\cite{Springwebsite} használatával készítettem el. Ennek segítségével gyorsabban és egyszerűbben tudom elkezdeni a Spring Frameworkre épülő alkalmazásom fejlesztését, mivel a Spring Boot projektek rendelkeznek alapértelmezett konfigurációs beállításokkal, nekem ezeket csak akkor kell átírnom, ha valahol az alapértelmezettől eltérő viselkedést akarok elérni. A fejlesztést InteliJ IDEA (Community Edition)\cite{IDEAwebsite} környezetben végeztem.
+A backend alkalmazásomat a Spring Boot\cite{Springwebsite} használatával készítettem el. Ennek segítségével gyorsabban és egyszerűbben tudtam elkezdeni a Spring Frameworkre épülő alkalmazásom fejlesztését, mivel a Spring Boot projektek rendelkeznek alapértelmezett konfigurációs beállításokkal, nekem ezeket csak akkor kell átírnom, ha valahol az alapértelmezettől eltérő viselkedést akarok elérni. A fejlesztést InteliJ IDEA (Community Edition)\cite{IDEAwebsite} környezetben végeztem.
 
 	\subsection{Jakarta Persistence API Hibernate ORM-el}
 
@@ -286,11 +313,11 @@ A H2\cite{H2website} memórián belüli adatbázis megvalósítását az integr�
 
 \section{MariaDB}
 
-A backend alkalmazás éles futtatása során egy MariaDB\cite{Mariawebsite} adatbázisszerverre kapcsolódik. A MariaDB egy nyílt forráskódú, SQL alapú relációs adatbázis-kezelő rendszer (RDBMS). Más hasonló adatbázisszerverek közül azért erre esett a választásom, mert a tanulmányaim során ezt használtam a legtöbbet.
+A backend alkalmazás éles futtatása során egy MariaDB\cite{Mariawebsite} adatbázisszerverhez kapcsolódik. A MariaDB egy nyílt forráskódú, SQL alapú relációs adatbázis-kezelő rendszer (RDBMS). Más hasonló adatbázisszerverek közül azért erre esett a választásom, mert a tanulmányaim során ezt használtam a legtöbbet.
 
 \section{Angular}
 
-Az Angular\cite{Angularwebsite} egy Google által fejlesztett, nyílt forráskódú, TypeScript alapú keretrendszer webalkalmazások fejlesztésére. Az applikációm frontend részét ezzel valósítottam meg. A választásom azért erre esett, mert a hozzá hasonló keretrenszerek közül ezt ismerem a legjobban, és úgy ítéltem meg, hogy alkalmas modern, reszponzív felhasználói felületek létrehozására. A fejlesztést Visual Studio Code\cite{VSCwebsite} környezetben végeztem.
+Az Angular\cite{Angularwebsite} egy Google által fejlesztett, nyílt forráskódú, TypeScript alapú keretrendszer webalkalmazások fejlesztésére. Az applikációm frontend részét ezzel valósítottam meg. A választásom azért erre esett, mert a hozzá hasonló keretrendszerek közül ezt ismerem a legjobban, és úgy ítéltem meg, hogy alkalmas modern, reszponzív felhasználói felületek létrehozására. A fejlesztést Visual Studio Code\cite{VSCwebsite} környezetben végeztem.
 
 	\subsection{Angular Material}
 
@@ -318,7 +345,7 @@ A \ref{layers_backend}.1-es ábrán az API felépítése látható. A Háromrét
 
 \section{A model réteg}
 
-A model osztályaim egyszerű POJO-k (Plain Old Java Object), amelyek a Jakarta Persistence Entity interfészét valósítják meg. Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit, valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányainak egyszerű másolására.
+A model osztályaim egyszerű POJO-k (Plain Old Java Object). Az osztályokban sűrűn használtam a JPA objektum relációs leképzésekhez szükséges annotációit, valamint az általam szerializáláshoz használt Jackson ObjectMapper működését segítő annotációkat. Az alkalmazás további fejlesztése során gyakran használtam a Set interfészt, ezért a model osztályokban felülírtam az equals() és hashCode() metódusokat. Ezek mellett copy konstruktorokat is létrehoztam, hogy lehetőségem legyen az osztályok példányainak egyszerű másolására.
 
 \section{A repository réteg}
 
@@ -330,7 +357,7 @@ A service komponenseket nem az általuk használt repository-k, hanem a funkció
 
 \subsection{AuthService}
 
-Az \textit{AuthService} feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet veti össze az adatbázisban tárolt felhasználónévvel és megadott jelszavat az adatbázisban tárolt titkosított jelszóval a Spring Security BCryptPasswordEncoder osztály matches metódusának használatával. A sikeres bejelentkezéskor az \textit{AuthService} létrehoz egy \textit{Session} objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az \textit{AuthService} metódusait használom arra, hogy az authorisation header-ben érkező session id alapján a felhasználó jogosult-e a végponthoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
+Az \textit{AuthService} feladata a felhasználók hitelesítése és azok jogosultságainak ellenőrzése. A felhasználók bejelentkezésekor a megadott felhasználónevet veti össze az adatbázisban tárolt felhasználónévvel és megadott jelszavat az adatbázisban tárolt titkosított jelszóval a Spring Security BCryptPasswordEncoder osztály matches metódusának használatával. A sikeres bejelentkezéskor az \textit{AuthService} létrehoz egy \textit{Session} objektumot, amely a felhasználónevet (ez minen felhasználónál egyedi), a session lejáratának időpontját, valamint a session id-t tartalmazza.  A csak bejelentkezett felhasználók számára elérhető végpontokban az \textit{AuthService} metódusait használom arra, hogy az authorization header-ben érkező session id alapján a felhasználó jogosult-e a végponthoz tartozó művelet végrehajtására. A session objektum törlésre kerül, ha a felhasználó kijelentkezik, vagy ha a session lejárta után történik kísérlet annak használatára.
 
 \subsection{EventService}
 
@@ -389,12 +416,16 @@ A Spring Security-ben lehetőség van saját CORS, azaz a Cross-origin Resource 
 
 	\subsection{CSRF elleni védekezés}
 
-A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalról, tudta nélkül küld kérést a szerver felé\cite{Infbiztwebsite}. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorisation headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
+A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyik oldalra bejelentkezett felhasználó egy másik oldalon elrejtett űrlapon keresztül, tudta nélkül küld kérést a szerver felé\cite{Infbiztwebsite}. Ennek nagy a kockázata session cookie-k használata esetén, mivel a böngészősütikhez más oldalak is hozzáférnek, ezért a session id-t nem sütikben, hanem az authorization headerben várják az alkalmazás REST végpontjai, a frontend oldalon pedig a localstorage-ben tárolom azt, így más oldal nem férhet hozzá.
 
 
 	\subsection{XSS elleni védekezés}
 
-Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML formában továbbítom a frontendre, és ebben felhasználók által megadott szövegek is (az esemény neve, leírása, az extra mezők neve és értékei) szerepelnek, ez alkalmas lehet kártékony szkriptek más felhasználókhoz történő eljuttatására. Az efajta támadást DOM alapú XSS-nek, azaz Cross Site Scripting-nek nevezzük\cite{Infbiztwebsite}. Hogy ezt megelőzzem, a felhasználók által megadott szöveket csak azután használom fel arra, hogy a HTML tagek közé illesszem, hogy azokban escape-elem a speciális karaktereket.
+Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML formában továbbítom a frontendre, és ebben felhasználók által megadott szövegek (az esemény neve, leírása, az extra mezők neve és értékei) is szerepelnek, ez alkalmas lehet kártékony szkriptek más felhasználókhoz történő eljuttatására. Az efajta támadást DOM alapú XSS-nek, azaz Cross Site Scripting-nek nevezzük\cite{Infbiztwebsite}. Hogy ezt megelőzzem, a felhasználók által megadott szöveget csak azután használom fel arra, hogy a HTML tagek közé illesszem, hogy azokban escape-elem a speciális karaktereket.
+
+	\subsection{SQLi}
+
+Az SQLi\cite{Infbiztwebsite2}, azaz SQL befecskendezés esetén a támadó az SQL query-kben felhasznált, felhasználói bemenetből származó adatok ellenőrzésének és megfelelő feldolgozásának hiányát használja ki oly módon, hogy azok segítségével manipulálja az ezeket felhasználó query-ket. Az alkalmazásban az adatbázist legtöbbször a JPARepository-t megvalósító repository osztályokon keresztül használom, amelynek előre elkészített medódusai védettek az SQLi ellen. A repository-kban saját query-ket is írtam, ezekben nevekkel ellátott paraméterekként adtam át a felhasználóktól érkező adatokat, ezekből a JPA  \textit{prepared statement}-eket készít, így szintén védettnek minősülnek.
 
 \chapter{A frontend fejlesztése}
 
@@ -404,11 +435,11 @@ Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket
 
 \section{Service réteg}
 
-Az \textit{ApiService}-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorisation header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az \textit{ApiService}-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
+Az \textit{ApiService}-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorization header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az \textit{ApiService}-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
 
 \section{Pipe-ok}
 
-Az angular Pipe-ok\cite{Pipewebsite} segítségével egyszerűen lehet a template fájlokban JS objektumokat megjeleníthető formába alakítani. Én több ilyet is létrehoztam, például egy pipe segítségével jelenítem meg a pontos dátumot a naptárfelületen. Itt a pipe transform metódusa a naptár objektumot és az óra sorszámát számát kapja meg, majd ezek segítségével adja vissza a pontos dátumot leíró sztringet, vagy az "end of the event" szöveget.
+Az angular Pipe-ok\cite{Pipewebsite} segítségével egyszerűen lehet a template fájlokban JS objektumokat megjeleníthető formába alakítani. Én több ilyet is létrehoztam, például egy pipe segítségével jelenítem meg a pontos dátumot a naptárfelületen. Itt a pipe transform metódusa a naptár objektumot és az óra sorszámát kapja meg, majd ezek segítségével adja vissza a pontos dátumot leíró sztringet, vagy az "end of the event" szöveget.
 
 \section{Navigáció az oldalon}
 
@@ -436,7 +467,7 @@ Saját dialógusablak komponenst hoztam létre, amely alkalmas formázott és fo
 \label{view_calendar_structure}
 \end{center}
 
-A naptárfelület több standalone komponensből tevődik össze, ezt foglalja össze az \ref{view_calendar_structure}-es ábra. A \textit{ViewCalendarComponent}-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az \textit{HourComponentben} és a\textit{ DayComponentben} keletkező változtatásokat az azokat magában foglaló ViewCalendarComponentben összesítem és azokat egy megerősítő felhasználói interakció után egyetlen HTTP üzenetben küldöm el az API-nak, az \textit{EventService}-t csak a \textit{ViewCalendarComponent}-ben injektáltam. A \textit{ViewCalendarComponentben} keletkező események az összes gyerek komponensre hatással vannak, a gyerek komponensekben keletkező eseményeket pedig a \textit{ViewCalendarComponent} összesíti a fent említett módon, ezért a \textit{DayComponent}-ben és az \textit{HourComponent}-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak. A \textit{ViewCalendarComponentben} keletkező eseményre példa a szerkesztői nézetre váltás, erről a nap és óra komponenseknek is értesülniük kell, mivel szerkesztői nézetben megváltozik a viselkedésük.
+A naptárfelület több standalone komponensből tevődik össze, ezt foglalja össze az \ref{view_calendar_structure}-es ábra. A \textit{ViewCalendarComponent}-en belül az egyes napokhoz, és azokon belül az órákhoz külön komponens tartozik. Mivel az \textit{HourComponentben} és a\textit{ DayComponentben} keletkező változtatásokat az azokat magában foglaló \textit{ViewCalendarComponentben} összesítem és azokat egy megerősítő felhasználói interakció után egyetlen HTTP üzenetben küldöm el az API-nak, az \textit{EventService}-t csak a \textit{ViewCalendarComponent}-ben injektáltam. A \textit{ViewCalendarComponentben} keletkező események az összes gyerek komponensre hatással vannak, a gyerek komponensekben keletkező eseményeket pedig a \textit{ViewCalendarComponent} összesíti a fent említett módon, ezért a \textit{DayComponent}-ben és az \textit{HourComponent}-ben Input és Output direktívákat alkalmaztam, hogy az adatok mindkét irányban megfelelő módon áramoljanak. A \textit{ViewCalendarComponentben} keletkező eseményre példa a szerkesztői nézetre váltás, erről a nap és óra komponenseknek is értesülniük kell, mivel szerkesztői nézetben megváltozik a viselkedésük.
 
 \section{Űrlapok reaktív módon történő kezelése}
 
@@ -449,7 +480,7 @@ A naptárfelület több standalone komponensből tevődik össze, ezt foglalja �
 \captionof{figure}{Példa egyszerű és összetett űrlapra}
 \end{center}
 
-Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule\cite{ReactiveFormswebsite} segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek. Erre példa a függvény, amelyet annak ellenőrzésére használtam a  \textit{SignUp} komponensben, hogy a felhasználó által a regusztráció során megadott két jelszó megegyezik-e.
+Az egyszerű, egyetlen input mezőből álló és frontend oldali validációt nem igénylő űrlapokat kétirányú adatkötéssel dolgoztam fel, az összetettebbeket azonban a ReactiveFormsModule\cite{ReactiveFormswebsite} segítségével alkottam meg. Az űrlapokhoz FormGroup-okba gyűjtött FormControl objektumokat rendeltem, amelyekhez validációs függvényeket is írtam, ahol a ReactiveFormsModule előre megírt függvényei nem voltak elegendőek. Erre példa a függvény, amelyet annak ellenőrzésére használtam a  \textit{SignUp} komponensben, hogy a felhasználó által a regisztráció során megadott két jelszó megegyezik-e.
 
 \section{UX, UI}
 
@@ -465,7 +496,7 @@ Létrehoztam egy saját progress indicator komponenst, amely segítségével jel
 
 	\subsection{Guard-ok}
 
-Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateFn\cite{Guardwebsite} interfészt implementálják, és segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete gaurd-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a  \textit{UserService}-t injektáltam, hogy annak  \textit{getCurrentUser} metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
+Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateFn\cite{Guardwebsite} interfészt implementálják, és segítségével eldönthető, hogy a felhasználó navigálhat-e egy adott al-útvonalra az oldalon belül. Használatuknak jellegzetes esete guard-ot rendelni azokhoz az útvonalakhoz, amelyeket csak bejelentkezett felhasználók használhatnak. Ez UX funkció, hiszen az ilyen útvonalakhoz rendelt komponensekből olyan funkciók is elérhetőek, amelyekre a választ a szerver vissza fogja utasítani, ha nincs bejelentkezve a felhasználó, ennek előfordulása egy guard használatával elkerülhető. Én is írtam egy ilyen függvényt, amelybe a  \textit{UserService}-t injektáltam, hogy annak  \textit{getCurrentUser} metódusa segítségével eldönthesse, jogosult-e a felhasználó az útvonal aktiválására.
 
 	\subsection{Folytonos színátmenet style binding segítségével}
 
@@ -498,15 +529,19 @@ Az értesítések nagyobb valószínűséggel juthatnak el a felhasználókhoz, 
 
 \chapter{Hasonló alkalmazások}
 
-Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írása közben többen felhívták rá a figyelmemet, hogy hasonló célra készült alkalmazások már léteznek, ezért ezeknek utánanéztem, hogy összehasonlíthassam őket a saját megoldásommal. A legtöbbet a Doodle alkalmazást említették, emellett a ClickUp, valamint a WhenAvailable merült még fel. Az alábbiakban az alkalmazásomat a Doodle\cite{DoodleWebsite} ingyenes változatával vetem össze.
+Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írása közben többen felhívták rá a figyelmemet, hogy hasonló célra készült alkalmazások már léteznek, ezért ezeknek utánanéztem, hogy összehasonlíthassam őket a saját megoldásommal. A legtöbben a Doodle alkalmazást említették, emellett a ClickUp, valamint a WhenAvailable merült még fel. Az alábbiakban az alkalmazásomat a Doodle\cite{DoodleWebsite} ingyenes változatával vetem össze.
 
 \section{Doodle}
 
-A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak.  További hasonlóság, hogy lehetőség van az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni. A legtöbb különbség abból adódik, hogy a Doodle-t elsősorban előre meghatározott időponttal rendelkező, szigorú keretek között megvalósuló meeting-ek megszervezésére készítették, míg az én alkalmazásom inkább arra hivatott, hogy egy adott baráti társaság találkozóinak rugalmas szervezését segítse.
+A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak.  További hasonlóság, hogy az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni. A legtöbb különbség abból adódik, hogy a Doodle-t elsősorban előre meghatározott időponttal rendelkező, szigorú keretek között megvalósuló meeting-ek megszervezésére készítették, míg az én alkalmazásom inkább arra hivatott, hogy egy adott baráti társaság találkozóinak rugalmas szervezését segítse.
 
 \chapter{Összefoglalás}
 
-Az alkalmazás legfontosabb funkciókat mind megvalósítottam. A használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek. Ám az alkalmazás még nem teljes, számos felhasználói élményt javító funkcióval kibővíthető.
+Az alkalmazás legfontosabb funkcióit mind megvalósítottam. A használatával eseményeket lehet létrehozni, lehetőség van azok konfigurációjára és sokszorosítására. Az eseményekhez más felhasználók is adhatók, az általuk adott visszajelzésekről könnyen értelmezhető statisztikákat kap az esemény szervezője. Az események adatainak véglegesítéséről a felhasználók alkalmazáson belüli üzenetben értesülnek. Ám az alkalmazás még nem teljes, számos felhasználói élményt javító funkcióval kibővíthető.
+
+A fejlesztés során a tesztelésre nagy gondot fordítottam, külön tesztelési környezetet hoztam létre, amely a produkcióstól eltérő adatbázis kapcsolattal rendelkezett. Valahányszor új funkciókkal bővítettem ki az alkalmazást, teszteket is írtam azokhoz, így sikerült nagy tesztlefedettséget elérnem.
+
+Az alkalmazás készítése során új ismeretekre is szert tettem, elsősorban a biztonsági megfontolások terén, az SQL befecskendezés elleni védekezési módok ismertek voltak számomra, a CSRF és XSS támadások elhárítására szolgáló megoldások azonban újak voltak számomra.
 
 Bár léteznek már hasonló célra készült alkalmazások, úgy hiszem, hogy elsősorban a rugalmassága miatt az alkalmazásom egy létező igényt elégít ki.
 
@@ -516,22 +551,11 @@ Bár léteznek már hasonló célra készült alkalmazások, úgy hiszem, hogy e
 \bibliography{mate_koncz} 
 
 \newpage
-{\Huge \bf Köszönetnyilvánítás}
-
- \addcontentsline{toc}{chapter}{Köszönetnyilvánítás}
-
-\vspace{2 cm}
-
-köszi köszi
-
-\newpage
 {\Huge \bf Nyilatkozat}
 
  \addcontentsline{toc}{chapter}{Nyilatkozat}
 
 \vspace{2 cm}
-
-{\it A szöveg kötött, kérjük ezt használni!}
 
 Alulírott, Koncz Máté, Programtervező Informatikus szakos hallgató, kijelentem, hogy a szakdolgozatban ismertetettek saját munkám eredményei, és minden felhasznált, nem saját munkából származó eredmény esetén hivatkozással jelöltem annak forrását. 
 
@@ -552,6 +576,8 @@ Szeged, \today
 \newpage
 \section*{Mellékletek}
 
+ \addcontentsline{toc}{chapter}{Mellékletek}
+
 \subsection{Jacoco report}
 \label{jacoco}
 \begin{center}
@@ -565,11 +591,6 @@ Szeged, \today
 \includegraphics[width=170mm]{jacoco_service.pdf}
 
 \end{center}
-
-
-
-
- \addcontentsline{toc}{chapter}{Mellékletek}
 
 
 \vspace{2 cm}
