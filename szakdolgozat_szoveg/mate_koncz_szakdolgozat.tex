@@ -131,7 +131,7 @@ Programterveő Informatikus BSc hallgató    & egyetemi adjunktus\\
 \bigskip
 %\setlength{\parskip}{\baselineskip}%
 
-A projekt célja egy eseményszervezést segítő webalkalmazás létrehozása, amely segítségével rugalmasan lehet baráti társaságok összejöveteleit megszervezni. Az alkalmazásnak felhasználóbarátnak kell lennie, valamit gondoskodnia kell a felhasználók adatainak alapvető biztonságáról. 
+A cél egy eseményszervezést segítő webalkalmazás létrehozása Angular-ban, amely egy Spring keretrendszerre épülő API-t használ. A szükséges adatokat az alkalmazás egy relációs adatbázis szerveren tárolja. Az alkalmazás nagyobb baráti társaságoknak készül segítségként, hogy találkozásokhoz megtalálják a legmegfelelőbb időpontot, és mindig értesüljenek az eseményt érintő változásokról. A felhasználók eseményeket készíthetnek, ezekhez más felhasználók egy csoportját társíthatják. Ezután az esemény tulajdonosa meghirdeti a releváns információkat és a lehetséges időpontokat. Ezekre a részvevők egy naptár felületen reagálhatnak ( jó időpont, rossz időpont, elfogadható időpont). Ezekről az adatokról a szervező informatív statisztikákat kap. Az eseményekből sémák készíthetőek, amelyek segítségével új eseményeket lehet létrehozni. Az alkalmazás fontos része a résztvevők állandó tájékoztatása az esemény híreiről (pl. időpont véglegesítése, esemény lemondása, helyszín változás). Továbbá fontos az adatok biztonsága, vagyis hogy illetéktelenek (nem résztvevők) ne férhessenenek hozzá az események adataihoz.
 
 \newpage
 
@@ -425,7 +425,7 @@ Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML form�
 
 	\subsection{SQLi}
 
-Az SQLi\cite{Infbiztwebsite2}, azaz SQL befecskendezés esetén a támadó az SQL query-kben felhasznált, felhasználói bemenetből származó adatok ellenőrzésének és megfelelő feldolgozásának hiányát használja ki oly módon, hogy azok segítségével manipulálja az ezeket felhasználó query-ket. Az alkalmazásban az adatbázist legtöbbször a JPARepository-t megvalósító repository osztályokon keresztül használom, amelynek előre elkészített medódusai védettek az SQLi ellen. A repository-kban saját query-ket is írtam, ezekben nevekkel ellátott paraméterekként adtam át a felhasználóktól érkező adatokat, ezekből a JPA  \textit{prepared statement}-eket készít, így szintén védettnek minősülnek.
+Az SQLi\cite{Infbiztwebsite2}, azaz SQL befecskendezés esetén a támadó az SQL query-kben felhasznált, felhasználói bemenetből származó adatok ellenőrzésének és megfelelő feldolgozásának hiányát használja ki oly módon, hogy azok segítségével manipulálja az ezeket felhasználó query-ket. A natív query-k esetében a felhasználótól érkező adatokat nevekkel ellátott paraméterekként adtam át, ezek a Hibernate által  \textit{prepared statement}-ekben kerülnek felhasználásra, így védettnek minősülnek\cite{hibernatewebsite2}. A natív query-k mellett a JPARepository interfész metódusait használtam, amelyeknek Hibernate-es megvalósításai szintén paraméter kötést alkalmaznak.
 
 \chapter{A frontend fejlesztése}
 
