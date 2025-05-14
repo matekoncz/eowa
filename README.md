@@ -20,6 +20,6 @@ Java 21 is required.
 In the folder of the webapp (eowa/eowa_frontend) run the following commands:
 
  - ng build
- - http-server dist/eowa_frontend
+ - http-server dist/eowa_frontend -p 4200
 
 Or you can use "ng serve".
