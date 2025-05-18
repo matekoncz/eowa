@@ -290,7 +290,6 @@ public class EventService {
     }
 
     private String getMailContentForEvent(Event event) {
-        //TODO
 
         String message = h2("An event you're participating in has been finalized");
 
@@ -307,18 +306,18 @@ public class EventService {
             List<Day> days = event.getCalendar().getDays();
 
             Day startDay = days.stream()
-                    .filter(d -> d.getHours().stream().anyMatch(h -> h.getNumberInTotal() == start))
+                    .filter(d -> d.getHours().stream().anyMatch(h -> h.getNumberInCalendar() == start))
                     .findFirst().get();
 
             Hour startHour = startDay.getHours().stream()
-                    .filter(h -> h.getNumberInTotal() == start).findFirst().get();
+                    .filter(h -> h.getNumberInCalendar() == start).findFirst().get();
 
             Day endDay = days.stream()
-                    .filter(d -> d.getHours().stream().anyMatch(h -> h.getNumberInTotal() == end))
+                    .filter(d -> d.getHours().stream().anyMatch(h -> h.getNumberInCalendar() == end))
                     .findFirst().get();
 
             Hour endHour = endDay.getHours().stream()
-                    .filter(h -> h.getNumberInTotal() == end).findFirst().get();
+                    .filter(h -> h.getNumberInCalendar() == end).findFirst().get();
 
             tableContent += tr(
                     td("Start of the event")

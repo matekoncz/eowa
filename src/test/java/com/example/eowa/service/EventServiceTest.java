@@ -184,8 +184,8 @@ public class EventServiceTest extends EowaIntegrationTest {
        Hour firstHour = days.getFirst().getHours().getFirst();
        Hour lastHour = days.getLast().getHours().getLast();
 
-       eventService.setUserOpinion(event.getId(), Set.of(firstHour.getNumberInTotal(), lastHour.getNumberInTotal()),user, Opinion.UserOpinion.TOLERABLE);
-       eventService.setUserOpinion(event.getId(), Set.of(firstHour.getNumberInTotal()),user, Opinion.UserOpinion.BAD);
+       eventService.setUserOpinion(event.getId(), Set.of(firstHour.getNumberInCalendar(), lastHour.getNumberInCalendar()),user, Opinion.UserOpinion.TOLERABLE);
+       eventService.setUserOpinion(event.getId(), Set.of(firstHour.getNumberInCalendar()),user, Opinion.UserOpinion.BAD);
 
         days = eventService.getEventById(event.getId()).getCalendar().getDays();
         firstHour = days.getFirst().getHours().getFirst();
@@ -213,9 +213,9 @@ public class EventServiceTest extends EowaIntegrationTest {
         Hour firstHour = days.getFirst().getHours().getFirst();
         Hour lastHour = days.getLast().getHours().getLast();
 
-        eventService.setUserOpinion(event.getId(), Set.of(firstHour.getNumberInTotal(), lastHour.getNumberInTotal()),user, Opinion.UserOpinion.TOLERABLE);
+        eventService.setUserOpinion(event.getId(), Set.of(firstHour.getNumberInCalendar(), lastHour.getNumberInCalendar()),user, Opinion.UserOpinion.TOLERABLE);
 
-        eventService.removeUserOpinion(event.getId(), Set.of(firstHour.getNumberInTotal()),user);
+        eventService.removeUserOpinion(event.getId(), Set.of(firstHour.getNumberInCalendar()),user);
 
         days = eventService.getEventById(event.getId()).getCalendar().getDays();
         firstHour = days.getFirst().getHours().getFirst();

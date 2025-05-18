@@ -31,7 +31,7 @@ public class Hour {
         this.opinions = new HashSet<>();
     }
 
-    public int getNumberInTotal() {
+    public int getNumberInCalendar() {
         return numberInTotal;
     }
 

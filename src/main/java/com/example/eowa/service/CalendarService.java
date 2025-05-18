@@ -118,7 +118,7 @@ public class CalendarService {
     public void setUnavailableHours(Calendar calendar, Set<Integer> serialNumbers) {
         calendar.getDays().forEach(
                 day -> day.getHours().forEach(
-                        hour -> hour.setEnabled(!serialNumbers.contains(hour.getNumberInTotal()))
+                        hour -> hour.setEnabled(!serialNumbers.contains(hour.getNumberInCalendar()))
                 )
         );
     }
@@ -144,7 +144,7 @@ public class CalendarService {
     public void setUserOpinion(Calendar calendar, User user, Set<Integer> hourNumbersInTotal, Opinion.UserOpinion userOpinion) {
         calendar.getDays().forEach(day -> {
             day.getHours().forEach(hour -> {
-                if (hourNumbersInTotal.contains(hour.getNumberInTotal())) {
+                if (hourNumbersInTotal.contains(hour.getNumberInCalendar())) {
                     Opinion existingOpinion = getUserOpinion(hour, user);
                     if (existingOpinion != null) {
                         existingOpinion.setUserOpinion(userOpinion);
@@ -161,7 +161,7 @@ public class CalendarService {
     public void removeUserOpinion(Calendar calendar, User user, Set<Integer> hourNumbersInTotal) {
         calendar.getDays().forEach(day -> {
             day.getHours().forEach(hour -> {
-                if (hourNumbersInTotal.contains(hour.getNumberInTotal())) {
+                if (hourNumbersInTotal.contains(hour.getNumberInCalendar())) {
                     Opinion existingOpinion = getUserOpinion(hour, user);
                     if (existingOpinion != null) {
                         hour.getOpinions().remove(existingOpinion);
@@ -192,43 +192,57 @@ public class CalendarService {
         calendarRepository.save(calendar);
     }
 
-    public List<TimeIntervalDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions){
-        List<Hour> everyHour = new ArrayList<>(calendar.getDays().stream().map(Day::getHours).flatMap(Collection::stream).toList());
-        everyHour.sort(Comparator.comparingInt(Hour::getNumberInTotal));
+    public List<TimeIntervalDetails> getBestTimeIntervals(Calendar calendar, int minParticipants, int minLength, Set<Opinion.UserOpinion> allowedOpinions) {
+        List<Hour> everyHour = getEveryHourOfCalendar(calendar);
+        List<TimeIntervalDetails> timeIntervals = new ArrayList<>();
 
-        List<TimeIntervalDetails> momentDetails = new ArrayList<>();
+        everyHour.forEach( (Hour hour) -> {
+            Set<User> sharedParticipants = getAvailableUsers(hour, allowedOpinions);
 
-        everyHour.forEach(hour->{
-            Set<User> sharedParticipants = getPositiveParticipants(hour,allowedOpinions);
-            if(sharedParticipants.size()<minParticipants){
+            if (sharedParticipants.size() < minParticipants) {
                 return;
             }
 
-            int nextNumber = hour.getNumberInTotal()+1;
-            Hour nextHour = getHourByNumber(everyHour,nextNumber);
+            int nextHourNumber = hour.getNumberInCalendar() + 1;
+            Hour nextHour = getHourByNumber(everyHour, nextHourNumber);
             int participantNumber = 0;
-            while(nextHour != null && nextHour.isEnabled()){
-                 participantNumber = sharedParticipants.size();
-                updateSharedParticipants(sharedParticipants,getPositiveParticipants(nextHour,allowedOpinions));
-                if(sharedParticipants.size()<minParticipants){
+
+            while (nextHour != null && nextHour.isEnabled()) {
+                participantNumber = sharedParticipants.size();
+                sharedParticipants =  getSharedParticipants(sharedParticipants, getAvailableUsers(nextHour, allowedOpinions));
+
+                if (sharedParticipants.size() < minParticipants) {
                     break;
                 }
-                if(sharedParticipants.size()<participantNumber){
-                    TimeIntervalDetails timeInterval = new TimeIntervalDetails(hour.getNumberInTotal(), nextNumber - hour.getNumberInTotal(), participantNumber, sharedParticipants);
-                    if(!isTimeIntervalIncludedInAnotherOne(timeInterval,momentDetails)){
-                        momentDetails.add(timeInterval);
+
+                if (sharedParticipants.size() < participantNumber) {
+                    TimeIntervalDetails timeInterval = createTimeInterval(hour, nextHourNumber, participantNumber, sharedParticipants);
+                    if (!isTimeIntervalIncludedInAnotherOne(timeInterval, timeIntervals) && timeInterval.getLength() >= minLength) {
+                        timeIntervals.add(timeInterval);
                     }
                 }
-                nextNumber++;
-                nextHour=getHourByNumber(everyHour,nextNumber);
+
+                nextHourNumber += 1;
+                nextHour = getHourByNumber(everyHour, nextHourNumber);
             }
-            TimeIntervalDetails timeInterval = new TimeIntervalDetails(hour.getNumberInTotal(), nextNumber - hour.getNumberInTotal(), participantNumber, sharedParticipants);
-            if(!isTimeIntervalIncludedInAnotherOne(timeInterval,momentDetails)){
-                momentDetails.add(timeInterval);
+
+            TimeIntervalDetails timeInterval = createTimeInterval(hour, nextHourNumber, participantNumber, sharedParticipants);
+            if (!isTimeIntervalIncludedInAnotherOne(timeInterval, timeIntervals) && timeInterval.getLength() >= minLength) {
+                timeIntervals.add(timeInterval);
             }
         });
 
-        return momentDetails.stream().filter(detail->detail.getLength()>=minLength).collect(Collectors.toList());
+        return timeIntervals;
+    }
+
+    private static TimeIntervalDetails createTimeInterval(Hour hour, int nextHourNumber, int participantNumber, Set<User> sharedParticipants) {
+        return new TimeIntervalDetails(hour.getNumberInCalendar(), nextHourNumber - hour.getNumberInCalendar(), participantNumber, sharedParticipants);
+    }
+
+    private static ArrayList<Hour> getEveryHourOfCalendar(Calendar calendar) {
+        ArrayList<Hour> everyHour = new ArrayList<>(calendar.getDays().stream().map(Day::getHours).flatMap(Collection::stream).toList());
+        everyHour.sort(Comparator.comparingInt(Hour::getNumberInCalendar));
+        return everyHour;
     }
 
     private boolean isTimeIntervalIncludedInAnotherOne(TimeIntervalDetails timeInterval, List<TimeIntervalDetails> otherIntervals){
@@ -238,19 +252,21 @@ public class CalendarService {
                         && (details.getHourSerial()+details.getLength()>=timeInterval.getHourSerial()+timeInterval.getLength()));
     }
 
-    private void updateSharedParticipants(Set<User> sharedParticipants, Set<User> positiveParticipants) {
+    private Set<User> getSharedParticipants(Set<User> originalSharedParticipants, Set<User> availableParticipants) {
         Set<User> participantsToRemove = new HashSet<>();
+        Set<User> sharedParticipants = new HashSet<>(originalSharedParticipants);
         sharedParticipants.forEach(
                 user -> {
-                    if(!positiveParticipants.contains(user)){
+                    if(!availableParticipants.contains(user)){
                         participantsToRemove.add(user);
                     }
                 }
         );
         sharedParticipants.removeAll(participantsToRemove);
+        return sharedParticipants;
     }
 
-    private Set<User> getPositiveParticipants(Hour hour, Set<Opinion.UserOpinion> allowedOpinions) {
+    private Set<User> getAvailableUsers(Hour hour, Set<Opinion.UserOpinion> allowedOpinions) {
         if(!hour.isEnabled()){
             return Set.of();
         }
@@ -258,6 +274,6 @@ public class CalendarService {
     }
 
     private static Hour getHourByNumber(List<Hour> everyHour, long nextNumber) {
-        return everyHour.stream().filter(h -> h.getNumberInTotal() == nextNumber).findFirst().orElse(null);
+        return everyHour.stream().filter(h -> h.getNumberInCalendar() == nextNumber).findFirst().orElse(null);
     }
 }
