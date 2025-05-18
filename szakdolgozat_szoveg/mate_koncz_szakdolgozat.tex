@@ -138,7 +138,7 @@ Programtervező Informatikus BSc hallgató    & egyetemi adjunktus\\
 \bigskip
 %\setlength{\parskip}{\baselineskip}%
 
-A cél egy eseményszervezést segítő webalkalmazás létrehozása Angular-ban, amely egy Spring keretrendszerre épülő API-t használ. A szükséges adatokat az alkalmazás egy relációs adatbázis szerveren tárolja. Az alkalmazás nagyobb baráti társaságoknak készül segítségként, hogy találkozásokhoz megtalálják a legmegfelelőbb időpontot, és mindig értesüljenek az eseményt érintő változásokról. A felhasználók eseményeket készíthetnek, ezekhez más felhasználók egy csoportját társíthatják. Ezután az esemény tulajdonosa meghirdeti a releváns információkat és a lehetséges időpontokat. Ezekre a részvevők egy naptár felületen reagálhatnak ( jó időpont, rossz időpont, elfogadható időpont). Ezekről az adatokról a szervező informatív statisztikákat kap. Az eseményekből sémák készíthetőek, amelyek segítségével új eseményeket lehet létrehozni. Az alkalmazás fontos része a résztvevők állandó tájékoztatása az esemény híreiről (pl. időpont véglegesítése, esemény lemondása, helyszín változás). Továbbá fontos az adatok biztonsága, vagyis hogy illetéktelenek (nem résztvevők) ne férhessenenek hozzá az események adataihoz.
+A cél egy eseményszervezést segítő webalkalmazás létrehozása Angular-ban, amely egy Spring keretrendszerre épülő API-t használ. A szükséges adatokat az alkalmazás egy relációs adatbázis szerveren tárolja. Az alkalmazás nagyobb baráti társaságoknak készül segítségként, hogy találkozásokhoz megtalálják a legmegfelelőbb időpontot, és mindig értesüljenek az eseményt érintő változásokról. A felhasználók eseményeket készíthetnek, ezekhez más felhasználók egy csoportját társíthatják. Ezután az esemény tulajdonosa meghirdeti a releváns információkat és a lehetséges időpontokat. Ezekre a részvevők egy naptár felületen reagálhatnak ( jó időpont, rossz időpont, elfogadható időpont). Ezekről az adatokról a szervező informatív statisztikákat kap. Az eseményekből sémák készíthetőek, amelyek segítségével új eseményeket lehet létrehozni. Az alkalmazás fontos része a résztvevők állandó tájékoztatása az esemény híreiről (pl. időpont véglegesítése, esemény lemondása, helyszín változás). Továbbá fontos az adatok biztonsága, vagyis hogy illetéktelenek (nem résztvevők) ne férhessenek hozzá az események adataihoz.
 
 \newpage
 
@@ -174,7 +174,7 @@ Létrehoztam egy Angular keretrendszerben megvalósított webalkalmazást, amely
 
 \medskip
 
-A fejlesztés során az InteliJ IDEA és a Visual Studio Code fejlesztőkörnyezeteket használtam. A backend felépítését a Controller-Service-Repository architektúrális tervezési minta alapján alkottam meg.	
+A fejlesztés során az InteliJ IDEA és a Visual Studio Code fejlesztőkörnyezeteket használtam. A backend felépítését a Controller-Service-Repository architekturális tervezési minta alapján alkottam meg.	
 
 \bigskip
 
@@ -234,7 +234,7 @@ Az események adataihoz csak a szervező és a meghívottak férhetnek hozzá. A
 
 	\subsection{Létrehozás}
 
-Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni. Naptár hozzáadása opcionális, ez később is megadható, a részleteiről részletesebben lejjeb írtam.  Az esemény létrehozásakor a szervező automatikusan a meghívottak közé is bekerül.
+Az eseményeket a nevük és egy rövid leírás megadásával lehet létrehozni. Naptár hozzáadása opcionális, ez később is megadható, a részleteiről részletesebben lejjebb írtam.  Az esemény létrehozásakor a szervező automatikusan a meghívottak közé is bekerül.
 
 	\subsection{Csatlakozás}
 
@@ -322,7 +322,7 @@ A backend alkalmazásomat a Spring Boot\cite{Springwebsite} használatával kés
 
 	\subsection{Jakarta Persistence API Hibernate ORM-el}
 
-A Hibernate\cite{Hibernatewebsite} segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA)\cite{JPAwebsite} keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját natív query-ket is írtam, mivel néhány funkció megvalósításánal az adatokat egyéni módon akartam kezelni.
+A Hibernate\cite{Hibernatewebsite} segítségével végeztem objektum-relációs leképezéseket a backend alkalmazásomban, ezt azonban a Java Persistence API-n (JPA)\cite{JPAwebsite} keresztül használtam. A JPA egy interfészt szolgáltat, amely segítségével a Java kódban kezelhetem a relációs adatbázisomban (esetemben a MariaDB szerveremen) tárolt adatokat. A JPA-val emellett saját natív query-ket is írtam, mivel néhány funkció megvalósításánál az adatokat egyéni módon akartam kezelni.
 
 	\subsection{H2 In-memory DB}
 
@@ -400,13 +400,13 @@ elemet adhat vissza, ahol \textit{a} az esemény naptárjához rendelt napok sz�
 \begin{equation} \label{eq:eq2}
  \sum_{n=1}^{1441} {n} = 1 038 961
 \end{equation}
-, ennyit nem szeretnék a frontenden feldolgozni. Ezért a \textit{getBestTimeIntervals} függvényt használja a \textit{getLongestTimeIntervals} és a \textit{getMostPopularIntervals} függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tizet adják vissza. A REST végpontokból csak ez a két függvény érhető el. A \mbox{\textit{getBestTimeIntervals}} függvény forráskódja a \ref{getBestDocumentation}-as számú mellékletben található.
+, ennyit nem szeretnék a frontenden feldolgozni. Ezért a \textit{getBestTimeIntervals} függvényt használja a \textit{getLongestTimeIntervals} és a \textit{getMostPopularIntervals} függvény, amelyek a hossz, illetve a népszerűség alapján rendezik az eredmények listáját, és csak a legjobb tízet adják vissza. A REST végpontokból csak ez a két függvény érhető el. A \mbox{\textit{getBestTimeIntervals}} függvény forráskódja a \ref{getBestDocumentation}-as számú mellékletben található.
 
 \subsection{MailService}
 
 A felhasználóknak küldött rendszeren belüli üzenetek kezelését végzi.
 
-A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az eseményt lezáró művelet esetleges visszavonásáról. Az események lezárásaról tájékoztató üzenet tartalmazza az eseményhez tartozó mező-érték párokat (ebbe az esemény kezdete és vége is bele tartozik, amennyiben naptárt is rendelt a szervező az eseményhez). Ezeket egyszerű szövegként nehéz értelmezni, ezért ezt formázott szövgként táblázatos formában terveztem megjeleníteni. Mivel a frontend oldalon nem terveztem módosításokat végrehajtani a backendről érkező levéleken, ezért a formázott üzenetet a backenden készítettem el, HTML formátumban. Mivel nem találtam az igényeimnek megfelelő Java könyvtárat, ezért elkészítettem a \textit{HTMLWriter} osztályt amelyben HTML elemeket előállító statikus metódusokat írtam. A formázott levelek frontend oldalon történő kezeléséről lejjebb értekezem.
+A felhasználók üzeneteket kapnak az esemény lezárásáról, illetve az eseményt lezáró művelet esetleges visszavonásáról. Az események lezárásáról tájékoztató üzenet tartalmazza az eseményhez tartozó mező-érték párokat (ebbe az esemény kezdete és vége is bele tartozik, amennyiben naptárt is rendelt a szervező az eseményhez). Ezeket egyszerű szövegként nehéz értelmezni, ezért ezt formázott szövegként táblázatos formában terveztem megjeleníteni. Mivel a frontend oldalon nem terveztem módosításokat végrehajtani a backendről érkező levéleken, ezért a formázott üzenetet a backenden készítettem el, HTML formátumban. Mivel nem találtam az igényeimnek megfelelő Java könyvtárat, ezért elkészítettem a \textit{HTMLWriter} osztályt amelyben HTML elemeket előállító statikus metódusokat írtam. A formázott levelek frontend oldalon történő kezeléséről lejjebb értekezem.
 
 \section{Controller réteg}
 
@@ -440,7 +440,7 @@ A CSRF a Cross Site Request Forgery rövidítése. A CSRF lényege, hogy az egyi
 
 	\subsection{XSS elleni védekezés}
 
-Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML formában továbbítom a frontendre, és ebben felhasználók által megadott szövegek (az esemény neve, leírása, az extra mezők neve és értékei) is szerepelnek, ez alkalmas lehet kártékony szkriptek más felhasználókhoz történő eljuttatására. Az efajta támadást DOM alapú XSS-nek, azaz Cross Site Scripting-nek nevezzük\cite{Infbiztwebsite}. Hogy ezt megelőzzem, a felhasználók által megadott szöveget csak azután használom fel arra, hogy a HTML tagek közé illesszem, hogy azokban escape-elem a speciális karaktereket.
+Mivel az esemény adatainak véglegesítéséről küldött üzenetet HTML formában továbbítom a frontendre, és ebben felhasználók által megadott szövegek (az esemény neve, leírása, az extra mezők neve és értékei) is szerepelnek, ez alkalmas lehet kártékony szkriptek más felhasználókhoz történő eljuttatására. Az effajta támadást DOM alapú XSS-nek, azaz Cross Site Scripting-nek nevezzük\cite{Infbiztwebsite}. Hogy ezt megelőzzem, a felhasználók által megadott szöveget csak azután használom fel arra, hogy a HTML tagek közé illesszem, hogy azokban escape-elem a speciális karaktereket.
 
 Más, szintén felhasználóktól származó, frontend oldalon megjelenített szövegek estén nem volt szükség az XSS elleni védekezésről gondoskodni, mivel azokat az Angular-ban szöveg interpoláció által jelenítem meg, amely során az Angular gondoskodik a speciális karakterek escape-eléséről\cite{Angularxsswebsite}.
 
@@ -456,7 +456,7 @@ Az egyes backend oldali model osztályoknak megfelelő TypeScript interfészeket
 
 \section{Service réteg}
 
-Az \textit{ApiService}-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorization header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az \textit{ApiService}-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizátólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
+Az \textit{ApiService}-ben írtam meg a fetch API-t\cite{Fetchwebsite} használva a backend felé HTTP kéréseket küldő metódusokat, valamint a kéréshez tartozó header-öket is itt állítom össze (utóbbiakból a legfontosabb az authorization header, amelybe az aktuális felhasználó session információi kerülnek). A többi service osztályba pedig az \textit{ApiService}-t injektáltam, így az összes kérés rajta keresztül zajlik.  Mivel az üzleti logika kizárólag a backend oldalon található, az összes service metódus egyetlen, az API felé küldött kérésből és a válasz feldolgozásából áll.
 
 \section{Pipe-ok}
 
@@ -530,7 +530,7 @@ Az Angular-ban a canActivate guard-ok olyan függvények, amelyek a CanActivateF
 \label{week_view}
 \end{center}
 
-A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az \ref{week_view}-ös ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyensen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
+A naptárfelületen színek segítségével jelenítem meg, hogy az egyes órák mennyire népszerűek a résztvevők körében. Ahogyan az \ref{week_view}-ös ábrán is látszódik, a legtöbb felhasználónak megfelelő órák a legélénkebb zöld színnel, a legkevesebb felhasználónak megfelelő órák pedig a legélénkebb piros színnel vannak megjelölve. Az óra komponensben létrehoztam egy függvényt, amely annak népszerűségét a felhasználói vélemények alapján egy nulla és egy közötti szám formájában adja vissza. Ennek függvényében akartam a komponensek háttérszínét a pirostól a zöld színig terjedő skálán elhelyezni, ezért egy új tulajdonságot vezettem be a komponensben, amelyben a háttérszínt RGB formátumban tároltam. A kék összetevőt nullára állítottam, a zöld összetevőt a népszerűséggel egyenesen arányos módon, a piros összetevőt pedig a fordítottan arányos módon állítottam be. A tulajdonságot pedig a template fájlban stíluskötéssel állítottam be háttérszínnek.
 
 	\subsection{Canvas Angularban}
 
@@ -542,9 +542,9 @@ Az aszinkron műveletekhez az RxJs könyvtár eszköztárát használtam. Hogy e
  
 \chapter{Továbbfejlesztési lehetőségek}
 
-Az alkalmazást a fejlesztés folyamán csak a saját eszközömöm futtattam, logikusnak tűnik következő lépésként egy alkalmas szerverszolgáltatás igénybevétele, esetleg saját szerver felállítása, amely segítségével a webalkalmazás a világhálón keresztül elérhetővé tehető más eszközök számára is.
+Az alkalmazást a fejlesztés folyamán csak a saját eszközömön futtattam, logikusnak tűnik következő lépésként egy alkalmas szerverszolgáltatás igénybevétele, esetleg saját szerver felállítása, amely segítségével a webalkalmazás a világhálón keresztül elérhetővé tehető más eszközök számára is.
 
-Az egyik lehetőség a továbbfejlesztésre a JWT\cite{JWTwebsite} (Jason Web Token) használata az autorizációs folyamatokra. A jelenlegi megoldásom, bár a localstorage-ben tárolt json objektum segítségével zajlik, nem nevezhető jwt-nek, mivel az autorizáció a benne tárolt session id alapján történik, aminek hitelességét a backend oldalon kell lellenőrizni, és nem egy digitális aláírás segítségével.
+Az egyik lehetőség a továbbfejlesztésre a JWT\cite{JWTwebsite} (Jason Web Token) használata az autorizációs folyamatokra. A jelenlegi megoldásom, bár a localstorage-ben tárolt json objektum segítségével zajlik, nem nevezhető jwt-nek, mivel az autorizáció a benne tárolt session id alapján történik, aminek hitelességét a backend oldalon kell leellenőrizni, és nem egy digitális aláírás segítségével.
 
 Az alkalmazás reszponzivitása javítható, jelen állapotban például mobilról nehezen használható. Emellett a felhasználói felület akadálymentesítésével is érdemes lehet foglalkozni.
 
@@ -556,7 +556,7 @@ Bár én a projekt megkezdése előtt nem hallottam róla, az alkalmazás írás
 
 \section{Doodle}
 
-A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak.  További hasonlóság, hogy az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni. A legtöbb különbség abból adódik, hogy a Doodle-t elsősorban előre meghatározott időponttal rendelkező, szigorú keretek között megvalósuló meeting-ek megszervezésére készítették, míg az én alkalmazásom inkább arra hivatott, hogy egy adott baráti társaság találkozóinak rugalmas szervezését segítse.
+A Doodle-ban több, az enyémhez hasonló megoldás is van, például az eseményhez csatlakozás egy megosztott linken keresztül történik, valamint itt van egy esemény véglegesítő művelet, amelyről a résztvevők értesítést kapnak. További hasonlóság, hogy az egyszerű "megfelel" mellett az "amennyiben nincs más lehetőség" válasz is elérhető. Különbség, hogy ebben csak előre megadott, konkrét időpontokra lehet jelentkezni, valamint az is, hogy az esemény más tulajdonságait (pédául a helyszínt) a szervező nem teheti szavazás tárgyává. Különbség az is, hogy a Doodle-ben regisztráció nem szükséges, az értesítéseket az eseményhez társított email-címükre kapják a felhasználók. A doodle-ben a véglegesítési művelet nem vonható vissza, és mivel extra mezőket nem lehet az eseményekhez társítani, következtetésképp azokból eseménysémákat sincs lehetőség létrehozni. A legtöbb különbség abból adódik, hogy a Doodle-t elsősorban előre meghatározott időponttal rendelkező, szigorú keretek között megvalósuló meeting-ek megszervezésére készítették, míg az én alkalmazásom inkább arra hivatott, hogy egy adott baráti társaság találkozóinak rugalmas szervezését segítse.
 
 \chapter{Összefoglalás}
 
