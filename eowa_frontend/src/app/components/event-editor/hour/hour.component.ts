@@ -70,7 +70,7 @@ export class HourComponent implements OnInit {
     this.$showTimeInterval?.subscribe((details) => {
       let firstSerial = details.hourSerial;
       let lastSerial = firstSerial + details.length;
-      let hourserial = this.hour!.numberInTotal;
+      let hourserial = this.hour!.numberInCalendar;
 
       this.selected = (hourserial >= firstSerial) && (hourserial < lastSerial)
     })
@@ -170,7 +170,7 @@ export class HourComponent implements OnInit {
   addOpinion(opinionType: string) {
     let opinion: Opinion = {
       userOpinion: UserOpinionLookup[opinionType as keyof typeof UserOpinion],
-      number: this.hour?.numberInTotal,
+      number: this.hour?.numberInCalendar,
       user: this.userservice.getCurrentUser()!,
     };
     this.opinionSet.next(opinion);

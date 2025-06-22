@@ -252,7 +252,7 @@ export class ViewCalendarComponent implements OnInit {
         }
         for (let hour of day!.hours) {
           if (hour.enabled == false) {
-            serialNUmbers.push(hour.numberInTotal);
+            serialNUmbers.push(hour.numberInCalendar);
           }
         }
       }
@@ -347,7 +347,7 @@ export class ViewCalendarComponent implements OnInit {
   selectHour(hour: Hour) {
     console.log('hour selected', hour);
     console.log('newStartAndEnd', this.newStartAndEnd);
-    this.newStartAndEnd.push(hour.numberInTotal);
+    this.newStartAndEnd.push(hour.numberInCalendar);
     this.newStartAndEnd.sort();
 
     switch (this.newStartAndEnd.length) {

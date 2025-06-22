@@ -12,9 +12,9 @@ export class StartAndEndHourPipePipe implements PipeTransform {
       return 'not yet set';
     }
     let day = calendar.days?.find(
-      (day) => day.hours.find((hour) => hour.numberInTotal == number) != null
+      (day) => day.hours.find((hour) => hour.numberInCalendar == number) != null
     );
-    let hour = day?.hours.find((hour) => hour.numberInTotal == number);
+    let hour = day?.hours.find((hour) => hour.numberInCalendar == number);
 
     if (!hour?.number) {
       return 'end of the event';
