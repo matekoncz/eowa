@@ -90,7 +90,7 @@ public class AuthControllerTest extends EowaIntegrationTest {
                         .content(serializedCredentials))
                 .andReturn().getResponse();
 
-        Assertions.assertEquals(response.getStatus(),HttpStatus.UNAUTHORIZED.value());
+        Assertions.assertEquals(response.getStatus(),HttpStatus.NOT_ACCEPTABLE.value());
     }
 
     @Test
