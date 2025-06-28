@@ -19,14 +19,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                .anyRequest().hasIpAddress("")
-                                .anyRequest().hasIpAddress("")
-                                .requestMatchers("")
+                        authorizeRequests.anyRequest().permitAll()
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+                    configuration.setAllowedOrigins(List.of("http://localhost:4200","https://matekoncz.github.io"));
                     configuration.setAllowedMethods(List.of("*"));
                     configuration.setAllowedHeaders(List.of("*"));
                     configuration.setAllowCredentials(true);
