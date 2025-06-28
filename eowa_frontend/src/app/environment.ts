@@ -1,4 +1,4 @@
 export const environment = {
-    eowaUrl: 'http://localhost:8080/',
+    eowaUrl: 'https://konzs.mywire.org/eowa-api/',
     sessionCookieName: 'jsessionid'
   }
