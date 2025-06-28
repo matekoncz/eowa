@@ -18,8 +18,12 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
-                        .permitAll())
+        http.authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .anyRequest().hasIpAddress("")
+                                .anyRequest().hasIpAddress("")
+                                .requestMatchers("")
+                )
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:4200"));

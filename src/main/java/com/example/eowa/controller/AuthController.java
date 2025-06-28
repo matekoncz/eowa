@@ -10,6 +10,7 @@ import com.example.eowa.service.SessionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class AuthController {
     @PostMapping("/signup")
     public void signUp(
             @RequestBody User user,
+            HttpServletRequest request,
             HttpServletResponse response) throws UserException, IOException {
         authService.signUpUser(user);
         response.setStatus(HttpStatus.OK.value());

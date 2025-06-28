@@ -10,7 +10,7 @@
 
     <mat-form-field id="description">
       <mat-label>Add a description</mat-label>
-      <input matInput placeholder="description" formControlName="description" required />
+      <textarea matInput placeholder="description" formControlName="description" required></textarea>
       @if (createEventForm.controls["description"].invalid) {
       <mat-error>enter at least 8 characters</mat-error>
       }

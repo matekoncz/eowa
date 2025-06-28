@@ -15,7 +15,7 @@ public class Hour {
     @Column
     private int number;
     @Column
-    private int numberInTotal;
+    private int numberInCalendar;
     @Column
     private boolean enabled;
     @OneToMany(fetch = FetchType.EAGER)
@@ -24,15 +24,15 @@ public class Hour {
     public Hour() {
     }
 
-    public Hour(int number,int numberInTotal, boolean enabled) {
+    public Hour(int number,int numberInCalendar, boolean enabled) {
         this.number = number;
         this.enabled = enabled;
-        this.numberInTotal = numberInTotal;
+        this.numberInCalendar = numberInCalendar;
         this.opinions = new HashSet<>();
     }
 
     public int getNumberInCalendar() {
-        return numberInTotal;
+        return numberInCalendar;
     }
 
     public boolean isEnabled() {
