@@ -1,0 +1,41 @@
+name: GitHub Pages
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+  # push:
+  #   branches:
+  #   - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm --prefix=eowa_frontend install
+
+    # - name: Run tests
+    #   run: npm run test:headless
+
+    - name: Build
+      run:  npm run --prefix=eowa_frontend build -- --base-href /eowa/
+
+    - name: Deploy
+      if: success()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: eowa_frontend/dist/eowa_frontend/browser
+        enable_jekyll: true
