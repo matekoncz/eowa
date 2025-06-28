@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { from } from 'rxjs';
 import { environment } from '../environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor() {}
+  constructor(private router: Router) {}
 
   private getBaseRequestInit(): RequestInit {
     let init = {
@@ -57,7 +58,16 @@ export class ApiService {
   }
 
   sendRequest(url: string, request: RequestInit): Observable<Response> {
-    return from(fetch(environment.eowaUrl + url, request));
+    return from(fetch(environment.eowaUrl + url, request)).pipe(
+      (response) => {
+        response.subscribe((res) => {
+          if(res.status === 401) {
+            localStorage.removeItem('jwt');
+            this.router.navigate(['/login']);
+          }
+        });
+        return response;
+      });
   }
 }
 

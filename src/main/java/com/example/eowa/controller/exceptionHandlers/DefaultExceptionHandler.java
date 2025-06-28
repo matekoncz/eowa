@@ -38,7 +38,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
             InvalidSessionException ex, WebRequest request) {
         String bodyOfResponse = "The given session id is invalid";
         return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
+                new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 
     @ExceptionHandler(value = { UserIsNotEventOwnerException.class})
@@ -62,7 +62,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
             WrongPasswordException ex, WebRequest request) {
         String bodyOfResponse = "Wrong password";
         return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+                new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
     }
 
     @ExceptionHandler(value = { WrongIntervalException.class})
