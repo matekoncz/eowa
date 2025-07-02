@@ -1,12 +1,13 @@
 <mat-expansion-panel hideToggle>
   <mat-expansion-panel-header>
     <mat-panel-title><b>{{event?.eventName}}</b></mat-panel-title>
-    <mat-panel-description> {{event?.description}} </mat-panel-description>
     <mat-panel-description> {{"role: "+role}} </mat-panel-description>
   </mat-expansion-panel-header>
-  <b>participants:</b>
-  @for(participant of event?.participants; track participant){
-  <p>{{participant.username}}</p>
-  }
-  <button mat-stroked-button (click)="openEvent()">more</button>
+  <mat-action-row><mat-panel-description>{{event?.description}}</mat-panel-description> </mat-action-row>
+  <mat-action-row>
+    <mat-panel-title>participants: {{getParticipantsText()}}</mat-panel-title> 
+  </mat-action-row>
+  <mat-action-row>
+    <button mat-stroked-button (click)="openEvent()">more</button>
+  </mat-action-row>
 </mat-expansion-panel>

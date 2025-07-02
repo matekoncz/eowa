@@ -35,7 +35,7 @@ mat-card {
   width: 100%;
 }
 
-#saveButton {
+aligned {
   align-items: center;
 }
 

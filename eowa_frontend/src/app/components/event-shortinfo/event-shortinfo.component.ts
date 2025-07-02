@@ -32,4 +32,12 @@ export class EventShortinfoComponent {
       queryParams: { id: this.event?.id },
     });
   }
+
+  getParticipantsText(): string {
+    let participantNames: string[] = [];
+    for (const participant of this.event!.participants) {
+      participantNames.push(participant.username!);
+    }
+    return participantNames.join(', ');
+  }
 }

@@ -11,7 +11,6 @@ export class UserService {
       console.log('No jwt found');
       return null;
     }
-    console.log(localStorage.getItem('jwt'));
       return (JSON.parse(localStorage.getItem('jwt')!) as WebToken).user;
   }
 

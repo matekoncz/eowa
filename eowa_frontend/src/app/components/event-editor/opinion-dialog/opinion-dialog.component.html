@@ -1,5 +1,6 @@
 <h2 mat-dialog-title>Share your opinion on the date {{data.title}}:00</h2>
 <mat-dialog-content>
+    <div class = "centered wrap">
     <div class="flexRow spaced">
         <div class="flexCol">
             <p> {{getAnswerPercentage().toFixed(0)}}% answered</p>
@@ -27,6 +28,8 @@
                 <canvas #barCanvas id="barCanvas"></canvas>
             </div>
         </div>
+    </div>
+    <div class="flexCol spaced">
         <form id="form" [formGroup]="opinionForm">
             <mat-form-field id="opinion">
                 <mat-label>Select the opinion</mat-label>
@@ -46,6 +49,7 @@
                 }
             </mat-form-field>
         </form>
+        </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions>

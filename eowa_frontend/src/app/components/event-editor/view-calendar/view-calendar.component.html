@@ -1,7 +1,7 @@
 @if(loading){
     <app-process-indicator></app-process-indicator>
 } @else {
-    <div class="centered">
+    <div class="centered margined">
         <h1>Event calendar of {{event?.eventName}}</h1>
     </div>
     <div class="flexRow fillSpace">
@@ -11,18 +11,19 @@
                 <mat-card-title>Organizer actions</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-    
+                <div class="centered wrap">
+                                    @if(editMode == EditMode.EDIT) {
+                <button mat-raised-button class="mainaction" (click)="exitEditMode(true)"><p>Exit and save</p></button>
+                <button mat-raised-button class="mainaction" (click)="exitEditMode(false)"><p>Exit and discard changes</p></button>
+                <button mat-raised-button (click)="disableHoursPeriodically()" syle="height: fit-content;"><p>Disable hours periodically</p></button>
+                }
                 <button mat-raised-button (click)="editCalendar()" [disabled]="editMode != EditMode.DEFAULT">Edit
                     calendar</button>
-                @if(editMode == EditMode.EDIT) {
-                <button mat-raised-button class="mainaction" (click)="exitEditMode(true)">Exit and save</button>
-                <button mat-raised-button class="mainaction" (click)="exitEditMode(false)">Exit and discard changes</button>
-                <button mat-raised-button (click)="disableHoursPeriodically()">Disable hours periodically</button>
-                }
                 <button mat-raised-button (click)="startAndEnd()" [disabled]="editMode != EditMode.DEFAULT">Set start and
                     end hour</button>
                 <button mat-raised-button (click)="openGetBestTimeIntervalsDialog()"
                     [disabled]="editMode != EditMode.DEFAULT">Get best time intervals</button>
+                </div>
             </mat-card-content>
         </mat-card>
         @if(editMode == EditMode.SHOW_BEST){
@@ -40,7 +41,7 @@
                     <div class="verticalCenter">
                     {{interval.hourSerial | startAndEndHourPipe : this.event!.calendar!}} - {{interval.hourSerial +
                     interval.length | startAndEndHourPipe : this.event!.calendar! }} |   participants:
-                    {{interval.participantNumber}} length: {{interval.length}} hours
+                    {{interval.participantNumber}}; length: {{interval.length}} hours
                     </div>
                 </div>
                 }
@@ -69,6 +70,7 @@
                 <mat-card-title>Opinions</mat-card-title>
             </mat-card-header>
             <mat-card-content class="spaced">
+                <div class="centered wrap">
                 <div class="flexCol">
                     <h3>Add opinions fast</h3>
     
@@ -89,19 +91,17 @@
                         </mat-form-field>
                     </form>
     
-                    <button mat-raised-button [ngClass]="{'inverted': opinionMode != OpinionMode.DEFAULT}"
-                        (click)="opinionModeChanged()">
+                </div>
+                <div class="centered aligned wrap">
+                    <button mat-raised-button [ngClass]="{'inverted': opinionMode != OpinionMode.DEFAULT}" (click)="opinionModeChanged()">
                         @if(opinionMode==OpinionMode.DEFAULT){
-                        start
+                            start
                         }@else{
-                        finish
+                            finish
                         }
                     </button>
-    
+                    <button mat-raised-button [disabled]="changedOpinions.size==0" (click)="updateOpinions()"> Save opinions</button>
                 </div>
-                <div class="centered" id="saveButton">
-                    <button mat-raised-button [disabled]="changedOpinions.size==0" (click)="updateOpinions()"> Save
-                        opinions</button>
                 </div>
             </mat-card-content>
         </mat-card>

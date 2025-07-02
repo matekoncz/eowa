@@ -7,9 +7,9 @@ export interface EowaEvent {
   calendar?: Calendar;
   owner: User;
   eventName: string;
-  description: String;
+  description: string;
   participants: User[];
-  invitationCode?: String;
+  invitationCode?: string;
   selectionFields: SelectionField[];
   finalized: boolean;
 }

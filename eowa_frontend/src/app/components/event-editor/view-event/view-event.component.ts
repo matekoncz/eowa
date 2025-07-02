@@ -23,6 +23,7 @@ import { EventBlueprint } from '../../../Model/EventBlueprint';
 import { MatSelectModule } from '@angular/material/select';
 import { UserService } from '../../../services/user.service';
 import { ProcessIndicatorComponent } from "../../process-indicator/process-indicator.component";
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-view-event',
@@ -37,7 +38,8 @@ import { ProcessIndicatorComponent } from "../../process-indicator/process-indic
     MatCheckboxModule,
     EventFieldComponent,
     MatSelectModule,
-    ProcessIndicatorComponent
+    ProcessIndicatorComponent,
+    ClipboardModule
 ],
   templateUrl: './view-event.component.html',
   styleUrl: './view-event.component.css',

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../../services/event.service';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
@@ -45,9 +46,9 @@ export class CreateCalendarComponent {
 
     timeZone: new FormControl('', [Validators.required]),
 
-    startTime: new FormControl(new Date(), [Validators.required]),
+    startTime: new FormControl(new Date(), [Validators.required, this.dateValidator()]),
 
-    endTime: new FormControl(new Date(), [Validators.required]),
+    endTime: new FormControl(new Date(), [Validators.required, this.dateValidator()]),
   });
 
   private eventId: number;
@@ -109,4 +110,34 @@ export class CreateCalendarComponent {
   cancel() {
     this.router.navigate(['my-events']);
   }
+
+    dateValidator() {
+      return (control: AbstractControl) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+        if (this.createCalendarForm != undefined) {
+          const startfield = this.createCalendarForm.get('startTime');
+          const endfield = this.createCalendarForm.get('endTime');
+          if (startfield == null || endfield == null) {
+            return { dateValidator: false };
+          }
+          if (startfield.value > endfield.value) {
+            console.log('Start time is after end time');
+            endfield.setErrors({dateValidator: true});
+            return {dateValidator: true};
+          } else {
+            endfield.setErrors(null);
+          }
+          if (startfield.value < today) {
+            console.log('Start time is before today');
+            startfield.setErrors({ dateValidator: true });
+            return { dateValidator: true };
+          } else{
+            startfield.setErrors(null);
+          }
+          
+        }
+        return null;
+      };
+    }
 }

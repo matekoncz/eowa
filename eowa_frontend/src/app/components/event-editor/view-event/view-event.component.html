@@ -1,105 +1,110 @@
-@if(loading){ 
-    <app-process-indicator></app-process-indicator>
+@if(loading){
+<app-process-indicator></app-process-indicator>
 } @else {
-    <div class="centered">
-        <h1>{{event?.eventName}}</h1>
-    </div>
-    <div class="centered">
-        <div>
-            <b>{{event?.description}}</b>
-            <p><b>Organizer: </b>{{event?.owner?.username}}</p>
-            <b>participants: </b>
-            @for(participant of event?.participants; track participant){
-            <p>{{participant.username}}</p>
+<div class="centered">
+    <h1>{{event?.eventName}}</h1>
+</div>
+<div class="centered margined">
+    <div>
+        <b>{{event?.description}}</b>
+        <p><b>Organizer: </b>{{event?.owner?.username}}</p>
+        <b>participants: </b>
+        @for(participant of event?.participants; track participant){
+        <p>{{participant.username}}</p>
+        }
+        <p>
+            <b>invitation code: </b> {{event?.invitationCode}}
+            <button mat-icon-button [cdkCopyToClipboard]="event?.invitationCode!">
+                <mat-icon>content_copy</mat-icon>
+            </button>
+        </p>
+        @if(event?.calendar == null){
+        <mat-chip><button mat-button (click)="addCalendar()">Add calendar</button></mat-chip>
+        }
+        @else{
+        <mat-chip><button mat-button (click)="viewCalendar()">View calendar</button></mat-chip>
+        }
+
+        <div class="flexCol">
+            <h2>Extra fields</h2>
+
+            @for(field of event!.selectionFields; track field){
+            <app-event-field [field]="field" [isUserOwner]="isUserOwner()" [isEventFinalized]="event!.finalized"
+                (voteEvent)="vote($event)" (deleteFieldEvent)="deleteField($event)" (addOptionEvent)="addOption($event)"
+                (deleteOptionEvent)="deleteOption($event)" (removeVoteEvent)="removeVote($event)"
+                (selectOptionEvent)="selectOption($event)">
+            </app-event-field>
             }
-            <p><b>invitation code: </b> {{event?.invitationCode}}</p>
-            @if(event?.calendar == null){
-            <mat-chip><button mat-button (click)="addCalendar()">Add calendar</button></mat-chip>
-            }
-            @else{
-            <mat-chip><button mat-button (click)="viewCalendar()">View calendar</button></mat-chip>
-            }
-    
-            <div class="flexCol">
-                <h2>Extra fields</h2>
-    
-                @for(field of event!.selectionFields; track field){
-                <app-event-field [field]="field" [isUserOwner]="isUserOwner()" [isEventFinalized]="event!.finalized"
-                    (voteEvent)="vote($event)" (deleteFieldEvent)="deleteField($event)" (addOptionEvent)="addOption($event)"
-                    (deleteOptionEvent)="deleteOption($event)" (removeVoteEvent)="removeVote($event)"
-                    (selectOptionEvent)="selectOption($event)">
-                </app-event-field>
-                }
-    
-                @if(isUserOwner()){
-                <div class="group">
-    
-                    <h2>Add an extra field</h2>
-                    <div class="centered">
-                        <mat-form-field>
-                            <label>Field name</label>
-                            <input matInput placeholder="Enter the field name" [(ngModel)]="fieldname">
-                        </mat-form-field>
-    
-                        <mat-form-field>
-                            <label>Value</label>
-                            <input matInput placeholder="Add value" [(ngModel)]="fieldValue">
-                            <button mat-icon-button (click)="addValue()">
-                                <mat-icon>add</mat-icon>
-                            </button>
-                        </mat-form-field>
-                    </div>
-    
-                    <b>values:</b>
-                    @for(value of values; track value){
-                    <p>{{value}}</p>
-                    }
-    
-                    <mat-checkbox [(ngModel)]="selectedByPoll">Is field selected by poll</mat-checkbox>
-    
-                    <mat-checkbox [(ngModel)]="openForModification">Is field open for modification</mat-checkbox>
-    
-                    <button mat-button (click)="addField()">Create field</button>
-                </div>
-    
-                <div class="group">
-                    <mat-form-field>
-                        <mat-select placeholder="Select blueprint" [(ngModel)]="selectedBlueprint">
-                            @for(blueprint of userBlueprints; track blueprint){
-                            <mat-option [value]="blueprint">{{blueprint.name}}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-    
-                    <button mat-button (click)="addFieldsFromBluePrint()">Add fields from blueprint</button>
-    
-                </div>
-                }
-    
-    
-                <div class="group">
-                    <mat-form-field>
-                        <label>Blueprint name</label>
-                        <input matInput placeholder="Enter blueprint name" [(ngModel)]="blueprintName">
-                    </mat-form-field>
-    
-                    <button mat-button (click)="createBluePrint()">Create blueprint</button>
-    
-                </div>
-    
-            </div>
-    
+
             @if(isUserOwner()){
-            <div class="flexRow centered">
-                @if(event!.finalized){
-                <button mat-button class="mainaction" (click)="unfinalizeEvent()">Un-finalize event</button>
-                }@else {
-                <button mat-button class="mainaction" (click)="finalizeEvent()">Finalize event</button>
+            <div class="group">
+
+                <h2>Add an extra field</h2>
+                <div class="centered wrap">
+                    <mat-form-field>
+                        <label>Field name</label>
+                        <input matInput placeholder="Enter the field name" [(ngModel)]="fieldname">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <label>Value</label>
+                        <input matInput placeholder="Add value" [(ngModel)]="fieldValue">
+                        <button mat-icon-button (click)="addValue()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+
+                <p><b>values:</b></p>
+                @for(value of values; track value){
+                <p>{{value}}</p>
                 }
+
+                <mat-checkbox [(ngModel)]="selectedByPoll">Is field selected by poll</mat-checkbox>
+
+                <mat-checkbox [(ngModel)]="openForModification">Is field open for modification</mat-checkbox>
+
+                <button mat-button (click)="addField()">Create field</button>
+            </div>
+
+            <div class="group">
+                <mat-form-field>
+                    <mat-select placeholder="Select blueprint" [(ngModel)]="selectedBlueprint">
+                        @for(blueprint of userBlueprints; track blueprint){
+                        <mat-option [value]="blueprint">{{blueprint.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-button (click)="addFieldsFromBluePrint()">Add fields from blueprint</button>
+
             </div>
             }
-    
+
+
+            <div class="group">
+                <mat-form-field>
+                    <label>Blueprint name</label>
+                    <input matInput placeholder="Enter blueprint name" [(ngModel)]="blueprintName">
+                </mat-form-field>
+
+                <button mat-button (click)="createBluePrint()">Create blueprint</button>
+
+            </div>
+
         </div>
-    
+
+        @if(isUserOwner()){
+        <div class="flexRow centered">
+            @if(event!.finalized){
+            <button mat-button class="mainaction" (click)="unfinalizeEvent()">Un-finalize event</button>
+            }@else {
+            <button mat-button class="mainaction" (click)="finalizeEvent()">Finalize event</button>
+            }
+        </div>
+        }
+
     </div>
+
+</div>
 }

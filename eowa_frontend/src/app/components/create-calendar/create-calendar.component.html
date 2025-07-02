@@ -1,20 +1,22 @@
 <div id=formcontainer>
   <form id="form" [formGroup]="createCalendarForm">
-
-    <mat-form-field id="timeZone">
-      <mat-label>Select the time zone</mat-label>
-      <mat-select formControlName="timeZone">
-        @for(zone of Object.keys(ZoneId); track zone){
-        <mat-option [value]="zone">
-          {{ zone }}
-        </mat-option>
+    <div class="flexCol">
+      <div class="centered">
+      <mat-form-field id="timeZone">
+        <mat-label>Select the time zone</mat-label>
+        <mat-select formControlName="timeZone">
+          @for(zone of Object.keys(ZoneId); track zone){
+          <mat-option [value]="zone">
+            {{ zone }}
+          </mat-option>
+          }
+        </mat-select>
+        @if (createCalendarForm.controls["timeZone"].invalid) {
+        <mat-error>Please fill the time zone field</mat-error>
         }
-      </mat-select>
-      @if (createCalendarForm.controls["timeZone"].invalid) {
-      <mat-error>Please fill the time zone field</mat-error>
-      }
-    </mat-form-field>
-
+      </mat-form-field>
+      </div>
+      <div class="centered">
     <mat-form-field id="startTime">
       <mat-label>Choose a date</mat-label>
       <input matInput [matDatepicker]="start" formControlName="startTime">
@@ -22,7 +24,8 @@
       <mat-datepicker-toggle matIconSuffix [for]="start"></mat-datepicker-toggle>
       <mat-datepicker #start></mat-datepicker>
     </mat-form-field>
-
+    </div>
+    <div class="centered">
     <mat-form-field id="endTime">
       <mat-label>Choose a date</mat-label>
       <input matInput [matDatepicker]="end" formControlName="endTime">
@@ -30,6 +33,11 @@
       <mat-datepicker-toggle matIconSuffix [for]="end"></mat-datepicker-toggle>
       <mat-datepicker #end></mat-datepicker>
     </mat-form-field>
+    </div>
+      @if (createCalendarForm.controls["endTime"].invalid) {
+        <div class="flexCol"><mat-error><p>End time cannot be before start time and the start time cannot be in the past.</p></mat-error></div>
+      }
+    </div>
   </form>
   <button mat-button (click)="addCalendar()" [disabled]="!createCalendarForm.valid">Add calendar</button>
   <button mat-button (click)="cancel()"> I don't want to add a calendar now</button>

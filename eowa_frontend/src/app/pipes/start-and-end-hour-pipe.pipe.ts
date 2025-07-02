@@ -17,7 +17,7 @@ export class StartAndEndHourPipePipe implements PipeTransform {
     let hour = day?.hours.find((hour) => hour.numberInCalendar == number);
 
     if (!hour?.number) {
-      return 'end of the event';
+      return 'start of the event';
     }
 
     return (
