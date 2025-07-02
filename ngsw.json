@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1751482718890,
+  "timestamp": 1751483482634,
   "index": "/eowa/index.html",
   "assetGroups": [
     {
@@ -57,7 +57,7 @@
     "/eowa/favicon.ico": "a6348cb127038276d7cf9e6d315fb78e23413da6",
     "/eowa/index.html": "e4426c3d9192c01ad0e0d66372e7da0c1e157a95",
     "/eowa/main-YBSKKEKO.js": "4031fddea46dd04ec53aae106640cadaa83ee3c3",
-    "/eowa/manifest.webmanifest": "56ea6de30ef730160197a970799cac1810b21d04",
+    "/eowa/manifest.webmanifest": "8643fdf8dadb6a992365c9c7707fd37ce752a91e",
     "/eowa/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "/eowa/styles-G5ESQ6GC.css": "1d0dcf1254bbe3ded30f48cb642c68fc4ad61a33"
   },

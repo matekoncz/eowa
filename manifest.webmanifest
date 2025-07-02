@@ -1,7 +1,7 @@
 {
   "name": "eowa_frontend",
-  "short_name": "eowa_frontend",
-  "theme_color": "#1976d2",
+  "short_name": "eowa",
+  "theme_color": "#8001C6",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
