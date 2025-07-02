@@ -1,0 +1,83 @@
+{
+  "configVersion": 1,
+  "timestamp": 1751482718890,
+  "index": "/eowa/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/eowa/chunk-MKX5OTVV.js",
+        "/eowa/chunk-T4LT5XOZ.js",
+        "/eowa/favicon.ico",
+        "/eowa/index.html",
+        "/eowa/main-YBSKKEKO.js",
+        "/eowa/manifest.webmanifest",
+        "/eowa/polyfills-FFHMD2TL.js",
+        "/eowa/styles-G5ESQ6GC.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/eowa/assets/icons/icon-128x128.png",
+        "/eowa/assets/icons/icon-144x144.png",
+        "/eowa/assets/icons/icon-152x152.png",
+        "/eowa/assets/icons/icon-192x192.png",
+        "/eowa/assets/icons/icon-384x384.png",
+        "/eowa/assets/icons/icon-512x512.png",
+        "/eowa/assets/icons/icon-72x72.png",
+        "/eowa/assets/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/eowa/assets/icons/icon-128x128.png": "2043100be74f3a51803a05df9190c3383a2317a8",
+    "/eowa/assets/icons/icon-144x144.png": "f858a715e883ea8b973ee30f69a1bf36f58eecf7",
+    "/eowa/assets/icons/icon-152x152.png": "dd5cdc69dd4a8865fea4e7a22012c21ae4510254",
+    "/eowa/assets/icons/icon-192x192.png": "e0d78e26be539ba101d27de1c89f589948920e53",
+    "/eowa/assets/icons/icon-384x384.png": "8f92532c967b7a0c97625b49bac1b455ccebaad5",
+    "/eowa/assets/icons/icon-512x512.png": "16beabf019656a9e8a0a30d350d15db268316f90",
+    "/eowa/assets/icons/icon-72x72.png": "a29dcfe6aa6a9de34905757c40aebdbb29ca9b06",
+    "/eowa/assets/icons/icon-96x96.png": "7e0c5a8963ca137a1d94b1b75151a9b263818149",
+    "/eowa/chunk-MKX5OTVV.js": "22f55512b5fdfaba077ca3e7549e891a09f50550",
+    "/eowa/chunk-T4LT5XOZ.js": "50057d71b99cefd2dcd29ccbfe972d8676b62a5b",
+    "/eowa/favicon.ico": "a6348cb127038276d7cf9e6d315fb78e23413da6",
+    "/eowa/index.html": "e4426c3d9192c01ad0e0d66372e7da0c1e157a95",
+    "/eowa/main-YBSKKEKO.js": "4031fddea46dd04ec53aae106640cadaa83ee3c3",
+    "/eowa/manifest.webmanifest": "56ea6de30ef730160197a970799cac1810b21d04",
+    "/eowa/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
+    "/eowa/styles-G5ESQ6GC.css": "1d0dcf1254bbe3ded30f48cb642c68fc4ad61a33"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
