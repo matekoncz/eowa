@@ -69,4 +69,13 @@ export class AppComponent implements AfterContentInit{
   url(){
     return this.router.url;
   }
+
+  getProfileText(): string {
+    let user = this.userservice.getCurrentUser();
+    if (user) {
+      return user.username!;
+    } else {
+      return "unauthenticated";
+    }
+  }
 }

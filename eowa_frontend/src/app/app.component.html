@@ -22,7 +22,7 @@
     </button>
   </mat-menu>
   <button mat-button [matMenuTriggerFor]="profile">
-    Profile
+    {{getProfileText()}}
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #profile="matMenu">
@@ -37,10 +37,6 @@
     </button>
   }
   @if(getAuthStatus()==AuthStatus.LOGGED_IN){
-    <button mat-menu-item>
-      profile
-      <mat-icon>person</mat-icon>
-    </button>
     <button mat-menu-item (click)="openDialog()">
       Log out
       <mat-icon>keyboard_tab</mat-icon>

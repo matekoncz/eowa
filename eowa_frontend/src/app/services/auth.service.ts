@@ -47,6 +47,7 @@ export class AuthService {
   }
 
   getAuthStatus() {
+    this.authStatus = localStorage.getItem('jwt') ? AuthStatus.LOGGED_IN : AuthStatus.LOGGED_OUT;
     return this.authStatus;
   }
 }
