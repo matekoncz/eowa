@@ -110,3 +110,11 @@ h1,h2,h3{
   font-weight: bold;
   color: blueviolet;
 }
+
+.wrap{
+  flex-wrap: wrap;
+}
+
+.margined{
+  margin: 10px;
+}
