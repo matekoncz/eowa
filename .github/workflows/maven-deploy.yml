@@ -1,0 +1,49 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Build and deploy
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: maven
+      - name: Build with Maven without testing
+        run: mvn -B package -DskipTests
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: target/*.jar
+  deploy:
+
+    runs-on: my-pi4
+    needs: build
+
+    steps:
+      - name: Download artifacts and deploy them
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - shell: bash
+        run: |
+          cp -a *.jar /deploy-target
+          chmod a+r /deploy-target/*.jar
+          docker restart eowa-eowa-1

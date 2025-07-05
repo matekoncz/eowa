@@ -140,7 +140,7 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = { EventCannotBeFinalizedException.class})
     protected ResponseEntity<Object> handleEventCannotBeFinalized(
             EventCannotBeFinalizedException ex, WebRequest request) {
-        String bodyOfResponse = "The event cannot be finalized, all selection fields have to be set beforehand";
+        String bodyOfResponse = "Event cannot be finalized: make sure to set all event fields (calendar and selection fields).";
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
     }
